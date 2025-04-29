@@ -13,7 +13,7 @@ public class AlbaUtils {
 	public static String nextLine(String msg) {
 		System.out.print(msg);
 		return scanner.nextLine();
-	}
+	} 
 	
 	public static Long nextLong(String msg) {
 		System.out.print(msg);

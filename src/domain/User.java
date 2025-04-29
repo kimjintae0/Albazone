@@ -1,6 +1,6 @@
 package domain;
 
-public class UserList {
+public class User {
 	// 회원(추상) 개인*사업주(구상)
     //가입, 수정, 탈퇴
     //1) 사업자 : 구현/ ID, Pw, 대표자명, 상호명, 연락처
@@ -14,7 +14,7 @@ public class UserList {
  //
 
 
- public UserList(String ceoName, String companyName, int number, String id, String pw) {
+ public User(String ceoName, String companyName, int number, String id, String pw) {
     super();
     this.ceoName = ceoName;
     this.companyName = companyName;
