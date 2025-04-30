@@ -14,7 +14,6 @@ public class UserService {
 
 	}
 	
-
 	public void register() {
 		int choice = AlbaUtils.nextInt("1. (사업자) 회원가입 2.(개인회원) 회원가입 3. 종료");
 

@@ -1,6 +1,6 @@
 package domain;
 
-public class BusinessUser extends User{
+public class BusinessUser extends User{ 
 	//1) 사업자 : 구현/ ID, Pw, 대표자명, 상호명, 연락처
 	
    private String BusinessUserName; // 상사업자 이름
@@ -8,7 +8,7 @@ public class BusinessUser extends User{
    private String BusinessUserArea; // 주소 
    private String BusinessUserNumber;// 사업자 연락처
    private String BusinessUserId ; //사업자 아이디
-   private String BusinessUserPw; // 사업자 비밀번호
+   private String BusinessUserPw; // 사업자 비밀번호 -> Business -> business 나중에 소문자 변경
    
    public BusinessUser() {}
 
