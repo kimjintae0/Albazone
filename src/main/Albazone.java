@@ -11,7 +11,7 @@ public class Albazone {
 		try {
 			while(true) {
 				System.out.println("====================================");
-					AlbazoneService.getInstance().menu();
+					AlbazoneService.getInstance().menu(); // -> 이거 서버 연결을 여기에다 하는지 알바 서비스에서 연결을 해야 하는지 물어보기
 			}
 		}
 		catch (Exception e) {

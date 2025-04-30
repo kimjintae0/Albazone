@@ -11,7 +11,7 @@ public class AlbazoneService {
 	}
 		
 	public void menu() {
-		if(userService.getLoginUser() == null) {
+		if(userService.getLoginUser() == null) { 
 			int no = AlbaUtils.nextInt("1. 로그인 2. 회원가입");
 			switch(no) {
 				case 1:{
