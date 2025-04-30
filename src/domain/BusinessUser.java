@@ -5,7 +5,6 @@ public class BusinessUser extends User{
 	
 	
 	public void register() {
-		System.out.println("회원가입을");
 		
 	}
 }
