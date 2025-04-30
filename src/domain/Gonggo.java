@@ -1,85 +1,94 @@
 package domain;
 
+import java.util.Date;
+
 public class Gonggo {
     //제목, 담당업무 , 근무기간, 근무시간, 시급, 근무지역
 
     private String title;
     private String role;
-    private int wokingPeriod;    //근무기간
-    private int workingHours;    //근무시간
+    private int workHours;    //근무시간
     private int wage; //시급
-    private String region;     //지역
-
-    //기본 및 모든 필드 사용 생성자
+    private Date startDate;
+    private Date endDate;
+    private int workingPeriod;	//end date - startdate
+    
     public Gonggo() {}
 
-    public Gonggo(String title, String role, int wokingPeriod, int workingHours, int wage, String region) {
-        super();
-        this.title = title;
-        this.role = role;
-        this.wokingPeriod = wokingPeriod;
-        this.workingHours = workingHours;
-        this.wage = wage;
-        this.region = region;
-    }
+	public Gonggo(String title, String role, int workHours, int wage, Date startDate, Date endDate, int workingPeriod) {
+		super();
+		this.title = title;
+		this.role = role;
+		this.workHours = workHours;
+		this.wage = wage;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.workingPeriod = workingPeriod;
+	}
 
-    //getter, setter
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public String getRole() {
-        return role;
-    }
+	public String getRole() {
+		return role;
+	}
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+	public void setRole(String role) {
+		this.role = role;
+	}
 
-    public int getWoking_period() {
-        return wokingPeriod;
-    }
+	public int getWorkHours() {
+		return workHours;
+	}
 
-    public void setWoking_period(int wokingPeriod) {
-        this.wokingPeriod = wokingPeriod;
-    }
+	public void setWorkHours(int workHours) {
+		this.workHours = workHours;
+	}
 
-    public int getWorking_hours() {
-        return workingHours;
-    }
+	public int getWage() {
+		return wage;
+	}
 
-    public void setWorking_hours(int workingHours) {
-        this.workingHours = workingHours;
-    }
+	public void setWage(int wage) {
+		this.wage = wage;
+	}
 
-    public int getWage() {
-        return wage;
-    }
+	public Date getStartDate() {
+		return startDate;
+	}
 
-    public void setWage(int wage) {
-        this.wage = wage;
-    }
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
 
-    public String getRegion() {
-        return region;
-    }
+	public Date getEndDate() {
+		return endDate;
+	}
 
-    public void setRegion(String region) {
-        this.region = region;
-    }
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 
-    @Override
-    public String toString() {
-        return "Gonggo [title=" + title + ", role=" + role + ", wokingPeriod=" + wokingPeriod + ", workingHours="
-                + workingHours + ", wage=" + wage + ", region=" + region + "]";
-    }
+	public int getWorkingPeriod() {
+		return workingPeriod;
+	}
 
+	public void setWorkingPeriod(int workingPeriod) {
+		this.workingPeriod = workingPeriod;
+	}
 
-
-
-
+	@Override
+	public String toString() {
+		return "Gonggo [title=" + title + ", role=" + role + ", workHours=" + workHours + ", wage=" + wage
+				+ ", startDate=" + startDate + ", endDate=" + endDate + ", workingPeriod=" + workingPeriod + "]";
+	}
+    
+    
 }
+
+       
