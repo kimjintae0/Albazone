@@ -3,7 +3,7 @@ package service;
 import utils.AlbaUtils;
 
 public class AlbazoneService {
-	
+	private UserService userService;
 	private static AlbazoneService albazoneService = new AlbazoneService();
 	private AlbazoneService() {}
 	public static AlbazoneService getInstance() {
@@ -23,7 +23,7 @@ public class AlbazoneService {
 					break;
 				}
 				case 7:{
-					throw new Exception();
+					throw new RuntimeException();
 				}
 				default:{
 					System.out.println("잘못된 입력입니다.");
