@@ -16,7 +16,6 @@ public class UserService {
 	private static UserService userService = new UserService();
 	
 	public static UserService getInstance() {
-		// TODO Auto-generated method stub
 		return userService;
 	}
 	
@@ -35,7 +34,7 @@ public class UserService {
 			businessUser.setBusinessUserNumber(AlbaUtils.nextLine("연락처를 입력하세요>"+ "10~ 11자리 숫자로 구성되어야 합니다."));
 			businessUser.setBusinessUserId(AlbaUtils.nextLine("아이디를 입력하세요>"));
 			businessUser.setBusinessUserPw(AlbaUtils.nextLine("비밀 번호를 입력하세요>"));
-			
+			// 이번에 기능 한 번에 구현해두기
 			break; // 끝내기
 
 		case 2:
