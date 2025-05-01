@@ -7,7 +7,17 @@ public class Resume  {
 	private String tel;
 	private String address;
 	private String introduce;
+	private String id;
 	
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public Resume() {}
 
 	public Resume(String title, String name, String tel, String address, String introduce) {
