@@ -13,6 +13,8 @@ public class Gonggo {
     private Date endDate;
     private int workingPeriod;	//end date - startdate
     
+    public boolean state;	//공고진행상태
+    
     public Gonggo() {}
 
 	public Gonggo(String title, String role, int workHours, int wage, Date startDate, Date endDate, int workingPeriod) {
