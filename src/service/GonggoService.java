@@ -18,8 +18,7 @@ public class GonggoService {
 		
 	}
 	
-	
-	
+
 	//공고조회메서드
 	void lookupUser() {
 		//조회 노출 리스트
