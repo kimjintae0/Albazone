@@ -1,17 +1,22 @@
 package service;
 
+
 import java.util.ArrayList;
+import java.util.List;
+
 import domain.AlbaUser;
 import domain.BusinessUser;
 import domain.User;
 import utils.AlbaUtils;
 
 public class UserService {
-	public static void main(String[] args) {
-		AlbazoneService UserService = AlbazoneService.getInstance();
-		System.out.println("알바존 회원 가입 및 로그인");
-//		private List<Customer> customers = new ArrayList<>();// 리스트 사용 및 겟인스턴스를 해도 안됨
-
+	AlbazoneService albazoneService = AlbazoneService.getInstance();
+	List<User> users = new ArrayList<User>();
+	
+	private static UserService userService = new UserService();
+	
+	public static UserService getInstance() {
+		return userService;
 	}
 	
 	public void register() {
@@ -26,10 +31,10 @@ public class UserService {
 			businessUser.setBusinessUserName(AlbaUtils.nextLine("이름을 입력하세요>"));
 			businessUser.setCompanyName(AlbaUtils.nextLine("상호명을 입력하세요>"));
 			businessUser.setBusinessUserArea(AlbaUtils.nextLine("소재지를 입력하세요>"));
-			businessUser.setBusinessUserNumber(AlbaUtils.nextLine("연락처를 입력하세요>"));
+			businessUser.setBusinessUserNumber(AlbaUtils.nextLine("연락처를 입력하세요>"+ "10~ 11자리 숫자로 구성되어야 합니다."));
 			businessUser.setBusinessUserId(AlbaUtils.nextLine("아이디를 입력하세요>"));
 			businessUser.setBusinessUserPw(AlbaUtils.nextLine("비밀 번호를 입력하세요>"));
-
+			// 이번에 기능 한 번에 구현해두기
 			break; // 끝내기
 
 		case 2:
@@ -99,5 +104,7 @@ public class UserService {
 //		
 		return null;
 	}
+
+
 }
 
