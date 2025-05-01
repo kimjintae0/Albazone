@@ -2,6 +2,7 @@ package utils;
 
 import java.util.Scanner;
 
+
 public class AlbaUtils {
 	private static final Scanner scanner = new Scanner(System.in);
 	
