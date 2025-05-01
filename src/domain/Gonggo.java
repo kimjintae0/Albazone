@@ -12,12 +12,13 @@ public class Gonggo {
     private Date startDate;
     private Date endDate;
     private int workingPeriod;	//end date - startdate
-    
+    private int gonggoNo; //공고번호
     public boolean state;	//공고진행상태
     
     public Gonggo() {}
 
-	public Gonggo(String title, String role, int workHours, int wage, Date startDate, Date endDate, int workingPeriod) {
+	public Gonggo(String title, String role, int workHours, int wage, Date startDate, Date endDate, int workingPeriod,
+			int gonggoNo, boolean state) {
 		super();
 		this.title = title;
 		this.role = role;
@@ -26,10 +27,28 @@ public class Gonggo {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.workingPeriod = workingPeriod;
+		this.gonggoNo = gonggoNo;
+		this.state = state;
 	}
 
 	public String getTitle() {
 		return title;
+	}
+
+	public int getGonggoNo() {
+		return gonggoNo;
+	}
+
+	public void setGonggoNo(int gonggoNo) {
+		this.gonggoNo = gonggoNo;
+	}
+
+	public boolean isState() {
+		return state;
+	}
+
+	public void setState(boolean state) {
+		this.state = state;
 	}
 
 	public void setTitle(String title) {
@@ -87,7 +106,8 @@ public class Gonggo {
 	@Override
 	public String toString() {
 		return "Gonggo [title=" + title + ", role=" + role + ", workHours=" + workHours + ", wage=" + wage
-				+ ", startDate=" + startDate + ", endDate=" + endDate + ", workingPeriod=" + workingPeriod + "]";
+				+ ", startDate=" + startDate + ", endDate=" + endDate + ", workingPeriod=" + workingPeriod
+				+ ", gonggoNo=" + gonggoNo + ", state=" + state + "]";
 	}
     
     
