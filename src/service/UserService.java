@@ -30,7 +30,7 @@ public class UserService {
 			// 아이디 , 비밀번호, 연락처, 주소, 이름, 상호명
 			BusinessUser businessUser = new BusinessUser();// 스위치에 쓸 사업자 개인 만들기
 			businessUser.setName(AlbaUtils.nextLine("이름을 입력하세요>"));
-			businessUser.setCompanyName(AlbaUtils.nextLine("상호명을 입력하세요>"));
+			businessUser.setCompanyName(AlbaUtils.nextLine("상호명을 입력하세요>")); // 이것만 다름
 			businessUser.setArea(AlbaUtils.nextLine("소재지를 입력하세요>"));
 			businessUser.setNumber(AlbaUtils.nextLine("연락처를 입력하세요>"));
 			businessUser.setId(AlbaUtils.nextLine("아이디를 입력하세요>"));
