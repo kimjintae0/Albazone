@@ -15,6 +15,7 @@ public class Albazone {
 			}
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("정상적으로 종료되었습니다.");
 			return;
 		}

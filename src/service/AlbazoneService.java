@@ -3,7 +3,7 @@ package service;
 import utils.AlbaUtils;
 
 public class AlbazoneService {
-	private UserService userService;
+	private UserService userService = UserService.getInstance();
 	private static AlbazoneService albazoneService = new AlbazoneService();
 	private AlbazoneService() {}
 	public static AlbazoneService getInstance() {
