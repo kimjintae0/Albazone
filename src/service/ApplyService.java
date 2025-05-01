@@ -1,6 +1,7 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import domain.Apply;
@@ -19,15 +20,16 @@ public class ApplyService {
 	private GonggoService gonggoService = GonggoService.getInstance();
 	
 	
+	
 	// 지원 리스트 생성
 	List<Apply> applyList = new ArrayList<>();
 	
-	
-	
-	
-	{
+	 
+
+	public void apply() {
+		
 	}
 	
-	
+
 	
 }
