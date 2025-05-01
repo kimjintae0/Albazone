@@ -1,6 +1,5 @@
 package service;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +11,12 @@ import utils.AlbaUtils;
 public class UserService {
 	AlbazoneService albazoneService = AlbazoneService.getInstance();
 	List<User> users = new ArrayList<User>();
-	
+
 	private static UserService userService = new UserService();
-	
+
 	public static UserService getInstance() {
 		return userService;
 	}
-	
 
 	public void register() {
 		int choice = AlbaUtils.nextInt("1. (사업자) 회원가입 2.(개인회원) 회원가입 3. 종료");
@@ -59,12 +57,13 @@ public class UserService {
 			break;
 
 		}
+		System.out.println("회원가입 구현이 완료되었습니다. 로그인을 진행해주세요!");
 	}
 
 	public void login() { // 내일 건드리기
 		int choice = AlbaUtils.nextInt("1. (사업자) 로그인 2.(개인회원) 로그인 3. 종료");
 		switch (choice) {
-
+// 로그인 한 다음에 이력서 등록이 필요함
 		case 1:
 
 			System.out.println("사업자 로그인");
@@ -75,8 +74,7 @@ public class UserService {
 
 			String loninBusinessPw = AlbaUtils.nextLine(AlbaUtils.nextLine("비밀번호를 입력하세요>"));
 			// 작성
-			
-			
+
 			break;
 
 		case 2:
@@ -89,14 +87,14 @@ public class UserService {
 			String loginAlbaPw = AlbaUtils.nextLine(AlbaUtils.nextLine("비밀번호를 입력하세요>"));
 
 			break;
-			
+
 		case 3:
 
 			System.out.println("종료 초기화");
-			
+
 			break;
 
-		}
+		}System.out.println("로그인 완료");
 	}
 
 	public Object getLoginUser() { // 물어보기 알바존 서비스에 있음
@@ -109,18 +107,14 @@ public class UserService {
 		return null;
 	}
 
-
 	public void logOut() {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	public void modify() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-
 }
-
