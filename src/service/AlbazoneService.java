@@ -1,18 +1,21 @@
 package service;
 
-import utils.AlbaUtils;
+import static utils.AlbaUtils.*;
 
 public class AlbazoneService {
+	// 클래스 연동
 	private UserService userService = UserService.getInstance();
+	
+	// 싱글톤
 	private static AlbazoneService albazoneService = new AlbazoneService();
-	private AlbazoneService() {}
 	public static AlbazoneService getInstance() {
 		return albazoneService;
 	}
-		
+	
+	// 메뉴
 	public void menu() {
 		if(userService.getLoginUser() == null) { 
-			int no = AlbaUtils.nextInt("1. 회원가입 2. 로그인 7. 종료  ");
+			int no = nextInt("1. 회원가입 2. 로그인 7. 종료");
 			switch(no) {
 				case 1:{
 					userService.register();
@@ -37,6 +40,7 @@ public class AlbazoneService {
 //				}
 				case 6 :{
 					userService.logOut();
+					break;
 				}	
 				case 7:{
 					throw new RuntimeException();

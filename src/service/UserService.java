@@ -26,15 +26,15 @@ public class UserService {
 	// 로그인 유저 정보 
 	public User loginUser = null; // 0503 추가
 	
-	
-	//
-	// 유저번호 중복 x 식
-	int num = userList.get(userList.size() - 1).getUserNo() == 0 ? 1 : userList.get(userList.size()-1).getUserNo() + 1;
-	
 	// 초기화 블럭
 	{
-//		userList.add(new BusinessUser(num, "새똥이", "010-1111-1111", "ssa", "1234", "서울", "자바사랑", "111-111-11111"));
+		userList.add(new BusinessUser(1, "새똥이", "010-1111-1111", "ssa", "1234", "서울", "자바사랑", "111-111-11111"));		
 	}
+
+	
+	// 유저번호 중복 x 식
+	private int num = userList.get(userList.size() - 1).getUserNo() == 0 ? 1 : userList.get(userList.size()-1).getUserNo() + 1;
+	
 	
 	// 지역 선택
 	public String selectArea() {
@@ -64,8 +64,7 @@ public class UserService {
 		int choice = nextInt("1. (사업자) 회원가입 2.(개인회원) 회원가입 3. 종료");
 
 		switch (choice) {
-		
-		case 1:{
+		case 1: 
 			System.out.println("사업자 회원가입");
 			// 아이디 , 비밀번호, 연락처, 주소, 이름, 상호명
 			
@@ -81,15 +80,13 @@ public class UserService {
 			}
 			String area = selectArea();
 			
-			
 			// 유저번호, 이름, 연락처, id, pw, 소재지, 상호, 사업자 등록번호
-			 User businessUser = new BusinessUser(num, name, tel, id, pw, area, comName, comNum);
+			User businessUser = new BusinessUser(num, name, tel, id, pw, area, comName, comNum);
 			userList.add(businessUser); // -> add 추가 
 			System.out.println("회원가입이 완료되었습니다.");
 			
-			// 이번에 기능 한 번에 구현해두기
 			break; // 끝내기
-		}
+		
 		case 2:
 
 			System.out.println("개인회원 회원가입");
@@ -130,7 +127,7 @@ public class UserService {
 		int choice = nextInt("1. (사업자) 로그인 2.(개인회원) 로그인 3. 종료");
 		switch (choice) {
 		
-// 로그인 한 다음에 이력서 등록이 필요함
+		// 로그인 한 다음에 이력서 등록이 필요함
 		case 1:
 
 			System.out.println("사업자 로그인");

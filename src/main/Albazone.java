@@ -6,7 +6,6 @@ import utils.AlbaUtils;
 
 public class Albazone {
 	public static void main(String[] args) {
-		
 		System.out.println("세상 모든 알바, 알바존");
 		try {
 			while(true) {
