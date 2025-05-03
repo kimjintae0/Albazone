@@ -9,6 +9,7 @@ import domain.User;
 import utils.AlbaUtils;
 
 public class UserService {
+	
 	AlbazoneService albazoneService = AlbazoneService.getInstance();
 	List<User> users = new ArrayList<User>();
 
@@ -17,7 +18,20 @@ public class UserService {
 	public static UserService getInstance() {
 		return userService;
 	}
-
+	
+	public User loginUser = null;// 0503 추가
+//	{
+//		AlbaUser sampleUser = new AlbaUser();
+//		sampleUser.setName("김이수");
+//		sampleUser.setNumber("01044442211");
+//		sampleUser.setId("se111");
+//		sampleUser.setPw("1234");
+//		sampleUser.setArea("서울");
+//
+//		users.add(sampleUser); // 리스트에 추가
+//		System.out.println("샘플 유저가 등록되었습니다.");_> 나중에 수정
+//	}
+	
 	public void register() {
 		int choice = AlbaUtils.nextInt("1. (사업자) 회원가입 2.(개인회원) 회원가입 3. 종료");
 
@@ -27,12 +41,29 @@ public class UserService {
 			System.out.println("사업자 회원가입");
 			// 아이디 , 비밀번호, 연락처, 주소, 이름, 상호명
 			BusinessUser businessUser = new BusinessUser();// 스위치에 쓸 사업자 개인 만들기
+			
 			businessUser.setName(AlbaUtils.nextLine("이름을 입력하세요>"));
-			businessUser.setCompanyName(AlbaUtils.nextLine("상호명을 입력하세요>")); // 이것만 다름
+			
+			businessUser.setNumber(AlbaUtils.nextLine("사업자 번호>"));
+			
+			businessUser.setCompanyName(AlbaUtils.nextLine("상호명을 입력하세요>")); 
+			
+			// 이것2개만 다름
 			businessUser.setArea(AlbaUtils.nextLine("소재지를 입력하세요>"));
+			
 			businessUser.setNumber(AlbaUtils.nextLine("연락처를 입력하세요>"));
+			
 			businessUser.setId(AlbaUtils.nextLine("아이디를 입력하세요>"));
+			
 			businessUser.setPw(AlbaUtils.nextLine("비밀 번호를 입력하세요>"));
+//			int no = 1;
+//			if(!BusinessUser.isEmpty()) {
+//				no = BusinessUser.get(BusinessUser.size()-1).getNo()+1;
+//			}	
+			
+			users.add(businessUser); // -> add 추가 
+			System.out.println("회원가입 구현이 완료되었습니다. 로그인을 진행해주세요!");
+			
 			// 이번에 기능 한 번에 구현해두기
 			break; // 끝내기
 
@@ -43,26 +74,35 @@ public class UserService {
 			AlbaUser albaUser = new AlbaUser();
 
 			albaUser.setName(AlbaUtils.nextLine("이름을 입력하세요>"));
+			
 			albaUser.setNumber(AlbaUtils.nextLine("연락처를 입력하세요>"));
+			
 			albaUser.setArea(AlbaUtils.nextLine("거주지를 입력하세요>"));
+			
 			albaUser.setId(AlbaUtils.nextLine("아이디를 입력하세요>"));
+			
 			albaUser.setPw(AlbaUtils.nextLine("비밀번호를 입력하세요>"));
+			
 			albaUser.setResume(AlbaUtils.nextLine("이력서를 작성하세요>"));// 따로 이력서 작성하는 곳으로 연동시켜야함
-
+			System.out.println("회원가입 구현이 완료되었습니다. 로그인을 진행해주세요!");
+			
+			users.add(albaUser); // ->05/03 add 추가 
+			
 			break;
-
+			
 		case 3:
 
 			System.out.println("종료 초기화");
 			break;
 
 		}
-		System.out.println("회원가입 구현이 완료되었습니다. 로그인을 진행해주세요!");
+		
 	}
 
-	public void login() { // 내일 건드리기
+	public void login() { 
 		int choice = AlbaUtils.nextInt("1. (사업자) 로그인 2.(개인회원) 로그인 3. 종료");
 		switch (choice) {
+		
 // 로그인 한 다음에 이력서 등록이 필요함
 		case 1:
 
@@ -73,9 +113,24 @@ public class UserService {
 			String loninBusinessId = AlbaUtils.nextLine(AlbaUtils.nextLine("아이디를 입력하세요>"));
 
 			String loninBusinessPw = AlbaUtils.nextLine(AlbaUtils.nextLine("비밀번호를 입력하세요>"));
-			// 작성
-
-			break;
+			//05/03 수정중이고 나중에 봐야됨
+			
+				boolean flag = false;
+				for(User u : users) {
+					if(u instanceof BusinessUser && u.getId().equals(loninBusinessId) && u.getPw().equals(loninBusinessPw)) {
+						flag = true;
+						domain.BusinessUser loginBusinessUser = (BusinessUser) u;
+						
+						System.out.println("로그인 성공!");
+						
+						Resumeservice();
+					}
+				}
+				if(!flag) {
+					System.out.println("아이디 또는 비밀번호가 틀렸습니다");
+				}
+	// 작성
+				break;
 
 		case 2:
 			System.out.println("개인회원 로그인");
@@ -94,16 +149,11 @@ public class UserService {
 
 			break;
 
-		}System.out.println("로그인 완료");
+		}
 	}
 
 	public Object getLoginUser() { // 물어보기 알바존 서비스에 있음
 
-//		public void menu() throws Exception{
-//			try {
-//				if(customerService.getLoginCustomer() == null) { //
-//					int no = BankUtils.nextInt("1.회원가입 2.로그인 7.종료");
-//		
 		return null;
 	}
 
@@ -115,6 +165,11 @@ public class UserService {
 	public void modify() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void Resumeservice() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

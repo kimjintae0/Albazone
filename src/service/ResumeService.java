@@ -9,6 +9,7 @@ public class ResumeService {
 	private static ResumeService resumeService = new ResumeService();
 	private ResumeService() {}
 	public static ResumeService getInstance() {
+		System.out.println();
 		return resumeService;
 	}
 	

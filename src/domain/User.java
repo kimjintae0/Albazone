@@ -70,5 +70,11 @@ public abstract class User {
 	public void setResume(String resume) {
 		this.resume = resume;
 	}
+
+	@Override
+	public String toString() {
+		return "User [Name=" + Name + ", Number=" + Number + ", Id=" + Id + ", Pw=" + Pw + ", Area=" + Area
+				+ ", resume=" + resume + "]";
+	}
 	
 }
