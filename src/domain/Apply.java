@@ -5,8 +5,8 @@ import java.util.Date;
 public class Apply {
 	int gonggoNo;
 	int resumeNo;
-	Date applyDate; // 언제
-	int applySitu;// 상태 - 읽음, 접수
+	Date applyDate = new Date(); // 언제
+	int applySitu;// [상태]  1 : 접수    2: 등록
 	
 	
 	// 게터, 세터
@@ -47,10 +47,8 @@ public class Apply {
 	// 생성자
 	public Apply() {}
 
-	public Apply(int gonggoNo, int resumeNo, Date applyDate, int applySitu) {
+	public Apply(int gonggoNo, int resumeNo) {
 		this.gonggoNo = gonggoNo;
 		this.resumeNo = resumeNo;
-		this.applyDate = applyDate;
-		this.applySitu = applySitu;
 	}
 }

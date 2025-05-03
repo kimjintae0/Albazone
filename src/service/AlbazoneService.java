@@ -12,23 +12,24 @@ public class AlbazoneService {
 		
 	public void menu() {
 		if(userService.getLoginUser() == null) { 
-			int no = AlbaUtils.nextInt("1. 회원가입 2. 로그인 3. 회원 정보 수정 4.이력서 등록 5. 공고 6. 로그아웃  ");
+			int no = AlbaUtils.nextInt("1. 회원가입 2. 로그인 7. 종료  ");
 			switch(no) {
 				case 1:{
 					userService.register();
-					
+					break;
 				}
 				case 2:{
 					userService.login();
-					
+					break;
 					
 				}
 				case 3 :{
 					userService.modify();
-					
+					break;
 				}
 				case 4 : {
-					userService.Resumeservice();		
+					userService.Resumeservice();
+					break;
 				}	
 //				case 5 : {
 //					userService.Resumeservice(); // 공고 내역이나 지원내역 볼 수 있는 칸 -> 공고 내역은 로그인 없이 가능?

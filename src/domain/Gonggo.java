@@ -10,7 +10,7 @@ public class Gonggo {
     private int workHours;    //근무시간
     private int wage; //시급
     private Date startDate;
-    private Date endDate;
+    private Date endDate; 
     private int workingPeriod;	//end date - startdate
     private int gonggoNo; //공고번호
     public boolean state;	//공고진행상태
