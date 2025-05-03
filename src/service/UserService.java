@@ -13,6 +13,9 @@ public class UserService {
 	// 유저 리스트 생성
 	List<User> userList = new ArrayList<User>();
 	
+	// 로그인 유저
+	private User loginUser;
+	
 	// 클래스 연동
 	AlbazoneService albazoneService = AlbazoneService.getInstance();
 	ResumeService resumeService = ResumeService.getInstance();
@@ -24,7 +27,9 @@ public class UserService {
 	}
 
 	// 로그인 유저 정보 
-	public User loginUser = null; // 0503 추가
+	public User getLoginUser() {
+		return loginUser;
+	}
 	
 	// 초기화 블럭
 	{
@@ -39,7 +44,7 @@ public class UserService {
 	// 지역 선택
 	public String selectArea() {
 		System.out.println("지역을 선택해주세요.");
-		int input = nextInt("1.서울 2.인천 3.부산 4.대전 5.대구 6.울산 7.광주 8.제주\n 9.경기 10.경상 11.강원 12.충청 13.전라");
+		int input = nextInt("1.서울 2.인천 3.부산 4.대전 5.대구 6.울산 7.광주\n 8.제주 9.경기 10.경상 11.강원 12.충청 13.전라");
 		switch(input) {
 		case 1: return "서울";  
 		case 2: return "인천"; 
@@ -58,6 +63,20 @@ public class UserService {
 		return "지역 미정";
 	}
 	
+	
+	// 중복체크 - findByNo, ID, comNum, tel
+	
+	public User findByNo(int userNo) {
+		User user = null;
+		for(User s : userList) {
+			if(s.getUserNo() == userNo) {
+				user = s;
+			}
+		}
+		return user;
+	}
+	
+
 	
 	// 회원가입
 	public void register() {
@@ -82,9 +101,8 @@ public class UserService {
 			
 			// 유저번호, 이름, 연락처, id, pw, 소재지, 상호, 사업자 등록번호
 			User businessUser = new BusinessUser(num, name, tel, id, pw, area, comName, comNum);
-			userList.add(businessUser); // -> add 추가 
-			System.out.println("회원가입이 완료되었습니다.");
-			
+			userList.add(businessUser);
+			System.out.println("회원가입이 정상적으로 완료되었습니다.");
 			break; // 끝내기
 		
 		case 2:
@@ -103,7 +121,7 @@ public class UserService {
 			
 			albaUser.setPw(nextLine("비밀번호를 입력하세요>"));
 			
-			System.out.println("회원가입 구현이 완료되었습니다. 로그인을 진행해주세요!");
+			System.out.println("회원가입이 정상적으로 완료되었습니다.");
 			
 			userList.add(albaUser); // ->05/03 add 추가 
 			
@@ -111,7 +129,7 @@ public class UserService {
 			
 		case 3:
 
-			System.out.println("종료 초기화");
+			System.out.println("메인 화면으로 돌아갑니다.");
 			break;
 
 		}
@@ -176,10 +194,6 @@ public class UserService {
 		}
 	}
 
-	public Object getLoginUser() { // 물어보기 알바존 서비스에 있음
-
-		return null;
-	}
 
 	public void logOut() {
 		// TODO Auto-generated method stub
