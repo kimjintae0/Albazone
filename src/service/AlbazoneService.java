@@ -5,63 +5,96 @@ import static utils.AlbaUtils.*;
 import domain.AlbaUser;
 import domain.BusinessUser;
 
-
-
 public class AlbazoneService {
 	// 클래스 연동
 	private UserService userService = UserService.getInstance();
-	
+
 	// 싱글톤
 	private static AlbazoneService albazoneService = new AlbazoneService();
+
 	public static AlbazoneService getInstance() {
 		return albazoneService;
 	}
-	
+
 	// 메뉴
 	public void menu() {
-		if(userService.getLoginUser() == null) { 
-			int no = nextInt("1. 회원가입 2. 로그인 7. 종료");
-			switch(no) {
-				case 1 :{
-					userService.register();
-					break;
+		if (userService.getLoginUser() == null) {
+			int no = nextInt("1. 회원가입 2. 로그인 5. 탈퇴 6. 로그아웃  7. 종료 ");
+			switch (no) {
+			case 1: {
+				userService.register();
+				break;
+			}
+			case 2: {
+				userService.login();
+	//			if(userService.getLoginUser()!=null) {
+//					loginMenu(); // 연동시키려고 했는데 안됨
 				}
-				case 2 :{
-					userService.login();
-					break;
+				break;
+			case 5: {
+				userService.remove();// 나중에 삭제
+				
 				}
-				case 3 :{
+				break;
+			
+			case 6: {
+				userService.logOut();
+				break; // 나중에 삭제
+			}
+			case 7: {
+				throw new RuntimeException();
+			}
+
+			default: {
+				System.out.println("잘못된 입력입니다.");
+				break;
+			}
+			}
+		}
+	}
+
+	public void loginMenu() {
+		if (userService.getLoginUser() != null) {
+			if (userService.getLoginUser() instanceof AlbaUser) {
+				int no = nextInt("1. 알바공고 2. 지원내역 3. 이력서 관리 5. 회원정보 수정 6.회원탈퇴 7. 종료"); // 종료 -> 로그아웃(로그인한 회원만 보이게)
+				switch (no) {
+
+				case 5: {
 					userService.modify();
 					break;
 				}
-				case 7 :{
-					throw new RuntimeException();
-				}
-				default :{
-					System.out.println("잘못된 입력입니다.");
+
+				case 6: {
+					userService.remove();
 					break;
 				}
-			}
-		}
-	}
-	
-	public void loginMenu() {
-		if(userService.getLoginUser() != null) {
-			if(userService.getLoginUser() instanceof AlbaUser) {
-				int no = nextInt("1. 알바공고 2. 지원내역 3. 이력서 관리 5. 회원정보 수정 6.회원탈퇴 7. 종료");
-				switch(no) {
-				
+
+				case 7: {
+					userService.logOut();
+					break; 
+				}
+
+				}
+			} else if (userService.getLoginUser() instanceof BusinessUser) {
+				int no = nextInt("1. 공고관리 5. 회원정보 수정 6.회원탈퇴 7. 종료");// 종료 -> 로그아웃
+				switch (no) {
+
+				case 5: {
+					userService.modify();
+					break;
+				}
+
+				case 6: {
+					userService.remove();
+					break;
+				}
+				case 7: {
+					userService.logOut();
+					break;
+				}
 				}
 			}
-			else if(userService.getLoginUser() instanceof BusinessUser) {
-				int no = nextInt("1. 공고관리 5. 회원정보 수정 6.회원탈퇴 7. 종료");
-				switch(no) {
-				
-				}
-			}
 		}
+
 	}
-	
-	
-	
 }

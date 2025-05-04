@@ -10,123 +10,110 @@ import domain.User;
 import static utils.AlbaUtils.*;
 
 public class UserService {
-	
+
 	// 유저 리스트 생성
 	List<User> userList = new ArrayList<User>();
-	
+
 	// 로그인 유저
 	private User loginUser;
-	
+
 	// 클래스 연동
 	AlbazoneService albazoneService = AlbazoneService.getInstance();
-	ResumeService resumeService = ResumeService.getInstance();
-	
+//	ResumeService resumeService = ResumeService.getInstance();
+
 	// 싱글톤
 	private static UserService userService = new UserService();
+
 	public static UserService getInstance() {
 		return userService;
 	}
 
-	// 로그인 유저 정보 
+	// 로그인 유저 정보
 	public User getLoginUser() {
 		return loginUser;
 	}
-	
+
 	// 초기화 블럭
 	{
-		userList.add(new BusinessUser(1, "새똥이", "010-1111-1111", "ssa", "1234", "서울", "자바사랑", "111-111-11111"));		
+		userList.add(new BusinessUser(1, "새똥이", "010-1111-1111", "ssa", "1234", "서울", "자바사랑", "111-111-11111"));
 	}
 
-	
 	// 유저번호 중복 x 식
-	private int num = userList.get(userList.size() - 1).getUserNo() == 0 ? 1 : userList.get(userList.size()-1).getUserNo() + 1;
-	
-	
-	
-	
-	
+	private int num = userList.get(userList.size() - 1).getUserNo() == 0 ? 1
+			: userList.get(userList.size() - 1).getUserNo() + 1;
+
 	// 중복체크 - findByNo, ID, comNum, tel
-	
+
 	public User findByNo(int userNo) {
 		User user = null;
-		for(User s : userList) {
-			if(s.getUserNo() == userNo) {
+		for (User s : userList) {
+			if (s.getUserNo() == userNo) {
 				user = s;
 			}
 		}
 		return user;
 	}
-	
 
-	
 	// 회원가입
 	public void register() {
 		int choice = nextInt("1. (사업자) 회원가입 2.(개인회원) 회원가입 3. 종료");
 
 		switch (choice) {
-		case 1: 
+		case 1:
 			System.out.println("사업자 회원가입");
 			// 아이디 , 비밀번호, 연락처, 주소, 이름, 상호명
-			
+
 			String name = nextLine("이름을 입력하세요."); // 대표자명
 			String comNum = nextLine("사업자 등록번호를 입력해주세요."); // 사업자번호 중복체크, 정규식 넣기 000-00-00000
-			String comName = nextLine("상호명을 입력하세요."); 
+			String comName = nextLine("상호명을 입력하세요.");
 			String tel = nextLine("전화번호를 입력해주세요."); // 중복체크, 정규식 010-0000-0000
 			String id = nextLine("아이디를 입력하세요."); // 중복체크
 			String pw = nextLine("비밀번호를 입력하세요.");
-			if(!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
+			if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
 				System.out.println("비밀번호가 다릅니다.");
 				return;
 			}
 			String area = selectArea();
-			
+
 			// 유저번호, 이름, 연락처, id, pw, 소재지, 상호, 사업자 등록번호
 			User businessUser = new BusinessUser(num, name, tel, id, pw, area, comName, comNum);
 			userList.add(businessUser);
 			System.out.println("회원가입이 정상적으로 완료되었습니다.");
 			break; // 끝내기
-		
+
 		case 2:
 
 			System.out.println("개인회원 회원가입");
 //					이름, 연락처, 거주지, 아이디, 비밀번호, 이력서
-			AlbaUser albaUser = new AlbaUser();
 
-			albaUser.setName(nextLine("이름을 입력하세요>"));
-			
-			albaUser.setTel(nextLine("연락처를 입력하세요>"));
-			
-			albaUser.setArea(nextLine("거주지를 입력하세요>"));
-			
-			albaUser.setId(nextLine("아이디를 입력하세요>"));
-			
-			albaUser.setPw(nextLine("비밀번호를 입력하세요>"));
-			
+			String name2 = nextLine("이름을 입력하세요."); // 개인 알바이름
+			String tel2 = nextLine("전화번호를 입력해주세요."); // 중복체크, 정규식 010-0000-0000
+			String id2 = nextLine("아이디를 입력하세요."); // 중복체크
+			String pw2 = nextLine("비밀번호를 입력하세요.");
+			if (!pw2.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
+				System.out.println("비밀번호가 다릅니다.");
+				return;
+			}
+
+			String area2 = selectArea();
+			User albaUser = new AlbaUser(num, name2, tel2, id2, pw2, area2);
 			System.out.println("회원가입이 정상적으로 완료되었습니다.");
-			
-			userList.add(albaUser); // ->05/03 add 추가 
-			
-			break;
-			
+			userList.add(albaUser);
+
 		case 3:
 
 			System.out.println("메인 화면으로 돌아갑니다.");
 			break;
 
 		}
-		
+
 	}
-	
-	
-	
-	
-	
+
 	// 로그인
-	public void login() { 
+	public void login() {
 		int choice = nextInt("1. (사업자) 로그인 2.(개인회원) 로그인 3. 종료");
 		switch (choice) {
-		
-		// 로그인 한 다음에 이력서 등록이 필요함
+
 		case 1:
 
 			System.out.println("사업자 로그인");
@@ -136,24 +123,24 @@ public class UserService {
 			String loginBusinessId = nextLine("아이디를 입력하세요>");
 
 			String loginBusinessPw = nextLine("비밀번호를 입력하세요>");
-			//05/03 수정중이고 나중에 봐야됨
-			
-				boolean flag = false;
-				for(User u : userList) {
-					if(u instanceof BusinessUser && u.getId().equals(loginBusinessId) && u.getPw().equals(loginBusinessPw)) {
-						flag = true;
-						domain.BusinessUser loginBusinessUser = (BusinessUser) u;
-						
-						System.out.println("로그인 성공!");
-						
-						Resumeservice();
-					}
+
+			boolean flag = false;
+			for (User u : userList) {
+				if (u instanceof BusinessUser && u.getId().equals(loginBusinessId)
+						&& u.getPw().equals(loginBusinessPw)) {
+					flag = true;
+					domain.BusinessUser loginBusinessUser = (BusinessUser) u;
+//					loginUser = u; -> 이걸 넣으면 로그인 무한 실행
+					System.out.println("로그인 성공!");
+
+					break;
+
 				}
-				if(!flag) {
-					System.out.println("아이디 또는 비밀번호가 틀렸습니다");
-				}
-	// 작성
-				break;
+			}
+			if (!flag) {
+				System.out.println("아이디 또는 비밀번호가 틀렸습니다");
+			}
+			break;
 
 		case 2:
 			System.out.println("개인회원 로그인");
@@ -164,31 +151,80 @@ public class UserService {
 
 			String loginAlbaPw = nextLine("비밀번호를 입력하세요>");
 
+			boolean flag2 = false;
+			for (User u : userList) {
+				if (u instanceof AlbaUser && u.getId().equals(loginAlbaId) && u.getPw().equals(loginAlbaPw)) {
+					flag2 = true;
+//					domain.AlbaUser albaUser = (AlbaUser) u;
+//					loginUser = u; -> 이걸 넣으면 로그인 무한 실행
+					System.out.println("로그인 성공!");
+					break;
+				} 		
+			}
+			if (!flag2) {
+				System.out.println("아이디 또는 비밀번호가 틀렸습니다");
+			}
+
 			break;
 
 		case 3:
 
-			System.out.println("종료 초기화");
-
+			System.out.println("메인 화면으로 돌아갑니다.");
 			break;
-
 		}
+//		AlbazoneService.getInstance().loginMenu(); -> 로그인 후에 로그인 상태 메뉴로 넘어가지 않음
+		
 	}
 
-
-	public void logOut() {
+	// 이력서 등록 관리
+	public void Resumeservice() {
 		// TODO Auto-generated method stub
 
 	}
 
+	// 회원정보 수정
 	public void modify() {
 		// TODO Auto-generated method stub
 
 	}
 
-	public void Resumeservice() {
-		// TODO Auto-generated method stub
+	// 로그아웃
+	public void logOut() {
+		if(loginUser!=null) {
+			System.out.println("로그아웃 되었습니다");
+			return;
+		}
+		else {
+			System.out.println("로그인 정보가 없습니다.");
+		}
+//			loginUser=null;-> 로그인 정보가 없을 때 정보 없다고 하고 != 사용해서 널값아닐 때 로그아웃 시켜서 메인으로 리턴시키기?
+//			System.out.println("로그아웃 되었습니다");
+//			return; -> 나중에 삭제
 		
+	}
+
+	// 회원 탈퇴
+	public void remove() {
+
+		// 로그인 안 했을 때는 로그인 문자 보내기
+//		if(loginUser==null) {
+//			System.out.println("로그인을 먼저 진행해 주세요");
+//			return;
+//		} // -> 회원 탈퇴를 회원인 상태에서만 볼 수 있게 하면 필요 없을 것 같아서 일단 주석처리 해 두었고 실행이 안 됩니다...
+
+
+		System.out.println("회원 탈퇴");
+		
+		if (!nextConfirm("탈퇴하시겠습니까?")) {
+			return;
+		}
+		// 중복으로 한 번 더 물어보기
+		if (!nextConfirm("정말로 탈퇴하시겠습니까?")) {
+			return;
+		}
+		logOut();// 회원 탈퇴시 로그아웃도 동시에 진행
+		System.out.println("탈퇴가 성공적으로 완료되었습니다.");
+
 	}
 
 }
