@@ -6,7 +6,6 @@ import java.util.List;
 import domain.AlbaUser;
 import domain.BusinessUser;
 import domain.User;
-import utils.AlbaUtils;
 
 import static utils.AlbaUtils.*;
 

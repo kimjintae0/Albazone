@@ -61,6 +61,10 @@ public class ResumeService {
 		Resume input = null;
 		lookupUser();
 		int select = resumeSelect();
+		if (select == 0) {
+			System.out.println("존재하지 않는 이력서입니다.");
+			return;
+		}
 		for(Resume resume : resumeList) {
 			if(resume.getResumeNo() == select) {
 					input = resume;
@@ -78,6 +82,10 @@ public class ResumeService {
 		System.out.println("이력서 삭제");
 		lookupUser();
 		int select = resumeSelect();
+		if (select == 0) {
+			System.out.println("존재하지 않는 이력서입니다.");
+			return;
+		}
 		for(Resume resume : resumeList) {
 			if(resume.getResumeNo() == select) {
 					resumeList.remove(resume);
@@ -93,10 +101,6 @@ public class ResumeService {
 			if(resume.getResumeNo() == select) {
 				if(resume.getUserNo() == userService.getLoginUser().getUserNo()) {
 					return select;
-				}
-				else {
-					System.out.println("존재하지 않는 이력서입니다.");
-					break;
 				}
 			}
 		}

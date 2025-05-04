@@ -1,6 +1,7 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import domain.Gonggo;
@@ -51,6 +52,28 @@ public class GonggoService {
 				System.out.println(gonggo.toString());
 			}
 		}
+	}
+	
+	// 공고 선택 - 알바
+	public int gonggoSelectUser() {
+		int input = nextInt("공고 번호를 선택해 주세요.");
+		for(Gonggo g : gonggoList) {
+			if(g.getGonggoNo() == input) {
+				return input;
+			}
+		}
+		return 0;
+	}
+	
+	// 공고 선택 - 사업자
+	public int gonggoSelectOwner() {
+		int input = nextInt("지원할 공고를 선택해 주세요.");
+		for(Gonggo g : gonggoList) {
+			if(g.getGonggoNo() == input) {
+				return input;
+			}
+		}
+		return 0;
 	}
 	
 	// 사업자가 자기 공고 조회
