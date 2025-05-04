@@ -1,31 +1,25 @@
 package domain;
 
-import java.util.Date;
-
 public class Gonggo {
     //제목, 담당업무 , 근무기간, 근무시간, 시급, 근무지역
 
     private String title;
     private String role;
     private int workHours;    //근무시간
-    private int wage; //시급
-    private Date startDate;
-    private Date endDate; 
-    private int workingPeriod;	//end date - startdate
+    private int wage = 10030; //시급
+    private String workingPeriod; //근무기간
     private int gonggoNo; //공고번호
     public boolean state;	//공고진행상태
     
     public Gonggo() {}
 
-	public Gonggo(String title, String role, int workHours, int wage, Date startDate, Date endDate, int workingPeriod,
+	public Gonggo(String title, String role, int workHours, int wage, String workingPeriod,
 			int gonggoNo, boolean state) {
 		super();
 		this.title = title;
 		this.role = role;
 		this.workHours = workHours;
 		this.wage = wage;
-		this.startDate = startDate;
-		this.endDate = endDate;
 		this.workingPeriod = workingPeriod;
 		this.gonggoNo = gonggoNo;
 		this.state = state;
@@ -79,35 +73,19 @@ public class Gonggo {
 		this.wage = wage;
 	}
 
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-
-	public int getWorkingPeriod() {
+	public String getWorkingPeriod() {
 		return workingPeriod;
 	}
 
-	public void setWorkingPeriod(int workingPeriod) {
+	public void setWorkingPeriod(String workingPeriod) {
 		this.workingPeriod = workingPeriod;
 	}
 
 	@Override
 	public String toString() {
-		return "Gonggo [title=" + title + ", role=" + role + ", workHours=" + workHours + ", wage=" + wage
-				+ ", startDate=" + startDate + ", endDate=" + endDate + ", workingPeriod=" + workingPeriod
-				+ ", gonggoNo=" + gonggoNo + ", state=" + state + "]";
+		return "[공고 제목 : " + title + ", 담당 업무 : " + role + ", 근무시간 : " + workHours + ", 시급 : " + wage
+				 + ", 근무기간 : " + workingPeriod
+				+ ", 공고번호 : " + gonggoNo + ", 공고진행상태 : " + state + "]";
 	}
     
     
