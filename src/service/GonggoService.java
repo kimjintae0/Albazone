@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import domain.BusinessUser;
 import domain.Gonggo;
+import domain.User;
+
 import static utils.AlbaUtils.*;
 
 public class GonggoService {
@@ -21,28 +24,40 @@ public class GonggoService {
 	// 유저서비스, 지원 서비스 호출
 	UserService userService = UserService.getInstance();
 	ApplyService applyService = ApplyService.getInstance();
+
 	
 	// 초기화 블럭
 	{
 		// 사업자 유저 번호, 공고 번호, 제목, 역할, 일하는 시간, 시급, 근무 기간, 진행상태, 소재지
-		gonggoList.add(new Gonggo(userService.getLoginUser().getUserNo(), 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "25-05-04 ~ 25-06-04", true, "서울"));
+		gonggoList.add(new Gonggo(userService.getLoginUser().getUserNo(), 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울"));
 	}
 	
-	// 공고 번호 관리
 	int num = gonggoList.get(gonggoList.size() - 1).getGonggoNo() == 0 ? 1 : gonggoList.get(gonggoList.size() - 1).getGonggoNo() + 1; 
 	
 	// 공고등록
 	void register() {
 		// 사업자 유저 번호, 공고 번호, 제목, 역할, 일하는 시간, 시급, 근무 기간, 진행상태, 소재지
 		String title = nextLine("공고의 제목을 입력해주세요.");
-		String role = nextLine("하는 일을 입력해주세요.");
-		int workHours = nextInt("일하는 시간을 숫자로 입력해주세요. (시간 단위로 적어주세요. 소숫점은 미지원)");
+		String role = nextLine("담당 업무를 입력해주세요.");
+		int workHours = nextInt("근무 시간을 숫자로 입력해주세요. (시간 단위로 적어주세요. 소숫점은 미지원)");
 		int wage = nextInt("시급을 숫자로 입력해주세요. (2025년 최저시급은 10,030원 입니다.)"); // 최저시급 보다 작을 시 return
-		String workingPeriod = nextLine("근무 기간을 입력해주세요."); // 정규식 만들기 
+			if(wage < 10030) {
+				System.out.println("2025년 최저 시급은 10,030원입니다. 다시 입력해주세요. ");
+				return;
+			}
+		String workingStartDate = nextLine("근무 시작일을 입력해주세요 (yyyy-MM-dd)."); // 정규식 만들기 
+		if(!workingStartDate.matches("(2)\\d{3}(0[1-9]|1[012])-(0[1-9]|[12])-([0-9]|3[01])")) {
+			System.out.println("양식에 맞게 다시 입력해주세요. 예) 2025-12-12");
+			return;
+		}
+		String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd)."); // 정규식 만들기 
+		if(!workingEndDate.matches("(2)\\d{3}(0[1-9]|1[012])-(0[1-9]|[12])-([0-9]|3[01])")) {
+			System.out.println("양식에 맞게 다시 입력해주세요. 예) 2025-12-12");
+			return;
+		}
 		String comArea = selectArea();
 		
-		gonggoList.add(new Gonggo(userService.getLoginUser().getUserNo(), num, title, role, workHours, wage, workingPeriod, true, comArea));
-		System.out.println("공고 작성 완료");
+		gonggoList.add(new Gonggo(userService.getLoginUser().getUserNo(), num, title, role, workHours, wage, workingStartDate, workingEndDate, true, comArea));
 	}
 	
 	// 알바가 공고 조회
@@ -105,6 +120,19 @@ public class GonggoService {
 	
 	void modify() {
 		//공고수정-사업자
+		//공고수정할 때 어떤값을 불러와서 수정하지..? 공고번호....?
+		//진행중인 공고만 수정가능하도록 진행중(true)인 공고 먼저 출력
+		String comNum = nextLine("사업자 등록번호를 입력해주세요.");
+//		for(String comNum : userService.userList) {
+//			if(userService.getLoginUser().equals(comNum)) {
+//				
+//				
+//			}
+//			else {
+//				System.out.println("사업자번호를 정확하게 입력해주세요.");
+//				return;
+//			}
+//		}
 	}
 	
 	void remove() {

@@ -1,10 +1,17 @@
 package domain;
 
+import service.UserService;
+
 public class BusinessUser extends User {
 	// 1) 사업자 : 구현/ ID, Pw, 대표자명, 상호명, 연락처, 사업자 번호
 	private String companyName; // 상호명
 	private String companyNumber; // 사업자 번호
 
+	// 싱글톤 0504 수정
+//		private static BusinessUser businessUser = new BusinessUser();
+//		public static BusinessUser getInstance() {
+//			return businessUser;
+//		}
 	
 	// 게터, 세터
 	public String getCompanyName() {
