@@ -8,7 +8,9 @@ public class Gonggo {
     private String role; // 역할
     private int workHours;  //근무시간
     private int wage = 10030; //시급
-    private String workingPeriod; //근무기간
+    private String workingStartDate; //근무시작일
+    private String workingEndDate; //근무종료일
+    //근무기간을 yyyy-MM-dd ~ yyyy-MM-dd 의 정규형 사용해서 표현하기 위해 시작/종료일 쪼갬
   	public boolean state;	//공고진행상태
     private String comArea; // 사업장 위치
     
@@ -49,12 +51,19 @@ public class Gonggo {
 	public void setWage(int wage) {
 		this.wage = wage;
 	}
-	public String getWorkingPeriod() {
-		return workingPeriod;
+	public String getWorkingStartDate() {
+		return workingStartDate;
 	}
-	public void setWorkingPeriod(String workingPeriod) {
-		this.workingPeriod = workingPeriod;
+	public void setWorkingStartDate(String workingStartDate) {
+		this.workingStartDate = workingStartDate;
 	}
+	public String getWorkingEndDate() {
+		return workingEndDate;
+	}
+	public void setWorkingEndDate(String workingEndDate) {
+		this.workingEndDate = workingEndDate;
+	}
+	
     public String getComArea() {
 		return comArea;
 	}
@@ -73,13 +82,14 @@ public class Gonggo {
 	// 생성자
     public Gonggo() {}
 
-	public Gonggo(int userNo, int gonggoNo, String title, String role, int workHours, int wage, String workingPeriod, boolean state, String comArea) {
+	public Gonggo(int userNo, int gonggoNo, String title, String role, int workHours, int wage, String workingStartDate, String workingEndDate, boolean state, String comArea) {
 		this.userNo = userNo;
 		this.title = title;
 		this.role = role;
 		this.workHours = workHours;
 		this.wage = wage;
-		this.workingPeriod = workingPeriod;
+		this.workingStartDate = workingStartDate;
+		this.workingEndDate = workingEndDate;		
 		this.gonggoNo = gonggoNo;
 		this.state = state;
 		this.comArea = comArea;
@@ -90,9 +100,10 @@ public class Gonggo {
 	@Override
 	public String toString() {
 		return "[공고 번호 : " + gonggoNo + ", 공고 제목 : " + title + ", 담당 업무 : " + role + ", 근무시간 : " + workHours + ", 시급 : " + wage
-				 + ", 근무기간 : " + workingPeriod
-				+ ", 공고번호 : " + gonggoNo + ", 공고진행상태 : " + state + "]";
+				 + ", 근무기간 : " +( workingStartDate + " ~ " + workingEndDate)
+				+ ", 공고번호 : " + gonggoNo + ", 공고진행상태 : " + state + "사업장소재지 : " + comArea + "]";
 	}
+
     
     
 }
