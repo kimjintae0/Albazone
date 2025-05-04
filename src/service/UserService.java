@@ -118,23 +118,22 @@ public class UserService {
 
 			System.out.println("사업자 로그인");
 
-			BusinessUser loginBusiness = new BusinessUser();
+//			BusinessUser loginBusiness = new BusinessUser(); 필요없음
 
-			String loginBusinessId = nextLine("아이디를 입력하세요>");
+			String Id = nextLine("아이디를 입력하세요>");
 
-			String loginBusinessPw = nextLine("비밀번호를 입력하세요>");
+			String Pw = nextLine("비밀번호를 입력하세요>");
 
 			boolean flag = false;
 			for (User u : userList) {
-				if (u instanceof BusinessUser && u.getId().equals(loginBusinessId)
-						&& u.getPw().equals(loginBusinessPw)) {
+				if (u instanceof BusinessUser && u.getId().equals(Id)
+						&& u.getPw().equals(Pw)) {
 					flag = true;
-					domain.BusinessUser loginBusinessUser = (BusinessUser) u;
-//					loginUser = u; -> 이걸 넣으면 로그인 무한 실행
+				
+					loginUser = u; // 로그인 유저 u로 지정
 					System.out.println("로그인 성공!");
-
-					break;
-
+					albazoneService.getInstance().loginMenu();// 로그인 했을 때만 보일 수있는 창 으로 이동
+					return;// 돌아가기//
 				}
 			}
 			if (!flag) {
@@ -145,20 +144,22 @@ public class UserService {
 		case 2:
 			System.out.println("개인회원 로그인");
 
-			AlbaUser loginAlba = new AlbaUser();
+//			AlbaUser loginAlba = new AlbaUser(); 필요 없고 오류만 남
 
-			String loginAlbaId = nextLine("아이디를 입력하세요>");
+			String Id2 = nextLine("아이디를 입력하세요>");
 
-			String loginAlbaPw = nextLine("비밀번호를 입력하세요>");
+			String Pw2 = nextLine("비밀번호를 입력하세요>");
 
 			boolean flag2 = false;
 			for (User u : userList) {
-				if (u instanceof AlbaUser && u.getId().equals(loginAlbaId) && u.getPw().equals(loginAlbaPw)) {
+				if (u instanceof AlbaUser && u.getId().equals(Id2) && u.getPw().equals(Pw2)) {
 					flag2 = true;
-//					domain.AlbaUser albaUser = (AlbaUser) u;
-//					loginUser = u; -> 이걸 넣으면 로그인 무한 실행
+//				
+
+					loginUser = u; // 로그인 유저 u로 지정
 					System.out.println("로그인 성공!");
-					break;
+					albazoneService.getInstance().loginMenu();// 로그인 했을 때만 보일 수있는 창 으로 이동
+					return;// 돌아가기//
 				} 		
 			}
 			if (!flag2) {
@@ -172,9 +173,10 @@ public class UserService {
 			System.out.println("메인 화면으로 돌아갑니다.");
 			break;
 		}
-//		AlbazoneService.getInstance().loginMenu(); -> 로그인 후에 로그인 상태 메뉴로 넘어가지 않음
+
 		
-	}
+	} 
+
 
 	// 이력서 등록 관리
 	public void Resumeservice() {
@@ -182,20 +184,40 @@ public class UserService {
 
 	}
 
-	// 회원정보 수정
-	public void modify() {
-		// TODO Auto-generated method stub
-
+	// 사업자 회원정보 수정 -> 사업자랑 개인 두개 만들기
+	public void modify() { // 나중에 디폴트 값 제거 및 수정 무한 생성 
+		System.out.println("회원정보 수정");
+		
+		
+	}
+	// 개인
+	public void modify2() { // 나중에 디폴트 값 제거 및 수정 무한 생성 
+//		System.out.println("회원정보 수정");
+//		String name2 = nextLine("이름을 입력하세요."); // 개인 알바이름
+//		String id2 = nextLine("아이디를 입력하세요."); // 중복체크
+//		String tel2 = nextLine("수정할 전화번호를 입력해주세요."); // 중복체크, 정규식 010-0000-0000
+//		String pw2 = nextLine("수정할 비밀번호를 입력하세요.");
+//		if (!pw2.equals(nextLine("[비밀번호 확인] 수정할 비밀번호를 재입력하세요."))) {
+//			System.out.println("비밀번호가 다릅니다.");
+//			}
+//
+//		String area2 = selectArea();
+//		User albaUser = new AlbaUser(num, name2, tel2, id2, pw2, area2);
+//		System.out.println("수정 완료.");
+//		userList.add(albaUser);
+//		
+//		return; 	
 	}
 
 	// 로그아웃
 	public void logOut() {
+		
 		if(loginUser!=null) {
+			loginUser=null;
 			System.out.println("로그아웃 되었습니다");
-			return;
 		}
 		else {
-			System.out.println("로그인 정보가 없습니다.");
+			System.out.println("로그인 정보가 없습니다.");// 메인 화면에서 보일필요 없으면 삭제
 		}
 //			loginUser=null;-> 로그인 정보가 없을 때 정보 없다고 하고 != 사용해서 널값아닐 때 로그아웃 시켜서 메인으로 리턴시키기?
 //			System.out.println("로그아웃 되었습니다");
@@ -206,12 +228,11 @@ public class UserService {
 	// 회원 탈퇴
 	public void remove() {
 
-		// 로그인 안 했을 때는 로그인 문자 보내기
+//		 로그인 안 했을 때는 로그인 문자 보내기
 //		if(loginUser==null) {
 //			System.out.println("로그인을 먼저 진행해 주세요");
 //			return;
-//		} // -> 회원 탈퇴를 회원인 상태에서만 볼 수 있게 하면 필요 없을 것 같아서 일단 주석처리 해 두었고 실행이 안 됩니다...
-
+//		} // -> 회원 탈퇴를 회원인 상태에서만 볼 수 있게 하면 필요 없을 것 같아서 일단 주석처리 해 두었습니다.
 
 		System.out.println("회원 탈퇴");
 		

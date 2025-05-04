@@ -19,7 +19,7 @@ public class AlbazoneService {
 	// 메뉴
 	public void menu() {
 		if (userService.getLoginUser() == null) {
-			int no = nextInt("1. 회원가입 2. 로그인 5. 탈퇴 6. 로그아웃  7. 종료 ");
+			int no = nextInt("1. 회원가입 2. 로그인  7. 종료 ");
 			switch (no) {
 			case 1: {
 				userService.register();
@@ -27,20 +27,10 @@ public class AlbazoneService {
 			}
 			case 2: {
 				userService.login();
-	//			if(userService.getLoginUser()!=null) {
-//					loginMenu(); // 연동시키려고 했는데 안됨
+
 				}
 				break;
-			case 5: {
-				userService.remove();// 나중에 삭제
-				
-				}
-				break;
-			
-			case 6: {
-				userService.logOut();
-				break; // 나중에 삭제
-			}
+		
 			case 7: {
 				throw new RuntimeException();
 			}
@@ -56,11 +46,11 @@ public class AlbazoneService {
 	public void loginMenu() {
 		if (userService.getLoginUser() != null) {
 			if (userService.getLoginUser() instanceof AlbaUser) {
-				int no = nextInt("1. 알바공고 2. 지원내역 3. 이력서 관리 5. 회원정보 수정 6.회원탈퇴 7. 종료"); // 종료 -> 로그아웃(로그인한 회원만 보이게)
+				int no = nextInt("1. 알바공고 2. 지원내역 3. 이력서 관리 5. 회원정보 수정 6.회원 탈퇴 7. 종료(로그아웃)"); // 종료 = 로그아웃(로그인한 회원만 보이게)
 				switch (no) {
 
 				case 5: {
-					userService.modify();
+					userService.modify2();
 					break;
 				}
 
@@ -76,7 +66,7 @@ public class AlbazoneService {
 
 				}
 			} else if (userService.getLoginUser() instanceof BusinessUser) {
-				int no = nextInt("1. 공고관리 5. 회원정보 수정 6.회원탈퇴 7. 종료");// 종료 -> 로그아웃
+				int no = nextInt("1. 공고관리 5. 회원정보 수정 6.회원탈퇴 7. 종료(로그아웃)");// 종료 = 로그아웃
 				switch (no) {
 
 				case 5: {

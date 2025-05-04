@@ -10,10 +10,8 @@ public class AlbaUser extends User {
 //		return albaUser;
 //	}
 	
-	public AlbaUser() {
-		// TODO Auto-generated constructor stub
-	}
 	public AlbaUser(int userNo, String name, String tel, String id, String pw, String area) {
 		super(userNo, name, tel, id, pw, area);
 	}
+
 }
