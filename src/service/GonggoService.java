@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import domain.Gonggo;
-import utils.AlbaUtils.*;
+import static utils.AlbaUtils.*;
 
 public class GonggoService {
 	// 공고 리스트 생성
@@ -21,28 +21,61 @@ public class GonggoService {
 	UserService userService = UserService.getInstance();
 	ApplyService applyService = ApplyService.getInstance();
 	
-	//공고등록메서드(조건 2개 - 사업주, 개인)
-	
-	void register() { //사업자
-		//로그인 정보로 공고 등록
-		
+	// 초기화 블럭
+	{
+		// 사업자 유저 번호, 공고 번호, 제목, 역할, 일하는 시간, 시급, 근무 기간, 진행상태, 소재지
+		gonggoList.add(new Gonggo(userService.getLoginUser().getUserNo(), 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "25-05-04 ~ 25-06-04", true, "서울"));
 	}
 	
-
-	//공고조회메서드
+	int num = gonggoList.get(gonggoList.size() - 1).getGonggoNo() == 0 ? 1 : gonggoList.get(gonggoList.size() - 1).getGonggoNo() + 1; 
+	
+	// 공고등록
+	void register() {
+		// 사업자 유저 번호, 공고 번호, 제목, 역할, 일하는 시간, 시급, 근무 기간, 진행상태, 소재지
+		String title = nextLine("공고의 제목을 입력해주세요.");
+		String role = nextLine("하는 일을 입력해주세요.");
+		int workHours = nextInt("일하는 시간을 숫자로 입력해주세요. (시간 단위로 적어주세요. 소숫점은 미지원)");
+		int wage = nextInt("시급을 숫자로 입력해주세요. (2025년 최저시급은 10,030원 입니다.)"); // 최저시급 보다 작을 시 return
+		String workingPeriod = nextLine("근무 기간을 입력해주세요."); // 정규식 만들기 
+		String comArea = selectArea();
+		
+		gonggoList.add(new Gonggo(userService.getLoginUser().getUserNo(), num, title, role, workHours, wage, workingPeriod, true, comArea));
+	}
+	
+	// 알바가 공고 조회
 	void lookupUser() {
-		//조회 노출 리스트
-		//개인기
+		for(Gonggo gonggo : gonggoList) {
+			if(userService.getLoginUser().getArea().equals(gonggo.getComArea())) {
+				System.out.println(gonggo.toString());
+			}
+		}
 	}
 	
-	void apply() {
-		//개인 지원하기
-		
-	}
-	
+	// 사업자가 자기 공고 조회
 	void lookupOwner() {
-		//조회 노출 리스트
-		//사업자 - 진행 or 마감 
+		int input = nextInt("1. 진행중 2. 마감 3. 종료");
+		switch(input) {
+		case 1:{
+			for(Gonggo gonggo : gonggoList) {
+				if(userService.getLoginUser().getUserNo() == gonggo.getUserNo() && gonggo.state == true) {
+					gonggo.toString();
+				}
+			}
+			break;
+		}
+		case 2:{
+			for(Gonggo gonggo : gonggoList) {
+				if(userService.getLoginUser().getUserNo() == gonggo.getUserNo() && gonggo.state == false) {
+					gonggo.toString();
+				}
+			}
+			break;
+		}
+		case 3:{
+			System.out.println("메뉴로 돌아갑니다.");
+			return;
+		}
+		}
 	}
 	
 	void modify() {
