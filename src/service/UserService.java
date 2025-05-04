@@ -132,16 +132,16 @@ public class UserService {
 
 			System.out.println("사업자 로그인");
 
-			BusinessUser loninBusiness = new BusinessUser();
+			BusinessUser loginBusiness = new BusinessUser();
 
-			String loninBusinessId = nextLine("아이디를 입력하세요>");
+			String loginBusinessId = nextLine("아이디를 입력하세요>");
 
-			String loninBusinessPw = nextLine("비밀번호를 입력하세요>");
+			String loginBusinessPw = nextLine("비밀번호를 입력하세요>");
 			//05/03 수정중이고 나중에 봐야됨
 			
 				boolean flag = false;
 				for(User u : userList) {
-					if(u instanceof BusinessUser && u.getId().equals(loninBusinessId) && u.getPw().equals(loninBusinessPw)) {
+					if(u instanceof BusinessUser && u.getId().equals(loginBusinessId) && u.getPw().equals(loginBusinessPw)) {
 						flag = true;
 						domain.BusinessUser loginBusinessUser = (BusinessUser) u;
 						
@@ -159,7 +159,7 @@ public class UserService {
 		case 2:
 			System.out.println("개인회원 로그인");
 
-			AlbaUser loninAlba = new AlbaUser();
+			AlbaUser loginAlba = new AlbaUser();
 
 			String loginAlbaId = nextLine("아이디를 입력하세요>");
 
