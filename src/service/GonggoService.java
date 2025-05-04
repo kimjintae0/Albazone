@@ -1,6 +1,14 @@
 package service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import domain.Gonggo;
+import utils.AlbaUtils.*;
+
 public class GonggoService {
+	// 공고 리스트 생성
+	List<Gonggo> gonggoList = new ArrayList<>();
 	
 	//싱글톤 
 	private static GonggoService gonggoService = new GonggoService();
@@ -9,7 +17,9 @@ public class GonggoService {
 		return gonggoService;
 	}
 	
-	//싱글톤으로 호출하기
+	// 유저서비스, 지원 서비스 호출
+	UserService userService = UserService.getInstance();
+	ApplyService applyService = ApplyService.getInstance();
 	
 	//공고등록메서드(조건 2개 - 사업주, 개인)
 	
@@ -23,7 +33,6 @@ public class GonggoService {
 	void lookupUser() {
 		//조회 노출 리스트
 		//개인기
-	
 	}
 	
 	void apply() {
