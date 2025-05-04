@@ -27,6 +27,7 @@ public class GonggoService {
 		gonggoList.add(new Gonggo(userService.getLoginUser().getUserNo(), 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "25-05-04 ~ 25-06-04", true, "서울"));
 	}
 	
+	// 공고 번호 관리
 	int num = gonggoList.get(gonggoList.size() - 1).getGonggoNo() == 0 ? 1 : gonggoList.get(gonggoList.size() - 1).getGonggoNo() + 1; 
 	
 	// 공고등록
@@ -40,6 +41,7 @@ public class GonggoService {
 		String comArea = selectArea();
 		
 		gonggoList.add(new Gonggo(userService.getLoginUser().getUserNo(), num, title, role, workHours, wage, workingPeriod, true, comArea));
+		System.out.println("공고 작성 완료");
 	}
 	
 	// 알바가 공고 조회
