@@ -45,7 +45,7 @@ public class ResumeService {
 	public void lookupUser() {
 		for(Resume resume : resumeList) {
 			if(resume.getUserNo() == userService.getLoginUser().getUserNo()) {
-				resume.toString();
+				System.out.println(resume.toString());
 			}
 		}
 	}
@@ -82,15 +82,18 @@ public class ResumeService {
 		System.out.println("이력서 삭제");
 		lookupUser();
 		int select = resumeSelect();
+		Resume removeResume = null;
 		if (select == 0) {
 			System.out.println("존재하지 않는 이력서입니다.");
 			return;
 		}
 		for(Resume resume : resumeList) {
 			if(resume.getResumeNo() == select) {
-					resumeList.remove(resume);
+					removeResume = resume;
 			}
 		}
+		resumeList.remove(removeResume);
+		System.out.println("No." + removeResume.getResumeNo() + " 이력서가 삭제되었습니다.");
 	}
 	
 	

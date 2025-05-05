@@ -35,7 +35,8 @@ public class UserService {
 
 	// 초기화 블럭
 	{
-		userList.add(new BusinessUser(1, "새똥이", "010-1111-1111", "ssa", "1234", "서울", "자바사랑", "111-111-11111"));
+		userList.add(new BusinessUser(1, "새똥이", "010-1111-1111", "1", "1", "서울", "자바사랑", "111-111-11111"));
+		userList.add(new AlbaUser(2, "개똥이", "010-2222-2222", "2", "2", "서울"));
 	}
 
 	// 유저번호 중복 x 식

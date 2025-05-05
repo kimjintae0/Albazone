@@ -21,21 +21,22 @@ public class ApplyService {
 	// 리줌, 공고 정보 가져오기
 	private UserService userService = UserService.getInstance();
 	private ResumeService resumeService = ResumeService.getInstance();
-	private GonggoService gonggoService = GonggoService.getInstance();
-	private AlbazoneService albazoneService = AlbazoneService.getInstance();
+
 	
 	
 	// 지원 리스트 생성
 	List<Apply> applyList = new ArrayList<>();
 	
 	
+	
 	// 지원하기 - 알바
 	public void apply() {
-		int gonggoNo = gonggoService.gonggoSelectUser();
+		int gonggoNo = GonggoService.getInstance().gonggoSelectUser();
 		if(gonggoNo == 0) {
 			System.out.println("없는 공고입니다.");
 			return;
 		}
+		resumeService.lookupUser();
 		int resumeNo = resumeService.resumeSelect();
 		if (resumeNo == 0) {
 			System.out.println("존재하지 않는 이력서입니다.");
@@ -55,7 +56,7 @@ public class ApplyService {
 		for(Resume r : resumeService.resumeList) {
 			for(Apply a : applyList) {
 				if(r.getUserNo() == userService.getLoginUser().getUserNo() && a.getResumeNo() == r.getResumeNo()) {
-					a.toString();
+					System.out.println(a.toString());
 				}
 			}
 		}	
