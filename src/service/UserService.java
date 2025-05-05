@@ -149,7 +149,6 @@ public class UserService {
 			for (User u : userList) {
 				if (u instanceof AlbaUser && u.getId().equals(Id2) && u.getPw().equals(Pw2)) {
 					flag2 = true;
-				
 
 					loginUser = u; // 로그인 유저 u로 지정
 					System.out.println("로그인 성공!");
@@ -171,10 +170,9 @@ public class UserService {
 	} 
 
 
-	// 이력서 등록 관리
+	// 이력서 등록 관리 // 이거 알바존 서비스 이력서 서비스로 연동시키는거면 필요없는건지 물어보고 삭제 하거나 추가하거나 하기
 	public void Resumeservice() {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	// 사업자 회원정보 수정 -> 사업자랑 개인 두개 만들기
@@ -212,10 +210,6 @@ public class UserService {
 		else {
 			System.out.println("로그인 정보가 없습니다.");// 메인 화면에서 보일필요 없으면 삭제
 		}
-//			loginUser=null;-> 로그인 정보가 없을 때 정보 없다고 하고 != 사용해서 널값아닐 때 로그아웃 시켜서 메인으로 리턴시키기?
-//			System.out.println("로그아웃 되었습니다");
-//			return; -> 나중에 삭제
-		
 	}
 
 	// 회원 탈퇴
@@ -236,6 +230,7 @@ public class UserService {
 		if (!nextConfirm("정말로 탈퇴하시겠습니까?")) {
 			return;
 		}
+		userList.remove(loginUser); // 로그인 유저 삭제
 		logOut();// 회원 탈퇴시 로그아웃도 동시에 진행
 		System.out.println("탈퇴가 성공적으로 완료되었습니다.");
 
