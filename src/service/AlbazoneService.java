@@ -45,7 +45,7 @@ public class AlbazoneService {
 			}
 		}
 		else if(userService.getLoginUser() instanceof AlbaUser) {
-			int no = nextInt("1. 알바공고 2. 지원하기 3. 지원내역 4. 이력서 관리 7. 회원정보 수정 8.회원 탈퇴 9. 종료(로그아웃)"); // 종료 = 로그아웃(로그인한 회원만 보이게)
+			int no = nextInt("1. 알바공고 2. 지원하기 3. 지원내역 4. 지원취소 5. 이력서 관리 7. 회원정보 수정 8.회원 탈퇴 9. 종료(로그아웃)"); // 종료 = 로그아웃(로그인한 회원만 보이게)
 			switch (no) {
 			case 1: {
 				gonggoService.lookupUser();
@@ -56,10 +56,14 @@ public class AlbazoneService {
 				break;
 			}
 			case 3: {
-				applyService.LookupUser();
+				applyService.lookupUser();
 				break;
 			}
 			case 4: {
+				applyService.remove();
+				break;
+			}
+			case 5: {
 				no = nextInt("1. 이력서 등록 2. 이력서 조회 3. 이력서 수정 4. 이력서 삭제 5. 나가기");
 				switch (no) {
 				case 1:{
@@ -101,10 +105,31 @@ public class AlbazoneService {
 
 			}
 		} else if (userService.getLoginUser() instanceof BusinessUser) {
-			int no = nextInt("1. 공고등록 2. 공고관리 5. 회원정보 수정 6. 회원탈퇴 7. 종료(로그아웃)");// 종료 = 로그아웃
+			int no = nextInt("1. 공고 5. 회원정보 수정 6. 회원탈퇴 7. 종료(로그아웃)");// 종료 = 로그아웃
 			switch (no) {
 			case 1:{
-				gonggoService.register();
+				no = nextInt("1. 공고 등록 2. 공고 조회 3. 공고 수정 4. 공고 삭제 5. 나가기");
+				switch (no) {
+				case 1:{
+					gonggoService.register();
+					break;
+				}
+				case 2:{
+					gonggoService.lookupOwner();
+					break;
+				}
+				case 3:{
+					gonggoService.modify();
+					break;
+				}
+				case 4:{
+					gonggoService.remove();
+					break;
+				}
+				case 5:{
+					break;
+				}
+				}
 				break;
 			}
 			case 2:{

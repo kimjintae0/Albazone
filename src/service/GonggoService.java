@@ -33,7 +33,7 @@ public class GonggoService {
 		gonggoList.add(new Gonggo(1, 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울"));
 	}
 	
-	int num = gonggoList.get(gonggoList.size() - 1).getGonggoNo() == 0 ? 1 : gonggoList.get(gonggoList.size() - 1).getGonggoNo() + 1; 
+	
 	
 	// 공고등록
 	void register() {
@@ -58,6 +58,8 @@ public class GonggoService {
 		}
 		String comArea = selectArea();
 		
+		// 공고번호 관리
+		int num = gonggoList.get(gonggoList.size() - 1).getGonggoNo() == 0 ? 1 : gonggoList.get(gonggoList.size() - 1).getGonggoNo() + 1; 
 		gonggoList.add(new Gonggo(userService.getLoginUser().getUserNo(), num, title, role, workHours, wage, workingStartDate, workingEndDate, true, comArea));
 	}
 	

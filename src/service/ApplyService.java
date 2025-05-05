@@ -1,5 +1,7 @@
 package service;
 
+import java.beans.SimpleBeanInfo;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -50,21 +52,48 @@ public class ApplyService {
 		System.out.println("공고 지원 완료");
 	}
 	
+	// 데이트 타입 포매터
+	SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
 	
 	// 지원내역 조회 - 알바
-	public void LookupUser() {
+	public void lookupUser() {
 		for(Resume r : resumeService.resumeList) {
-			for(Apply a : applyList) {
-				if(r.getUserNo() == userService.getLoginUser().getUserNo() && a.getResumeNo() == r.getResumeNo()) {
-					System.out.println(a.toString());
+			if(r.getUserNo() == userService.getLoginUser().getUserNo()) {
+				for(Apply a : applyList) {
+					if(r.getResumeNo() == a.getResumeNo()) {
+						for(Gonggo g : GonggoService.getInstance().gonggoList) {
+							if(a.getGonggoNo() == g.getGonggoNo()) {
+								System.out.println("지원 시간 : " + dateFormat.format(a.getApplyDate()));
+								System.out.println("지원 상태 : " + (a.getApplySitu() == 0 ? "접수" : "읽음"));
+								System.out.println(g.toString());
+							}
+						}
+					}
 				}
 			}
-		}	
+		}
 	}
 	
 	
 	// 지원 취소
-
+	public void remove() {
+		lookupUser();
+		Apply removeApply = null;
+		int input = nextInt("지원을 취소하실 공고의 번호를 입력해주세요.");
+		for(Apply a : applyList) {
+			if(a.getGonggoNo() == input) {
+				for(Resume r : resumeService.resumeList) {
+					if(r.getUserNo() == userService.getLoginUser().getUserNo()) {
+						if(a.getResumeNo() == r.getResumeNo()) {
+							removeApply = a;
+						}
+					}
+				}
+			}
+		}
+		applyList.remove(removeApply);
+		System.out.println("지원이 취소되었습니다.(중복 지원시, 오래된 항목이 먼저 삭제됩니다.)");
+	}
 	
 	// 내 공고에 지원한 내역 조회 - 사업자
 	

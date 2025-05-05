@@ -39,9 +39,7 @@ public class UserService {
 		userList.add(new AlbaUser(2, "개똥이", "010-2222-2222", "2", "2", "서울"));
 	}
 
-	// 유저번호 중복 x 식
-	private int num = userList.get(userList.size() - 1).getUserNo() == 0 ? 1
-			: userList.get(userList.size() - 1).getUserNo() + 1;
+	
 
 	// 중복체크 - findByNo, ID, comNum, tel
 
@@ -58,7 +56,8 @@ public class UserService {
 	// 회원가입
 	public void register() {
 		int choice = nextInt("1. (사업자) 회원가입 2.(개인회원) 회원가입 3. 종료");
-
+		// 유저번호 중복 x 식
+		int num = userList.get(userList.size() - 1).getUserNo() == 0 ? 1 : userList.get(userList.size() - 1).getUserNo() + 1;
 		switch (choice) {
 		case 1:
 			System.out.println("사업자 회원가입");
@@ -75,7 +74,8 @@ public class UserService {
 				return;
 			}
 			String area = selectArea();
-
+			
+			
 			// 유저번호, 이름, 연락처, id, pw, 소재지, 상호, 사업자 등록번호
 			User businessUser = new BusinessUser(num, name, tel, id, pw, area, comName, comNum);
 			userList.add(businessUser);
@@ -95,7 +95,8 @@ public class UserService {
 				System.out.println("비밀번호가 다릅니다.");
 				return;
 			}
-
+			
+			// 유저번호 중복 x 식
 			String area2 = selectArea();
 			User albaUser = new AlbaUser(num, name2, tel2, id2, pw2, area2);
 			System.out.println("회원가입이 정상적으로 완료되었습니다.");
