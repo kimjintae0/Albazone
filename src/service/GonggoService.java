@@ -22,6 +22,7 @@ public class GonggoService {
 	}
 	
 	// 유저서비스, 지원 서비스 호출
+	AlbazoneService albazoneService = AlbazoneService.getInstance();
 	UserService userService = UserService.getInstance();
 	ApplyService applyService = ApplyService.getInstance();
 
@@ -29,7 +30,7 @@ public class GonggoService {
 	// 초기화 블럭
 	{
 		// 사업자 유저 번호, 공고 번호, 제목, 역할, 일하는 시간, 시급, 근무 기간, 진행상태, 소재지
-		gonggoList.add(new Gonggo(userService.getLoginUser().getUserNo(), 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울"));
+		gonggoList.add(new Gonggo(1, 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울"));
 	}
 	
 	int num = gonggoList.get(gonggoList.size() - 1).getGonggoNo() == 0 ? 1 : gonggoList.get(gonggoList.size() - 1).getGonggoNo() + 1; 
@@ -67,6 +68,7 @@ public class GonggoService {
 				System.out.println(gonggo.toString());
 			}
 		}
+		return;
 	}
 	
 	// 공고 선택 - 알바

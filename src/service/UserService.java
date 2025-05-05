@@ -118,7 +118,6 @@ public class UserService {
 
 			System.out.println("사업자 로그인");
 
-//			BusinessUser loginBusiness = new BusinessUser(); 필요없음
 
 			String Id = nextLine("아이디를 입력하세요>");
 
@@ -132,8 +131,6 @@ public class UserService {
 				
 					loginUser = u; // 로그인 유저 u로 지정
 					System.out.println("로그인 성공!");
-					albazoneService.getInstance().loginMenu();// 로그인 했을 때만 보일 수있는 창 으로 이동
-					return;// 돌아가기//
 				}
 			}
 			if (!flag) {
@@ -144,8 +141,6 @@ public class UserService {
 		case 2:
 			System.out.println("개인회원 로그인");
 
-//			AlbaUser loginAlba = new AlbaUser(); 필요 없고 오류만 남
-
 			String Id2 = nextLine("아이디를 입력하세요>");
 
 			String Pw2 = nextLine("비밀번호를 입력하세요>");
@@ -154,12 +149,10 @@ public class UserService {
 			for (User u : userList) {
 				if (u instanceof AlbaUser && u.getId().equals(Id2) && u.getPw().equals(Pw2)) {
 					flag2 = true;
-//				
+				
 
 					loginUser = u; // 로그인 유저 u로 지정
 					System.out.println("로그인 성공!");
-					albazoneService.getInstance().loginMenu();// 로그인 했을 때만 보일 수있는 창 으로 이동
-					return;// 돌아가기//
 				} 		
 			}
 			if (!flag2) {
