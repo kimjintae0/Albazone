@@ -69,17 +69,7 @@ public class UserService {
 
 			String comName = nextLine("상호명을 입력하세요.");
 			String tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요."); // 중복체크, 정규식 010-0000-0000
-			if (!tel.matches("^0\\d{2}-\\d{4}-\\d{4}$|^0\\d{2}-\\d{4}-\\d{4}$|^02-\\d{4}-\\d{4}$|^02-\\d{3}-\\d{4}$")) { // 서울
-																															// 지역번호
-																															// 02랑
-																															// 일단
-																															// 3자리도
-																															// 있고
-																															// 4자리도
-																															// 있네
-																															// 그외는
-																															// 0\\d로
-																															// 묶기
+			if (!tel.matches("^0\\d{2}-\\d{4}-\\d{4}$|^0\\d{2}-\\d{4}-\\d{4}$|^02-\\d{4}-\\d{4}$|^02-\\d{3}-\\d{4}$")) { // 묶기
 				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
 				return;
 			}
@@ -153,9 +143,10 @@ public class UserService {
 		}
 
 	}
+
 	// 로그인 // 스위치 없애버리고
 	public void login() {
-		
+
 		System.out.println("로그인");
 
 		String Id = nextLine("아이디를 입력하세요>");
@@ -228,11 +219,11 @@ public class UserService {
 
 	// 로그아웃
 	public void logOut() {
-
-//		if (loginUser != null) {
-		loginUser = null;
-		System.out.println("로그아웃 되었습니다");
-//		}
+		if (loginUser != null) {
+			loginUser = null;
+			System.out.println(loginUser);
+			System.out.println("로그아웃 되었습니다");
+		}
 	}
 
 	// 회원 탈퇴
