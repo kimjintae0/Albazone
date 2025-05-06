@@ -74,8 +74,8 @@ public class Resume  implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "Resume [resumeNo=" + resumeNo + ", title=" + title + ", name=" + name + ", tel=" + tel + ", area="
-				+ area + ", introduce=" + introduce + "]";
+		return "[이력서 번호 : " + resumeNo + ", 이력서 제목 :" + title + ", 이름 :" + name + ", 전화 번호 :" + tel + ", 지역 :"
+				+ area + ", 자기소개 :" + introduce + "]";
 	}
 	
 }
