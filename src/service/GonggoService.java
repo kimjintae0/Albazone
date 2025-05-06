@@ -60,10 +60,10 @@ public class GonggoService {
 		}
 		String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd)."); // 정규식 만들기 
 		boolean workingEndDateCheck = workingEndDate.matches(dateForm);
-		if(true){
+		if(Pattern.matches(dateForm, workingEndDate)){
 			System.out.println(workingEndDate);
 		}else {
-			System.out.println("정해진 양식에 맞게 다시 입력해주세요.");
+			System.out.println("양식에 맞게 다시 입력해주세요.");
 			return;
 		}
 		String comArea = selectArea();
