@@ -69,11 +69,22 @@ public class UserService {
 
 			String comName = nextLine("상호명을 입력하세요.");
 			String tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요."); // 중복체크, 정규식 010-0000-0000
-			 if (!tel.matches("^0\\d{2}-\\d{4}-\\d{4}$|^0\\d{2}-\\d{4}-\\d{4}$|^02-\\d{4}-\\d{4}$|^02-\\d{3}-\\d{4}$")) { // 서울 지역번호 02랑 일단 3자리도 있고 4자리도 있네 그외는 0\\d로 묶기
-			        System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-			    	return;
-				}
-			        // 저녁에 수정하기 이거 하면 아이디랑 다른 것도 바로 구현 가능하고, 사업자랑 개인회원 최대한 겹치게 만들어야 좋음, 회원수정처럼 같이 할수 있는지 알아보기..
+			if (!tel.matches("^0\\d{2}-\\d{4}-\\d{4}$|^0\\d{2}-\\d{4}-\\d{4}$|^02-\\d{4}-\\d{4}$|^02-\\d{3}-\\d{4}$")) { // 서울
+																															// 지역번호
+																															// 02랑
+																															// 일단
+																															// 3자리도
+																															// 있고
+																															// 4자리도
+																															// 있네
+																															// 그외는
+																															// 0\\d로
+																															// 묶기
+				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+				return;
+			}
+			// 저녁에 수정하기 이거 하면 아이디랑 다른 것도 바로 구현 가능하고, 사업자랑 개인회원 최대한 겹치게 만들어야 좋음, 회원수정처럼 같이 할수
+			// 있는지 알아보기..
 //			        public Student findBy(int no) {
 //			    		Student student = null;
 //			    		for(int i = 0 ; i < students.size() ; i++) {
@@ -92,9 +103,9 @@ public class UserService {
 //						System.out.println("중복된 전화번호가 존재합니다");
 //						return;
 //					}
-			   				
+
 //로그인 했을 때 아이디 비밀번호인지 확인하고 사업자 알바 가입 합치기
-			 
+
 			String id = nextLine("아이디를 입력하세요."); // 중복체크
 
 			String pw = nextLine("비밀번호를 입력하세요.");
@@ -117,10 +128,10 @@ public class UserService {
 
 			String name2 = nextLine("이름을 입력하세요."); // 개인회원 알바이름
 			String tel2 = nextLine("전화번호를 입력해주세요. ex) 000-0000-0000"); // 중복체크, 정규식 010-0000-0000
-			 if (!tel2.matches("^0\\d{2}-\\d{4}-\\d{4}$")) { // 서울 지역번호나 집번호도 고객한테도 필요한가?
-			        System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-			 }
-			 
+			if (!tel2.matches("^0\\d{2}-\\d{4}-\\d{4}$")) { // 서울 지역번호나 집번호도 고객한테도 필요한가?
+				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+			}
+
 			String id2 = nextLine("아이디를 입력하세요."); // 중복체크
 
 			String pw2 = nextLine("비밀번호를 입력하세요.");
@@ -142,66 +153,34 @@ public class UserService {
 		}
 
 	}
-
 	// 로그인 // 스위치 없애버리고
 	public void login() {
-		int choice = nextInt("1. (사업자) 로그인 2.(개인회원) 로그인 3. 종료");
-		switch (choice) {
+		
+		System.out.println("로그인");
 
-		case 1:
+		String Id = nextLine("아이디를 입력하세요>");
 
-			System.out.println("사업자 로그인");
+		String Pw = nextLine("비밀번호를 입력하세요>");
 
-			String Id = nextLine("아이디를 입력하세요>");
-
-			String Pw = nextLine("비밀번호를 입력하세요>");
-
-			boolean flag = false;
-			for (User u : userList) {
-				if (u instanceof BusinessUser && u.getId().equals(Id) && u.getPw().equals(Pw)) {
-					flag = true;
-
-					loginUser = u; 
-					System.out.println("로그인 성공!");
-				}
+		boolean flag = false;
+		for (User u : userList) {
+			if (u instanceof BusinessUser && u.getId().equals(Id) && u.getPw().equals(Pw)) {
+				flag = true;
+				loginUser = u; // 로그인 유저 u로 지정
+				System.out.println("사업자 로그인 성공!");
+			} else if (u instanceof AlbaUser && u.getId().equals(Id) && u.getPw().equals(Pw)) {
+				flag = true;
+				loginUser = u; // 로그인 유저 u로 지정
+				System.out.println("개인회원 로그인 성공!");
 			}
-			if (!flag) {
-				System.out.println("아이디 또는 비밀번호가 틀렸습니다");
-			}
-			break;
-
-		case 2:
-			System.out.println("개인회원 로그인");
-
-			String Id2 = nextLine("아이디를 입력하세요>");
-
-			String Pw2 = nextLine("비밀번호를 입력하세요>");
-
-			boolean flag2 = false;
-			for (User u : userList) {
-				if (u instanceof AlbaUser && u.getId().equals(Id2) && u.getPw().equals(Pw2)) {
-					flag2 = true;
-
-					loginUser = u; // 로그인 유저 u로 지정
-					System.out.println("로그인 성공!");
-				}
-			}
-			if (!flag2) {
-				System.out.println("아이디 또는 비밀번호가 틀렸습니다");
-			}
-
-			break;
-
-		case 3:
-
-			System.out.println("메인 화면으로 돌아갑니다.");
-			break;
 		}
-
+		if (!flag) {
+			System.out.println("아이디 또는 비밀번호가 틀렸습니다.");
+		}
 	}
 
-	// 회원정보 수
-	public void modify() { 
+	// 회원정보 수정
+	public void modify() {
 		System.out.println("회원정보 수정");
 
 		// 사업자
@@ -232,8 +211,7 @@ public class UserService {
 			System.out.println("회원 정보 수정이 취소되었습니다. 다시 진행해주세요");
 			return;
 		}
-		
-		
+
 		// 개인회원
 		AlbaUser alba = (AlbaUser) loginUser;
 
@@ -252,13 +230,13 @@ public class UserService {
 	public void logOut() {
 
 //		if (loginUser != null) {
-			loginUser = null;
-			System.out.println("로그아웃 되었습니다");
+		loginUser = null;
+		System.out.println("로그아웃 되었습니다");
 //		}
 	}
 
 	// 회원 탈퇴
-	public void remove() { 
+	public void remove() {
 		System.out.println("회원 탈퇴");
 
 		if (!nextConfirm("탈퇴하시겠습니까?")) {
