@@ -22,7 +22,7 @@ public class AlbazoneService {
 	// 메뉴
 	public void menu() {
 		if (userService.getLoginUser() == null) {
-			int no = nextInt("1. 회원가입 2. 로그인  9. 종료 ");
+			int no = nextInt("1. 회원가입 2. 로그인  9. 종료 "); 
 			switch (no) {
 			case 1: {
 				userService.register();
@@ -45,7 +45,7 @@ public class AlbazoneService {
 			}
 		}
 		else if(userService.getLoginUser() instanceof AlbaUser) {
-			int no = nextInt("1. 알바공고 2. 지원하기 3. 지원내역 4. 지원취소 5. 이력서 관리 7. 회원정보 수정 8.회원 탈퇴 9. 종료(로그아웃)"); // 종료 = 로그아웃(로그인한 회원만 보이게)
+			int no = nextInt("1. 알바공고 2. 지원하기 3. 지원내역 4. 지원취소 5. 이력서 관리 6. 회원정보 수정 7.회원 탈퇴 8. 종료(로그아웃)"); 
 			switch (no) {
 			case 1: {
 				gonggoService.lookupUser();
@@ -88,24 +88,24 @@ public class AlbazoneService {
 				}
 			}
 			
-			case 7: {
-				userService.modify2();
+			case 6: {
+				userService.modify(); 
 				break;
 			}
 
-			case 8: {
+			case 7: {
 				userService.remove();
 				break;
 			}
 
-			case 9: {
+			case 8: {
 				userService.logOut();
 				break; 
 			}
 
 			}
 		} else if (userService.getLoginUser() instanceof BusinessUser) {
-			int no = nextInt("1. 공고 5. 회원정보 수정 6. 회원탈퇴 7. 종료(로그아웃)");// 종료 = 로그아웃
+			int no = nextInt("1. 공고 5. 회원정보 수정 6. 회원탈퇴 7. 종료(로그아웃)");
 			switch (no) {
 			case 1:{
 				no = nextInt("1. 공고 등록 2. 공고 조회 3. 지원자 확인 4. 공고 수정 5. 공고 삭제 6. 나가기");
@@ -123,7 +123,7 @@ public class AlbazoneService {
 					break;
 				}
 				case 4:{
-					gonggoService.modify();
+					gonggoService.modify(); 
 					break;
 				}
 				case 5:{
@@ -141,7 +141,7 @@ public class AlbazoneService {
 				break;
 			}
 			case 5: {
-				userService.modify();
+				userService.modify();// 사업자 정보 수정
 				break;
 			}
 
