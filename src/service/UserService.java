@@ -1,6 +1,5 @@
 package service;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class UserService {
 
 	// 클래스 연동
 	AlbazoneService albazoneService = AlbazoneService.getInstance();
-//	ResumeService resumeService = ResumeService.getInstance();
+	ResumeService resumeService = ResumeService.getInstance();
 
 	// 싱글톤
 	private static UserService userService = new UserService();
@@ -92,7 +91,8 @@ public class UserService {
 //						return;
 //					}
 			   				
-
+//로그인 했을 때 아이디 비밀번호인지 확인하고 사업자 알바 가입 합치기
+			 
 			String id = nextLine("아이디를 입력하세요."); // 중복체크
 
 			String pw = nextLine("비밀번호를 입력하세요.");
@@ -114,7 +114,6 @@ public class UserService {
 //					이름, 연락처, 거주지, 아이디, 비밀번호, 이력서
 
 			String name2 = nextLine("이름을 입력하세요."); // 개인회원 알바이름
-
 			String tel2 = nextLine("전화번호를 입력해주세요. ex) 000-0000-0000"); // 중복체크, 정규식 010-0000-0000
 			 if (!tel2.matches("^0\\d{2}-\\d{4}-\\d{4}$")) { // 서울 지역번호나 집번호도 고객한테도 필요한가?
 			        System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
@@ -128,7 +127,6 @@ public class UserService {
 				return;
 			}
 
-			// 유저번호 중복 x 식
 			String area2 = selectArea();
 			User albaUser = new AlbaUser(num, name2, tel2, id2, pw2, area2);
 			System.out.println("회원가입이 정상적으로 완료되었습니다.");
@@ -143,7 +141,7 @@ public class UserService {
 
 	}
 
-	// 로그인
+	// 로그인 // 스위치 없애버리고
 	public void login() {
 		int choice = nextInt("1. (사업자) 로그인 2.(개인회원) 로그인 3. 종료");
 		switch (choice) {
@@ -161,7 +159,7 @@ public class UserService {
 				if (u instanceof BusinessUser && u.getId().equals(Id) && u.getPw().equals(Pw)) {
 					flag = true;
 
-					loginUser = u; // 로그인 유저 u로 지정
+					loginUser = u; 
 					System.out.println("로그인 성공!");
 				}
 			}
@@ -200,14 +198,8 @@ public class UserService {
 
 	}
 
-	// 이력서 등록 관리 // 이거 알바존 서비스 이력서 서비스로 연동시키는거면 필요없는건지 물어보고 삭제 하거나 추가하거나 하기
-	public void Resumeservice() {
-
-	}
-
-	// 사업자 회원정보 수정 -> 사업자랑 개인 같이 가능할 것 같아서 같이 해두었습니다! 혹시 다시 구분해야 되면 바꾸고 다시 할게요!
-	public void modify() { // 나중에 디폴트 값 제거 및 수정 무한 생성
-//	
+	// 회원정보 수
+	public void modify() { 
 		System.out.println("회원정보 수정");
 
 		// 사업자
@@ -226,8 +218,6 @@ public class UserService {
 		System.out.println("수정할 거주지 정보");
 		String area = selectArea();
 
-		// if문 (instanceof로 로그인 유저 구분해보기), set 등록 , 로그인 된 유저니까? loginUser 해보고 아안됨녀 user
-
 		if (loginUser instanceof BusinessUser) {
 			business.setCompanyName(comName);
 			business.setName(name);
@@ -240,7 +230,6 @@ public class UserService {
 			System.out.println("회원 정보 수정이 취소되었습니다. 다시 진행해주세요");
 			return;
 		}
-
 		// 개인회원
 		AlbaUser alba = (AlbaUser) loginUser;
 
@@ -255,60 +244,23 @@ public class UserService {
 		}
 	}
 
-	// 개인 회원 정보 수정 -> 나중에 물어보고 삭제하기
-//	public void modify2() { // 나중에 디폴트 값 제거 및 수정 무한 생성
-//
-//		System.out.println("회원정보 수정");
-//
-//		AlbaUser alba = (AlbaUser) loginUser;
-//		String name2 = nextLine("수정할 이름을 입력하세요."); // 개인 알바이름
-//		String tel2 = nextLine("수정할 전화번호를 입력 해주세요."); // 중복체크, 정규식 010-0000-0000
-//		String pw2 = nextLine("수정할 비밀번호를 입력해 주세요.");
-//		if (!pw2.equals(nextLine("[비밀번호 확인] 수정할 비밀번호를 재입력하세요."))) {
-//			System.out.println("비밀번호가 다릅니다.");
-//		}
-//		System.out.println("수정할 거주지 정보");
-//		String area2 = selectArea();
-//		if (loginUser instanceof AlbaUser) {
-//			alba.setName(name2);
-//			alba.setTel(tel2);
-//			alba.setPw(pw2);
-//			alba.setArea(area2);
-//			System.out.println("성공적으로 회원 정보 수정이 완료되었습니다.");
-//			System.out.println("변경된 회원 정보" + loginUser); // 수정되었는지 확인해보기
-//			System.out.println("성공적으로 회원 정보 수정이 완료되었습니다.");
-//
-//		}
-//
-//		return;
-//	}
-
 	// 로그아웃
 	public void logOut() {
 
 		if (loginUser != null) {
 			loginUser = null;
 			System.out.println("로그아웃 되었습니다");
-		} else {
-			System.out.println("로그인 정보가 없습니다.");// 메인 화면에서 보일필요 없으면 삭제
 		}
 	}
 
 	// 회원 탈퇴
-	public void remove() {
-
-//		 로그인 안 했을 때는 로그인 문자 보내기
-//		if(loginUser==null) {
-//			System.out.println("로그인을 먼저 진행해 주세요");
-//			return;
-//		} // -> 회원 탈퇴를 회원인 상태에서만 볼 수 있게 하면 필요 없을 것 같아서 일단 주석처리 해 두었습니다.
-
+	public void remove() { 
 		System.out.println("회원 탈퇴");
 
 		if (!nextConfirm("탈퇴하시겠습니까?")) {
 			return;
 		}
-		// 중복으로 한 번 더 물어보기
+		// 중복으로 한 번 더 물어보기 (나중에 지원이랑 공고 내역 삭제까지)
 		if (!nextConfirm("정말로 탈퇴하시겠습니까?")) {
 			return;
 		}
