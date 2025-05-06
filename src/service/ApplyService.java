@@ -72,6 +72,12 @@ public class ApplyService {
 			System.out.println("존재하지 않는 이력서입니다.");
 			return;
 		}
+		for(Apply a : applyList) {
+			if(a.getGonggoNo() == gonggoNo && a.getResumeNo() == resumeNo) {
+				System.out.println("해당 이력서로 이미 지원한 공고입니다.");
+				return;
+			}
+		}
 		if(!nextConfirm("해당 공고에 지원하시겠습니까?")) {
 			System.out.println("공고 지원 취소");
 			return;
