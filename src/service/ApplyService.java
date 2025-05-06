@@ -144,6 +144,7 @@ public class ApplyService {
 	// 내 공고에 지원한 내역 조회 - 사업자
 	
 	public void lookupUserOwner() {
+		int size = 0;
 		for(Gonggo g : GonggoService.getInstance().gonggoList) {
 			if(userService.getLoginUser().getUserNo() == g.getUserNo() && g.state == true) {
 				System.out.println(g.toString());
@@ -166,10 +167,14 @@ public class ApplyService {
 				for(Resume r : resumeService.resumeList) {
 					if(a.getResumeNo() == r.getResumeNo()) {
 						System.out.println(r.toString());
+						size++;
 					}
 				}
 				a.setApplySitu(a.getApplySitu() + 1);
 			}
+		}
+		if(size == 0) {
+			System.out.println("지원자가 없습니다.");
 		}
 		save();
 	}
