@@ -49,7 +49,6 @@ public class ApplyService {
 			applyList.add(new Apply(1, 1));
 		} 
 		catch (Exception e) {
-			
 			e.printStackTrace();
 		}
 	}
@@ -92,6 +91,7 @@ public class ApplyService {
 	
 	// 지원내역 조회 - 알바
 	public void lookupUser() {
+		int size = 0;
 		for(Resume r : resumeService.resumeList) {
 			if(r.getUserNo() == userService.getLoginUser().getUserNo()) {
 				for(Apply a : applyList) {
@@ -101,11 +101,15 @@ public class ApplyService {
 								System.out.println("지원 시간 : " + dateFormat.format(a.getApplyDate()));
 								System.out.println("지원 상태 : " + (a.getApplySitu() == 0 ? "접수" : "읽음"));
 								System.out.println(g.toString());
+								size++;
 							}
 						}
 					}
 				}
 			}
+		}
+		if(size == 0) {
+			System.out.println("지원내역이 없습니다.");
 		}
 	}
 	
@@ -114,6 +118,7 @@ public class ApplyService {
 	public void remove() {
 		lookupUser();
 		Apply removeApply = null;
+		boolean check = false;
 		int input = nextInt("지원을 취소하실 공고의 번호를 입력해주세요.");
 		for(Apply a : applyList) {
 			if(a.getGonggoNo() == input) {
@@ -121,10 +126,15 @@ public class ApplyService {
 					if(r.getUserNo() == userService.getLoginUser().getUserNo()) {
 						if(a.getResumeNo() == r.getResumeNo()) {
 							removeApply = a;
+							check = true;
 						}
 					}
 				}
 			}
+		}
+		if(check = false) {
+			System.out.println("지원 이력을 찾을 수 없습니다.");
+			return;
 		}
 		applyList.remove(removeApply);
 		System.out.println("지원이 취소되었습니다.(중복 지원시, 오래된 항목이 먼저 삭제됩니다.)");
