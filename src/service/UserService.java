@@ -18,10 +18,10 @@ public class UserService {
 	private User loginUser;
 
 	// 클래스 연동
-	AlbazoneService albazoneService = AlbazoneService.getInstance();
-	ResumeService resumeService = ResumeService.getInstance();
-	ApplyService applyService = ApplyService.getInstance();
-	GonggoService gonggoService = GonggoService.getInstance();
+//	AlbazoneService albazoneService = AlbazoneService.getInstance();
+//	ResumeService resumeService = ResumeService.getInstance();
+//	ApplyService applyService = ApplyService.getInstance();
+//	GonggoService gonggoService = GonggoService.getInstance();
 
 	// 싱글톤
 	private static UserService userService = new UserService();
