@@ -47,15 +47,15 @@ public class GonggoService {
 				return;
 			}
 		String workingStartDate = nextLine("근무 시작일을 입력해주세요 (yyyy-MM-dd)."); // 정규식 만들기 
-		if(!workingStartDate.matches("(2)\\d{3}(0[1-9]|1[012])-(0[1-9]|[12])-([0-9]|3[01])")) {
-			System.out.println("양식에 맞게 다시 입력해주세요. 예) 2025-12-12");
-			return;
-		}
+//		if(!workingStartDate.matches("(2)\\d{3}(0[1-9]|1[012])-(0[1-9]|[12])-([0-9]|3[01])")) {
+//			System.out.println("양식에 맞게 다시 입력해주세요. 예) 2025-12-12");
+//			return;
+//		}
 		String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd)."); // 정규식 만들기 
-		if(!workingEndDate.matches("(2)\\d{3}(0[1-9]|1[012])-(0[1-9]|[12])-([0-9]|3[01])")) {
-			System.out.println("양식에 맞게 다시 입력해주세요. 예) 2025-12-12");
-			return;
-		}
+//		if(!workingEndDate.matches("(2)\\d{3}(0[1-9]|1[012])-(0[1-9]|[12])-([0-9]|3[01])")) {
+//			System.out.println("양식에 맞게 다시 입력해주세요. 예) 2025-12-12");
+//			return;
+//		}
 		String comArea = selectArea();
 		
 		// 공고번호 관리
@@ -77,7 +77,7 @@ public class GonggoService {
 	public int gonggoSelectUser() {
 		int input = nextInt("공고 번호를 선택해 주세요.");
 		for(Gonggo g : gonggoList) {
-			if(g.getGonggoNo() == input) {
+			if(g.getGonggoNo() == input && g.getComArea() == userService.getLoginUser().getArea()) {
 				return input;
 			}
 		}
@@ -100,17 +100,17 @@ public class GonggoService {
 		int input = nextInt("1. 진행중 2. 마감 3. 종료");
 		switch(input) {
 		case 1:{
-			for(Gonggo gonggo : gonggoList) {
-				if(userService.getLoginUser().getUserNo() == gonggo.getUserNo() && gonggo.state == true) {
-					gonggo.toString();
+			for(Gonggo g : gonggoList) {
+				if(userService.getLoginUser().getUserNo() == g.getUserNo() && g.state == true) {
+					System.out.println(g.toString());	
 				}
 			}
 			break;
 		}
 		case 2:{
-			for(Gonggo gonggo : gonggoList) {
-				if(userService.getLoginUser().getUserNo() == gonggo.getUserNo() && gonggo.state == false) {
-					gonggo.toString();
+			for(Gonggo g : gonggoList) {
+				if(userService.getLoginUser().getUserNo() == g.getUserNo() && g.state == false) {
+					System.out.println(g.toString());
 				}
 			}
 			break;

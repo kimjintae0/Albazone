@@ -1,12 +1,13 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Apply {
-	int gonggoNo;
-	int resumeNo;
-	Date applyDate = new Date(); // 언제
-	int applySitu;// [상태]  1 : 접수    2: 등록
+public class Apply implements Serializable{
+	private int gonggoNo;
+	private int resumeNo;
+	private Date applyDate = new Date(); // 언제
+	private int applySitu;// [상태]  1 : 접수    2: 등록
 	
 	
 	// 게터, 세터

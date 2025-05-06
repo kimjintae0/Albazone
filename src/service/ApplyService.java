@@ -1,9 +1,14 @@
 package service;
 
-import java.beans.SimpleBeanInfo;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import domain.Apply;
@@ -11,6 +16,8 @@ import domain.Gonggo;
 import domain.Resume;
 
 import static utils.AlbaUtils.*;
+
+@SuppressWarnings("unchecked")
 public class ApplyService {
 
 	// 싱글톤
@@ -29,13 +36,34 @@ public class ApplyService {
 	// 지원 리스트 생성
 	List<Apply> applyList = new ArrayList<>();
 	
+	// 초기화 블럭
+	{
+		ObjectInputStream ois = null;
+		try {
+			ois = new ObjectInputStream(new FileInputStream("data/apply.ser"));
+			applyList = (List<Apply>)ois.readObject();
+			ois.close();
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("Apply : 파일을 불러올 수 없습니다. 임시 데이터셋으로 진행합니다.");
+			applyList.add(new Apply(1, 1));
+		} 
+		catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
 	
 	
 	// 지원하기 - 알바
 	public void apply() {
 		int gonggoNo = GonggoService.getInstance().gonggoSelectUser();
 		if(gonggoNo == 0) {
-			System.out.println("없는 공고입니다.");
+			System.out.println("접근 권한이 없는 공고입니다.");
 			return;
 		}
 		resumeService.lookupUser();
@@ -50,6 +78,7 @@ public class ApplyService {
 		}
 		applyList.add(new Apply(gonggoNo, resumeNo)); // 로그인 유저의 이력서 중, 유저가 선택한 이력서의 번호 
 		System.out.println("공고 지원 완료");
+		save();
 	}
 	
 	// 데이트 타입 포매터
@@ -93,12 +122,58 @@ public class ApplyService {
 		}
 		applyList.remove(removeApply);
 		System.out.println("지원이 취소되었습니다.(중복 지원시, 오래된 항목이 먼저 삭제됩니다.)");
+		save();
 	}
 	
 	// 내 공고에 지원한 내역 조회 - 사업자
 	
+	public void lookupUserOwner() {
+		for(Gonggo g : GonggoService.getInstance().gonggoList) {
+			if(userService.getLoginUser().getUserNo() == g.getUserNo() && g.state == true) {
+				System.out.println(g.toString());
+			}
+		}
+		int input = nextInt("지원내역을 확인하실 공고의 번호를 입력해주세요.");
+		for(Gonggo g : GonggoService.getInstance().gonggoList) {
+			if(!(userService.getLoginUser().getUserNo() == g.getUserNo() && g.state == true)) {
+				input = 0;
+			}
+		}
+		if(input == 0) {
+			System.out.println("마감된 공고이거나 접근 권한이 없는 공고입니다.");
+			return;
+		}
+		for(Apply a : applyList) {
+			if(a.getGonggoNo() == input) {
+				
+				System.out.println("지원날짜"+ dateFormat.format(a.getApplyDate()));
+				for(Resume r : resumeService.resumeList) {
+					if(a.getResumeNo() == r.getResumeNo()) {
+						System.out.println(r.toString());
+					}
+				}
+				a.setApplySitu(a.getApplySitu() + 1);
+			}
+		}
+		save();
+	}
 	
-	
+	// 파일로 저장하기
+		private void save() {
+			try {
+				File file = new File("data");
+				if(!file.exists()) {
+					file.mkdirs();
+				}
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(file, "apply.ser")));
+				oos.writeObject(applyList);
+				oos.close();
+			}
+			catch (Exception e) {
+				System.out.println("파일 접근 권한이 없습니다.");
+				e.printStackTrace();
+			}
+		}
 	
 	
 	

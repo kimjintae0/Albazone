@@ -1,6 +1,8 @@
 package domain;
 
-public class Resume  {
+import java.io.Serializable;
+
+public class Resume  implements Serializable{
 	// 제목, 이름, 연락처, 주소, 자기소개
 	private int userNo; // 알바유저 번호
 	private int resumeNo; // 이력서 번호

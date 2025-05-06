@@ -1,6 +1,8 @@
 package domain;
 
-public class Gonggo {
+import java.io.Serializable;
+
+public class Gonggo implements Serializable{
     //제목, 담당업무 , 근무기간, 근무시간, 시급, 근무지역
 	private int userNo; // 사업자 유저번호
 	private int gonggoNo; //공고번호
