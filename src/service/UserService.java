@@ -41,7 +41,7 @@ public class UserService {
 		userList.add(new AlbaUser(2, "개똥이", "010-2222-2222", "2", "2", "서울"));
 	}
 
-	// 중복체크 - findByNo, ID, comNum, tel
+	// 중복체크 - findByNo(회원 정보), ID, comNum, tel
 
 	public User findByNo(int userNo) {
 		User user = null;
@@ -51,6 +51,24 @@ public class UserService {
 			}
 		}
 		return user;
+	} // 따라해보기
+
+	// 아이디 중복 해결 (되기는 하는데 왜 서비스로만 리턴되는지 모르겠습니다ㅏ)
+	public UserService findById(String Id) {
+		for (User u : userList) {
+			if (u.getId().equals(Id)) {
+			}
+		}
+		return userService;
+	}
+
+	// 전화번호 중복
+	public UserService findBytel(String tel) {
+		for (User u : userList) {
+			if (u.getTel().equals(tel)) {
+			}
+		}
+		return userService;
 	}
 
 	// 회원가입
@@ -66,39 +84,29 @@ public class UserService {
 
 			String name = nextLine("이름을 입력하세요."); // 대표자명
 			String comNum = nextLine("사업자 등록번호를 입력해주세요."); // 사업자번호 중복체크, 정규식 넣기 000-00-00000
-			if (!comNum.matches("\"-\"(하이픈)을 포함하여 ^\\d{3}-\\d{2}-\\d{5}$")) {
-				System.out.println("사업자번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-				return;
-			}
-			String comName = nextLine("상호명을 입력하세요.");
-			String tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요."); // 중복체크, 정규식 010-0000-0000
-			if (!tel.matches("^0\\d{2}-\\d{4}-\\d{4}$|^0\\d{2}-\\d{4}-\\d{4}$|^02-\\d{4}-\\d{4}$|^02-\\d{3}-\\d{4}$")) { // 묶기
-				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-				return;
-			}
-			// 저녁에 수정하기 이거 하면 아이디랑 다른 것도 바로 구현 가능하고, 사업자랑 개인회원 최대한 겹치게 만들어야 좋음, 회원수정처럼 같이 할수
-			// 있는지 알아보기..
-//			        public Student findBy(int no) {
-//			    		Student student = null;
-//			    		for(int i = 0 ; i < students.size() ; i++) {
-//			    			if(students.get(i).getNo() == no) {
-//			    				student = students.get(i);
-//			    				break;
-//			    			}
-//			    		}
-//			    		return student;
-//			    	}
-//			Public User findBy(String tel) {
-//				
+//			if (!comNum.matches("\"-\"(하이픈)을 포함하여 ^\\d{3}-\\d{2}-\\d{5}$")) {
+//				System.out.println("사업자번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+//				return;
 //			}
-//			        BusinessUser bu = findBy(tel);
-//			        if(bu != null) {
-//						System.out.println("중복된 전화번호가 존재합니다");
-//						return;
-//					}
-//로그인 했을 때 아이디 비밀번호인지 확인하고 사업자 알바 가입 합치기
 
-			String id = nextLine("아이디를 입력하세요."); // 중복체크
+			String comName = nextLine("상호명을 입력하세요.");
+			String tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요.");
+			// 중복체크,
+			if (findBytel(tel) != null) {
+				System.out.println("중복된 전화번호가 존재합니다.");
+				return;
+			}
+			// 정규식 010-0000-0000
+//			if (!tel.matches("^0\\d{2}-\\d{4}-\\d{4}$|^0\\d{2}-\\d{4}-\\d{4}$|^02-\\d{4}-\\d{4}$|^02-\\d{3}-\\d{4}$")) { // 묶기
+//				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+//				return;
+//			}
+
+			String id = nextLine("아이디를 입력하세요.");
+			if (findById(id) != null) {// 중복체크
+				System.out.println("중복된 아이디가 존재합니다. 다른 아이디로 다시 작성해 주세요.");
+				return;
+			}
 
 			String pw = nextLine("비밀번호를 입력하세요.");
 			if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
@@ -116,7 +124,7 @@ public class UserService {
 		case 2:
 
 			System.out.println("개인회원 회원가입");
-			
+
 //	이름, 연락처, 거주지, 아이디, 비밀번호, 이력서
 
 			String name2 = nextLine("이름을 입력하세요."); // 개인회원 알바이름
