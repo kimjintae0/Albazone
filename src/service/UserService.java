@@ -66,7 +66,10 @@ public class UserService {
 
 			String name = nextLine("이름을 입력하세요."); // 대표자명
 			String comNum = nextLine("사업자 등록번호를 입력해주세요."); // 사업자번호 중복체크, 정규식 넣기 000-00-00000
-
+			if (!comNum.matches("\"-\"(하이픈)을 포함하여 ^\\d{3}-\\d{2}-\\d{5}$")) {
+				System.out.println("사업자번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+				return;
+			}
 			String comName = nextLine("상호명을 입력하세요.");
 			String tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요."); // 중복체크, 정규식 010-0000-0000
 			if (!tel.matches("^0\\d{2}-\\d{4}-\\d{4}$|^0\\d{2}-\\d{4}-\\d{4}$|^02-\\d{4}-\\d{4}$|^02-\\d{3}-\\d{4}$")) { // 묶기
@@ -93,7 +96,6 @@ public class UserService {
 //						System.out.println("중복된 전화번호가 존재합니다");
 //						return;
 //					}
-
 //로그인 했을 때 아이디 비밀번호인지 확인하고 사업자 알바 가입 합치기
 
 			String id = nextLine("아이디를 입력하세요."); // 중복체크
@@ -114,7 +116,8 @@ public class UserService {
 		case 2:
 
 			System.out.println("개인회원 회원가입");
-//					이름, 연락처, 거주지, 아이디, 비밀번호, 이력서
+			
+//	이름, 연락처, 거주지, 아이디, 비밀번호, 이력서
 
 			String name2 = nextLine("이름을 입력하세요."); // 개인회원 알바이름
 			String tel2 = nextLine("전화번호를 입력해주세요. ex) 000-0000-0000"); // 중복체크, 정규식 010-0000-0000
@@ -141,10 +144,9 @@ public class UserService {
 			break;
 
 		}
-
 	}
 
-	// 로그인 // 스위치 없애버리고
+	// 로그인 // 스위치 없애버리고 사업자 알바 두개 합치기
 	public void login() {
 
 		System.out.println("로그인");
@@ -176,13 +178,20 @@ public class UserService {
 
 		// 사업자
 		BusinessUser business = (BusinessUser) loginUser;
-		String comName = nextLine("수정할 상호명을 입력하세요."); // 상호명 _> 이것만 사업자만 해당이고 나머지 공통..
+		String comName = nextLine("수정할 상호명을 입력하세요."); // 상호명 - 사업자
 		String name = nextLine("수정할 이름을 입력하세요."); // 이름
-		String tel = nextLine("수정할 전화번호를 입력해주세요. ex) 000-0000-0000"); // 중복체크, 정규식 010-0000-0000
-//		if (!tel.matches("^d{3}-\\d{4}-\\d{4}$")) {
-//			System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-//			return;
-//		} 정규식 잠깐 주석처리
+
+		String tel = nextLine("수정할 전화번호를 입력해주세요. ex) 000-0000-0000"); // 사업자 전화번호 (휴대폰 번호 010으로 통일하면 사업자 알바 합치기)
+		if (!tel.matches("^0\\d{2}-\\d{4}-\\d{4}$|^0\\d{2}-\\d{4}-\\d{4}$|^02-\\d{4}-\\d{4}$|^02-\\d{3}-\\d{4}$")) { // 묶기
+			System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+			return;
+		}
+		String tel2 = nextLine("수정할 전화번호를 입력해주세요. ex) 000-0000-0000"); // 개인회원 전화번호
+		if (!tel2.matches("^0\\d{2}-\\d{4}-\\d{4}$")) {
+			System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+			return;
+		}
+
 		String pw = nextLine("수정할 비밀번호를 입력해 주세요.");
 		if (!pw.equals(nextLine("[비밀번호 확인] 수정할 비밀번호를 재입력하세요."))) {
 			System.out.println("비밀번호가 다릅니다.");
@@ -208,7 +217,7 @@ public class UserService {
 
 		if (loginUser instanceof AlbaUser) {
 			alba.setName(name);
-			alba.setTel(tel);
+			alba.setTel(tel2);
 			alba.setPw(pw);
 			alba.setArea(area);
 			System.out.println("변경된 회원 정보" + loginUser); // 수정되었는지 확인해보기
@@ -221,7 +230,7 @@ public class UserService {
 	public void logOut() {
 		if (loginUser != null) {
 			loginUser = null;
-			System.out.println(loginUser);
+//			System.out.println("로그아웃 되었는지 확인용" + loginUser); 로그아웃 되었는지 확인용 (나중에 삭제)
 			System.out.println("로그아웃 되었습니다");
 		}
 	}
@@ -233,7 +242,7 @@ public class UserService {
 		if (!nextConfirm("탈퇴하시겠습니까?")) {
 			return;
 		}
-		// 중복으로 한 번 더 물어보기 (나중에 지원이랑 공고 내역 삭제까지)
+		// 중복으로 한 번 더 물어보기 (나중에 지원이랑 공고 내역 삭제까지) -> 문장 바꾸기//
 		if (!nextConfirm("정말로 탈퇴하시겠습니까?")) {
 			return;
 		}
