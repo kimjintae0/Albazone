@@ -138,16 +138,8 @@ public class GonggoService {
 		//공고수정할 때 어떤값을 불러와서 수정하지..? 공고번호....?
 		//진행중인 공고만 수정가능하도록 진행중(true)인 공고 먼저 출력
 		String comNum = nextLine("사업자 등록번호를 입력해주세요.");
-//		for(String comNum : userService.userList) {
-//			if(userService.getLoginUser().equals(comNum)) {
-//				
-//				
-//			}
-//			else {
-//				System.out.println("사업자번호를 정확하게 입력해주세요.");
-//				return;
-//			}
-//		}
+		
+
 	}
 	
 	void remove() {
