@@ -28,8 +28,8 @@ public class ApplyService {
 	}
 	
 	// 리줌, 공고 정보 가져오기
-	private UserService userService = UserService.getInstance();
-	private ResumeService resumeService = ResumeService.getInstance();
+//	private UserService userService = UserService.getInstance();
+//	private ResumeService resumeService = ResumeService.getInstance();
 
 	
 	
@@ -65,8 +65,8 @@ public class ApplyService {
 			System.out.println("접근 권한이 없는 공고입니다.");
 			return;
 		}
-		resumeService.lookupUser();
-		int resumeNo = resumeService.resumeSelect();
+		ResumeService.getInstance().lookupUser();
+		int resumeNo = ResumeService.getInstance().resumeSelect();
 		if (resumeNo == 0) {
 			System.out.println("존재하지 않는 이력서입니다.");
 			return;
@@ -92,8 +92,8 @@ public class ApplyService {
 	// 지원내역 조회 - 알바
 	public void lookupUser() {
 		int size = 0;
-		for(Resume r : resumeService.resumeList) {
-			if(r.getUserNo() == userService.getLoginUser().getUserNo()) {
+		for(Resume r : ResumeService.getInstance().resumeList) {
+			if(r.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
 				for(Apply a : applyList) {
 					if(r.getResumeNo() == a.getResumeNo()) {
 						for(Gonggo g : GonggoService.getInstance().gonggoList) {
@@ -122,8 +122,8 @@ public class ApplyService {
 		int input = nextInt("지원을 취소하실 공고의 번호를 입력해주세요.");
 		for(Apply a : applyList) {
 			if(a.getGonggoNo() == input) {
-				for(Resume r : resumeService.resumeList) {
-					if(r.getUserNo() == userService.getLoginUser().getUserNo()) {
+				for(Resume r : ResumeService.getInstance().resumeList) {
+					if(r.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
 						if(a.getResumeNo() == r.getResumeNo()) {
 							removeApply = a;
 							check = true;
@@ -146,13 +146,13 @@ public class ApplyService {
 	public void lookupUserOwner() {
 		int size = 0;
 		for(Gonggo g : GonggoService.getInstance().gonggoList) {
-			if(userService.getLoginUser().getUserNo() == g.getUserNo() && g.state == true) {
+			if(UserService.getInstance().getLoginUser().getUserNo() == g.getUserNo() && g.state == true) {
 				System.out.println(g.toString());
 			}
 		}
 		int input = nextInt("지원내역을 확인하실 공고의 번호를 입력해주세요.");
 		for(Gonggo g : GonggoService.getInstance().gonggoList) {
-			if(!(userService.getLoginUser().getUserNo() == g.getUserNo() && g.state == true)) {
+			if(!(UserService.getInstance().getLoginUser().getUserNo() == g.getUserNo() && g.state == true)) {
 				input = 0;
 			}
 		}
@@ -164,7 +164,7 @@ public class ApplyService {
 			if(a.getGonggoNo() == input) {
 				
 				System.out.println("지원날짜"+ dateFormat.format(a.getApplyDate()));
-				for(Resume r : resumeService.resumeList) {
+				for(Resume r : ResumeService.getInstance().resumeList) {
 					if(a.getResumeNo() == r.getResumeNo()) {
 						System.out.println(r.toString());
 						size++;

@@ -20,7 +20,7 @@ public class GonggoService {
 	
 	// 유저서비스, 지원 서비스 호출
 	AlbazoneService albazoneService = AlbazoneService.getInstance();
-	UserService userService = UserService.getInstance();
+//	UserService userService = UserService.getInstance();
 	ApplyService applyService = ApplyService.getInstance();
 
 	
@@ -69,7 +69,7 @@ public class GonggoService {
 		
 		//state가 true면 진행중, false면 마감 으로 출력시키기
 		
-		gonggoList.add(new Gonggo(userService.getLoginUser().getUserNo(), num, title, role, workHours, wage, workingStartDate, workingEndDate, true, comArea));
+		gonggoList.add(new Gonggo(UserService.getInstance().getLoginUser().getUserNo(), num, title, role, workHours, wage, workingStartDate, workingEndDate, true, comArea));
 		
 	}
 	
@@ -77,7 +77,7 @@ public class GonggoService {
 	// 알바가 공고 조회
 	void lookupUser() {
 		for(Gonggo gonggo : gonggoList) {
-			if(userService.getLoginUser().getArea().equals(gonggo.getComArea())) {
+			if(UserService.getInstance().getLoginUser().getArea().equals(gonggo.getComArea())) {
 				System.out.println(gonggo.toString());
 			}
 		}
@@ -88,7 +88,7 @@ public class GonggoService {
 	public int gonggoSelectUser() {
 		int input = nextInt("공고 번호를 선택해 주세요.");
 		for(Gonggo g : gonggoList) {
-			if(g.getGonggoNo() == input && g.getComArea() == userService.getLoginUser().getArea()) {
+			if(g.getGonggoNo() == input && g.getComArea() == UserService.getInstance().getLoginUser().getArea()) {
 				return input;
 			}
 		}
@@ -112,7 +112,7 @@ public class GonggoService {
 		switch(input) {
 		case 1:{
 			for(Gonggo g : gonggoList) {
-				if(userService.getLoginUser().getUserNo() == g.getUserNo() && g.state == true) {
+				if(UserService.getInstance().getLoginUser().getUserNo() == g.getUserNo() && g.state == true) {
 					System.out.println(g.toString());	
 				}
 			}
@@ -120,7 +120,7 @@ public class GonggoService {
 		}
 		case 2:{
 			for(Gonggo g : gonggoList) {
-				if(userService.getLoginUser().getUserNo() == g.getUserNo() && g.state == false) {
+				if(UserService.getInstance().getLoginUser().getUserNo() == g.getUserNo() && g.state == false) {
 					System.out.println(g.toString());
 				}
 			}

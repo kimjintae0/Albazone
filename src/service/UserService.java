@@ -20,6 +20,8 @@ public class UserService {
 	// 클래스 연동
 	AlbazoneService albazoneService = AlbazoneService.getInstance();
 	ResumeService resumeService = ResumeService.getInstance();
+	ApplyService applyService = ApplyService.getInstance();
+	GonggoService gonggoService = GonggoService.getInstance();
 
 	// 싱글톤
 	private static UserService userService = new UserService();
@@ -230,6 +232,8 @@ public class UserService {
 			System.out.println("회원 정보 수정이 취소되었습니다. 다시 진행해주세요");
 			return;
 		}
+		
+		
 		// 개인회원
 		AlbaUser alba = (AlbaUser) loginUser;
 
@@ -247,10 +251,10 @@ public class UserService {
 	// 로그아웃
 	public void logOut() {
 
-		if (loginUser != null) {
+//		if (loginUser != null) {
 			loginUser = null;
 			System.out.println("로그아웃 되었습니다");
-		}
+//		}
 	}
 
 	// 회원 탈퇴

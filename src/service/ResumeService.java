@@ -36,14 +36,14 @@ public class ResumeService {
 		String introduce = nextLine("자기소개를 작성해주세요.");
 		// 이력서 번호 관리
 		int num = resumeList.get(resumeList.size() - 1).getResumeNo() == 0 ? 1 : resumeList.get(resumeList.size() - 1).getResumeNo() + 1;
-		resumeList.add(new Resume(userService.getLoginUser().getUserNo(), num, title, userService.getLoginUser().getName(), userService.getLoginUser().getTel(), userService.getLoginUser().getArea(), introduce));
+		resumeList.add(new Resume(UserService.getInstance().getLoginUser().getUserNo(), num, title, UserService.getInstance().getLoginUser().getName(), UserService.getInstance().getLoginUser().getTel(), UserService.getInstance().getLoginUser().getArea(), introduce));
 		System.out.println("이력서 작성 완료");
 	}
 	
 	// 이력서 조회 - 알바
 	public void lookupUser() {
 		for(Resume resume : resumeList) {
-			if(resume.getUserNo() == userService.getLoginUser().getUserNo()) {
+			if(resume.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
 				System.out.println(resume.toString());
 			}
 		}
@@ -101,7 +101,7 @@ public class ResumeService {
 		int select = nextInt("이력서 번호를 입력해주세요.");	
 		for(Resume resume : resumeList) {
 			if(resume.getResumeNo() == select) {
-				if(resume.getUserNo() == userService.getLoginUser().getUserNo()) {
+				if(resume.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
 					return select;
 				}
 			}
