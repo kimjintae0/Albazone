@@ -33,7 +33,9 @@ public class GonggoService {
 	}
 	
 	int num = gonggoList.get(gonggoList.size() - 1).getGonggoNo() == 0 ? 1 : gonggoList.get(gonggoList.size() - 1).getGonggoNo() + 1; 
-	
+	//근무기간 (yyyy-MM-dd)
+
+
 	// 공고등록
 	void register() {
 		// 사업자 유저 번호, 공고 번호, 제목, 역할, 일하는 시간, 시급, 근무 기간, 진행상태, 소재지
