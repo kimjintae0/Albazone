@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import domain.BusinessUser;
 import domain.Gonggo;
 import domain.User;
+import jdk.javadoc.internal.doclets.toolkit.taglets.snippet.Replace;
 
 import static utils.AlbaUtils.*;
 
@@ -68,9 +69,14 @@ public class GonggoService {
 		}
 		String comArea = selectArea();
 		
+		
 		// 공고번호 관리
 		int num = gonggoList.get(gonggoList.size() - 1).getGonggoNo() == 0 ? 1 : gonggoList.get(gonggoList.size() - 1).getGonggoNo() + 1; 
+		
+		//state가 true면 진행중, false면 마감 으로 출력시키기
+		
 		gonggoList.add(new Gonggo(userService.getLoginUser().getUserNo(), num, title, role, workHours, wage, workingStartDate, workingEndDate, true, comArea));
+		
 	}
 	
 
