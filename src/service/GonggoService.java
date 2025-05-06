@@ -3,6 +3,8 @@ package service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import domain.BusinessUser;
 import domain.Gonggo;
@@ -22,6 +24,7 @@ public class GonggoService {
 	}
 	
 	// 유저서비스, 지원 서비스 호출
+	AlbazoneService albazoneService = AlbazoneService.getInstance();
 	UserService userService = UserService.getInstance();
 	ApplyService applyService = ApplyService.getInstance();
 
@@ -29,13 +32,12 @@ public class GonggoService {
 	// 초기화 블럭
 	{
 		// 사업자 유저 번호, 공고 번호, 제목, 역할, 일하는 시간, 시급, 근무 기간, 진행상태, 소재지
-		gonggoList.add(new Gonggo(userService.getLoginUser().getUserNo(), 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울"));
+		gonggoList.add(new Gonggo(1, 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울"));
 	}
 	
-	int num = gonggoList.get(gonggoList.size() - 1).getGonggoNo() == 0 ? 1 : gonggoList.get(gonggoList.size() - 1).getGonggoNo() + 1; 
-	//근무기간 (yyyy-MM-dd)
-
-
+	
+	public final String dateForm = "(20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])";
+	
 	// 공고등록
 	void register() {
 		// 사업자 유저 번호, 공고 번호, 제목, 역할, 일하는 시간, 시급, 근무 기간, 진행상태, 소재지
@@ -48,20 +50,30 @@ public class GonggoService {
 				return;
 			}
 		String workingStartDate = nextLine("근무 시작일을 입력해주세요 (yyyy-MM-dd)."); // 정규식 만들기 
-		if(!workingStartDate.matches("(2)\\d{3}(0[1-9]|1[012])-(0[1-9]|[12])-([0-9]|3[01])")) {
-			System.out.println("양식에 맞게 다시 입력해주세요. 예) 2025-12-12");
+		boolean workingStartDateCheck = workingStartDate.matches(dateForm);
+//		System.out.println(workingStartDateCheck);
+		if(Pattern.matches(dateForm, workingStartDate)) {
+			System.out.println(workingStartDate);
+		}else {
+			System.out.println("양식에 맞게 다시 입력하세요. ");
 			return;
 		}
 		String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd)."); // 정규식 만들기 
-		if(!workingEndDate.matches("(2)\\d{3}(0[1-9]|1[012])-(0[1-9]|[12])-([0-9]|3[01])")) {
-			System.out.println("양식에 맞게 다시 입력해주세요. 예) 2025-12-12");
+		boolean workingEndDateCheck = workingEndDate.matches(dateForm);
+		if(true){
+			System.out.println(workingEndDate);
+		}else {
+			System.out.println("정해진 양식에 맞게 다시 입력해주세요.");
 			return;
 		}
 		String comArea = selectArea();
 		
+		// 공고번호 관리
+		int num = gonggoList.get(gonggoList.size() - 1).getGonggoNo() == 0 ? 1 : gonggoList.get(gonggoList.size() - 1).getGonggoNo() + 1; 
 		gonggoList.add(new Gonggo(userService.getLoginUser().getUserNo(), num, title, role, workHours, wage, workingStartDate, workingEndDate, true, comArea));
 	}
 	
+
 	// 알바가 공고 조회
 	void lookupUser() {
 		for(Gonggo gonggo : gonggoList) {
@@ -69,13 +81,14 @@ public class GonggoService {
 				System.out.println(gonggo.toString());
 			}
 		}
+		return;
 	}
 	
 	// 공고 선택 - 알바
 	public int gonggoSelectUser() {
 		int input = nextInt("공고 번호를 선택해 주세요.");
 		for(Gonggo g : gonggoList) {
-			if(g.getGonggoNo() == input) {
+			if(g.getGonggoNo() == input && g.getComArea() == userService.getLoginUser().getArea()) {
 				return input;
 			}
 		}
@@ -98,17 +111,17 @@ public class GonggoService {
 		int input = nextInt("1. 진행중 2. 마감 3. 종료");
 		switch(input) {
 		case 1:{
-			for(Gonggo gonggo : gonggoList) {
-				if(userService.getLoginUser().getUserNo() == gonggo.getUserNo() && gonggo.state == true) {
-					gonggo.toString();
+			for(Gonggo g : gonggoList) {
+				if(userService.getLoginUser().getUserNo() == g.getUserNo() && g.state == true) {
+					System.out.println(g.toString());	
 				}
 			}
 			break;
 		}
 		case 2:{
-			for(Gonggo gonggo : gonggoList) {
-				if(userService.getLoginUser().getUserNo() == gonggo.getUserNo() && gonggo.state == false) {
-					gonggo.toString();
+			for(Gonggo g : gonggoList) {
+				if(userService.getLoginUser().getUserNo() == g.getUserNo() && g.state == false) {
+					System.out.println(g.toString());
 				}
 			}
 			break;

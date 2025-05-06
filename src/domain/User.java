@@ -1,6 +1,8 @@
 package domain;
 
-public abstract class User {
+import java.io.Serializable;
+
+public abstract class User implements Serializable{
 	// 공통 부분 묶어두기
 	private int userNo; // 회원번호
 	private String name; // 이름

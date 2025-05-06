@@ -1,6 +1,8 @@
 package domain;
 
-public class Gonggo {
+import java.io.Serializable;
+
+public class Gonggo implements Serializable{
     //제목, 담당업무 , 근무기간, 근무시간, 시급, 근무지역
 	private int userNo; // 사업자 유저번호
 	private int gonggoNo; //공고번호
@@ -99,9 +101,11 @@ public class Gonggo {
 
 	@Override
 	public String toString() {
-		return "[공고 번호 : " + gonggoNo + ", 공고 제목 : " + title + ", 담당 업무 : " + role + ", 근무시간 : " + workHours + ", 시급 : " + wage
-				 + ", 근무기간 : " +( workingStartDate + " ~ " + workingEndDate)
-				+ ", 공고번호 : " + gonggoNo + ", 공고진행상태 : " + state + "사업장소재지 : " + comArea + "]";
+		return "[공고 번호 : " + gonggoNo + ", 공고 제목 : \n" + title + ", 담당 업무 : n"
+				+ "" + role + ", 근무시간 : " + workHours + ", 시급 : " + wage
+				 + ", 근무기간 : n"
+				 + "" +( workingStartDate + " ~ " + workingEndDate)
+				+ "공고진행상태 : " + state + "사업장소재지 : " + comArea + "]";
 	}
 
     

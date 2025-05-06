@@ -1,6 +1,8 @@
 package domain;
 
-public class Resume  {
+import java.io.Serializable;
+
+public class Resume  implements Serializable{
 	// 제목, 이름, 연락처, 주소, 자기소개
 	private int userNo; // 알바유저 번호
 	private int resumeNo; // 이력서 번호
@@ -72,9 +74,11 @@ public class Resume  {
 	
 	@Override
 	public String toString() {
-		return "Resume [resumeNo=" + resumeNo + ", title=" + title + ", name=" + name + ", tel=" + tel + ", area="
-				+ area + ", introduce=" + introduce + "]";
-	}
-	
+		return "[이력서 번호: " + resumeNo + ",제목: " + title + "]\n"+ 
+		           "이름: " + name +
+		           "\n전화 번호: " + tel +
+		           "\n지역: " + area +
+		           "\n자기소개: " + introduce;
+		}
 }
 
