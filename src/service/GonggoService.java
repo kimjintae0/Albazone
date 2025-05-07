@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import domain.Gonggo;
+import utils.AlbaUtils;
 
 import static utils.AlbaUtils.*;
 
@@ -144,5 +145,17 @@ public class GonggoService {
 	
 	void remove() {
 		//공고삭제-사업자
+		System.out.println("공고 삭제");
+		int input = AlbaUtils.nextInt("삭제할 공고의 번호를 입력하세요 : ");
+		for(int i = 0; i < gonggoList.size() ; i++) {
+			if(input == gonggoList.get(i).getGonggoNo()) {
+			}
+			gonggoList.remove(i);
+			System.out.println("해당 공고 삭제되었습니다. ");
+		}
+		
+		
+		
+		
 	}
 }
