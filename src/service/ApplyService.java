@@ -93,6 +93,11 @@ public class ApplyService {
 	public void lookupUser() {
 		int size = 0;
 		for(Resume r : ResumeService.getInstance().resumeList) {
+			
+//			r
+			// 1. 로그인한 사용자가 작성한 이력서들 가져오기
+			
+			
 			if(r.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
 				for(Apply a : applyList) {
 					if(r.getResumeNo() == a.getResumeNo()) {
@@ -111,8 +116,28 @@ public class ApplyService {
 		if(size == 0) {
 			System.out.println("지원내역이 없습니다.");
 		}
+		
+//		// 로그인한 사용자가 이력서들
+//		List<Resume> resumes = ResumeService.getInstance().findResumeBy(UserService.getInstance().getLoginUser().getUserNo());
+//		// 해당 이력서들로 지원한 지원서들
+//		List<Apply> applies = new ArrayList<>();
+//		for(Resume r : resumes) {
+//			applies.addAll(findApplysBy(r.getResumeNo()));
+//		}
+		
+		
 	}
 	
+	// 입력 resumeNo 출력 List<Apply>
+	public List<Apply> findApplysBy(int resumeNo) {
+		List<Apply> applies = new ArrayList<>();
+		for(Apply a : applyList) {
+			if(a.getResumeNo() == resumeNo) {
+				applies.add(a);
+			}
+		}
+		return applies;
+	}
 	
 	// 지원 취소
 	public void remove() {
