@@ -1,6 +1,9 @@
 package service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 import domain.Gonggo;
@@ -35,7 +38,7 @@ public class GonggoService {
 	public final String dateForm = "(20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])";
 	
 	// 공고등록
-	void register() {
+	void register(){
 		// 사업자 유저 번호, 공고 번호, 제목, 역할, 일하는 시간, 시급, 근무 기간, 진행상태, 소재지
 		String title = nextLine("공고의 제목을 입력해주세요.");
 		String role = nextLine("담당 업무를 입력해주세요.");
@@ -48,20 +51,35 @@ public class GonggoService {
 		String workingStartDate = nextLine("근무 시작일을 입력해주세요 (yyyy-MM-dd)."); // 정규식 만들기 
 		boolean workingStartDateCheck = workingStartDate.matches(dateForm);
 //		System.out.println(workingStartDateCheck);
-		if(Pattern.matches(dateForm, workingStartDate)) {
-			System.out.println(workingStartDate);
-		}else {
+		if(!Pattern.matches(dateForm, workingStartDate)) {
 			System.out.println("양식에 맞게 다시 입력하세요. ");
 			return;
 		}
 		String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd)."); // 정규식 만들기 
 		boolean workingEndDateCheck = workingEndDate.matches(dateForm);
-		if(Pattern.matches(dateForm, workingEndDate)){
-			System.out.println(workingEndDate);
-		}else {
+		if(!Pattern.matches(dateForm, workingEndDate)){
 			System.out.println("양식에 맞게 다시 입력해주세요.");
 			return;
 		}
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+//		
+		try {
+			Date startdate = format.parse(workingStartDate);
+			Date enddate = format.parse(workingEndDate);
+			
+			if(startdate.compareTo(enddate) > 0) {
+				System.out.println("종료일보다 시작일이 늦습니다. 날짜를 다시 입력하세요.");
+				return;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+//		if(format1.compareTo(format2) > 0) {
+//			System.out.println("근무 종료일보다 늦으니 다시 입력하세요. ");
+//			return;
+//		}
+		
 		String comArea = selectArea();
 		
 		
@@ -89,7 +107,7 @@ public class GonggoService {
 	public int gonggoSelectUser() {
 		int input = nextInt("공고 번호를 선택해 주세요.");
 		for(Gonggo g : gonggoList) {
-			if(g.getGonggoNo() == input && g.getComArea() == UserService.getInstance().getLoginUser().getArea()) {
+			if(g.getGonggoNo() == input && g.getComArea() == UserService.getInstance().getLoginUser().getArea() && g.state == false) {
 				return input;
 			}
 		}
@@ -136,17 +154,56 @@ public class GonggoService {
 	
 	void modify() {
 		//공고수정-사업자
-		//공고수정할 때 어떤값을 불러와서 수정하지..? 공고번호....?
-		//진행중인 공고만 수정가능하도록 진행중(true)인 공고 먼저 출력
 		System.out.println("공고 수정 기능");
 		int input = AlbaUtils.nextInt("수정할 공고의 번호를 입력하세요 : ");
 		for(int i = 0; i < gonggoList.size(); i++) {
 			if(input == gonggoList.get(i).getGonggoNo()) {
-				register();
+				if(gonggoList.get(i).getUserNo() != UserService.getInstance().getLoginUser().getUserNo()) {
+					System.out.println("접근할 수 없는 공고입니다.");
+					return;
+				}
+				
+				String title = nextLine("공고의 제목을 입력해주세요.");
+				String role = nextLine("담당 업무를 입력해주세요.");
+				int workHours = nextInt("근무 시간을 숫자로 입력해주세요. (시간 단위로 적어주세요. 소숫점은 미지원)");
+				int wage = nextInt("시급을 숫자로 입력해주세요. (2025년 최저시급은 10,030원 입니다.)"); // 최저시급 보다 작을 시 return
+					if(wage < 10030) {
+						System.out.println("2025년 최저 시급은 10,030원입니다. 다시 입력해주세요. ");
+						return;
+					}
+				String workingStartDate = nextLine("근무 시작일을 입력해주세요 (yyyy-MM-dd)."); // 정규식 만들기 
+				boolean workingStartDateCheck = workingStartDate.matches(dateForm);
+//				System.out.println(workingStartDateCheck);
+				if(!Pattern.matches(dateForm, workingStartDate)) {
+					System.out.println("양식에 맞게 다시 입력하세요. ");
+					return;
+				}
+				String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd)."); // 정규식 만들기 
+				boolean workingEndDateCheck = workingEndDate.matches(dateForm);
+				if(!Pattern.matches(dateForm, workingEndDate)){
+					System.out.println("양식에 맞게 다시 입력해주세요.");
+					return;
+				}
+				
+				String comArea = selectArea();
+				
+				if(!nextConfirm("공고를 수정하시겠습니까?")) {
+					System.out.println("공고 수정이 취소되었습니다.");
+					return;
+				}
+				
+				
+				gonggoList.get(i).setTitle(title);
+				gonggoList.get(i).setRole(role);
+				gonggoList.get(i).setWorkHours(workHours);
+				gonggoList.get(i).setWage(wage);
+				gonggoList.get(i).setWorkingStartDate(workingStartDate);
+				gonggoList.get(i).setWorkingEndDate(workingEndDate);
+				gonggoList.get(i).setState(true);
+				gonggoList.get(i).setComArea(comArea);
+
 			}
 		}
-		
-
 	}
 	
 	void remove() {
@@ -171,8 +228,6 @@ public class GonggoService {
 			}
 		}
 		return gonggoes;
-		
-		
 	}
 		
 		
