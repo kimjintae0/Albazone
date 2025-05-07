@@ -141,7 +141,7 @@ public class AlbazoneService {
 				break;
 			}
 			case 5: {
-				userService.modify();// 사업자 정보 수정
+				userService.modify();
 				break;
 			}
 

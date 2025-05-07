@@ -11,28 +11,28 @@ import static utils.AlbaUtils.*;
 
 public class UserService {
 
-	// 정규식, 중복, 유저리스트 데이터 타입으로 저장 및 불러오기
-	// 유저 리스트 생성
-	List<User> userList = new ArrayList<User>();
-
-	// 로그인 유저
+// 로그인 유저
 	private User loginUser;
 
-	// 싱글톤
+// 싱글톤
 	private static UserService userService = new UserService();
 
 	public static UserService getInstance() {
 		return userService;
 	}
 
-	// 로그인 유저 정보
+// 정규식, 중복, 유저리스트 데이터 타입으로 저장 및 불러오기
+// 유저 리스트 생성
+	List<User> userList = new ArrayList<User>();
+
+// 로그인 유저 정보
 	public User getLoginUser() {
 		return loginUser;
 	}
 
 	// 초기화 블럭
 	{
-		userList.add(new BusinessUser(1, "새똥이", "010-1111-1111", "1", "1", "서울", "자바사랑", "111-111-11111"));
+		userList.add(new BusinessUser(1, "새똥이", "010-1111-1111", "1", "1", "서울", "자바사랑", "111-11-11111"));
 		userList.add(new AlbaUser(2, "개똥이", "010-2222-2222", "2", "2", "서울"));
 	}
 
@@ -46,12 +46,13 @@ public class UserService {
 			}
 		}
 		return user;
-	} 
+	}
 
-	// 아이디 중복 해결
+	// 아이디 중복
 	public User findById(String id) {
 		User user = null; // 초기값 지정
-		for (User u : userList) { // 리스트에 유저1, 유저2, 유저3이 있을 때, u = 유저1 로 if문 탐색 후 u = 유저2로 if문 탐색 후 u = 유저3으로 if문 탐색
+		for (User u : userList) { // 리스트에 유저1, 유저2, 유저3이 있을 때, u = 유저1 로 if문 탐색 후 u = 유저2로 if문 탐색 후 u = 유저3으로 if문
+									// 탐색
 			if (u.getId().equals(id)) {
 				user = u;
 			}
@@ -70,6 +71,20 @@ public class UserService {
 		return user;
 	}
 
+	// 사업자 번호 중복
+
+	public User findByNum(String comNum) {
+		User user = null;
+		for (User u : userList) {
+			if (u instanceof BusinessUser) {
+				if (((BusinessUser) u).getCompanyNumber().equals(comNum)) {
+					user = u;
+				}
+			}
+		}
+		return user;
+	}
+
 	// 회원가입
 	public void register() {
 		int choice = nextInt("1. (사업자) 회원가입 2.(개인회원) 회원가입 3. 종료");
@@ -82,27 +97,32 @@ public class UserService {
 			// 아이디 , 비밀번호, 연락처, 주소, 이름, 상호명
 
 			String name = nextLine("이름을 입력하세요."); // 대표자명
-			String comNum = nextLine("사업자 등록번호를 입력해주세요."); // 사업자번호 중복체크, 정규식 넣기 000-00-00000
-//			if (!comNum.matches("\"-\"(하이픈)을 포함하여 ^\\d{3}-\\d{2}-\\d{5}$")) {
-//				System.out.println("사업자번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-//				return;
-//			}
+
+			String comNum = nextLine("\"-\"(하이픈)을 포함하여 사업자 등록번호를 입력해 주세요."); // 사업자번호 중복체크, 정규식 넣기 000-00-00000
+			if (findByNum(comNum) != null) {
+				System.out.println("중복된 사업자 번호가 존재합니다.");
+				return;
+			}
+			if (!comNum.matches("^[0-9]{3}-[0-9]{2}-[0-9]{5}$")) {
+				System.out.println("사업자번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+				return;
+			}
 
 			String comName = nextLine("상호명을 입력하세요.");
+
 			String tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요.");
 			// 중복체크,
+			// 정규식 010-0000-0000
+			if (!tel.matches("^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$")) {
+				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+				return;
+			}
 			if (findBytel(tel) != null) {
 				System.out.println("중복된 전화번호가 존재합니다.");
 				return;
 			}
-			// 정규식 010-0000-0000
-			if (!tel.matches("^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$")) { 
-				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-				return;
-			}
 
 			String id = nextLine("아이디를 입력하세요.");
-
 			if (findById(id) != null) {// 중복체크
 				System.out.println("중복된 아이디가 존재합니다. 다른 아이디로 다시 작성해 주세요.");
 				return;
@@ -113,11 +133,13 @@ public class UserService {
 				System.out.println("비밀번호가 다릅니다.");
 				return;
 			}
+
 			String area = selectArea();
 
 			// 유저번호, 이름, 연락처, id, pw, 소재지, 상호, 사업자 등록번호
 			User businessUser = new BusinessUser(num, name, tel, id, pw, area, comName, comNum);
 			userList.add(businessUser);
+
 			System.out.println("회원가입이 정상적으로 완료되었습니다.");
 			break; // 끝내기
 
@@ -125,24 +147,35 @@ public class UserService {
 
 			System.out.println("개인회원 회원가입");
 
-//	이름, 연락처, 거주지, 아이디, 비밀번호, 이력서
+			// 이름, 연락처, 거주지, 아이디, 비밀번호, 이력서
 
-			String name2 = nextLine("이름을 입력하세요."); // 개인회원 알바이름
-			String tel2 = nextLine("전화번호를 입력해주세요. ex) 000-0000-0000"); // 중복체크, 정규식 010-0000-0000
-			if (!tel2.matches("")) { // 서울 지역번호나 집번호도 고객한테도 필요한가?
+			name = nextLine("이름을 입력하세요.");
+
+			tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요.ex) 010-0000-0000");// 중복체크, 정규식 010-0000-0000
+			if (!tel.matches("^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$")) {
 				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+				return;
+			}
+			if (findBytel(tel) != null) {
+				System.out.println("중복된 전화번호가 존재합니다.");
+				return;
 			}
 
-			String id2 = nextLine("아이디를 입력하세요."); // 중복체크
+			id = nextLine("아이디를 입력하세요.");
+			if (findById(id) != null) {// 중복체크
+				System.out.println("중복된 아이디가 존재합니다. 다른 아이디로 다시 작성해 주세요.");
+				return;
+			}
 
-			String pw2 = nextLine("비밀번호를 입력하세요.");
-			if (!pw2.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
+			pw = nextLine("비밀번호를 입력하세요.");
+			if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
 				System.out.println("비밀번호가 다릅니다.");
 				return;
 			}
 
-			String area2 = selectArea();
-			User albaUser = new AlbaUser(num, name2, tel2, id2, pw2, area2);
+			area = selectArea();
+
+			User albaUser = new AlbaUser(num, name, tel, id, pw, area);
 			System.out.println("회원가입이 정상적으로 완료되었습니다.");
 			userList.add(albaUser);
 
@@ -179,31 +212,42 @@ public class UserService {
 			System.out.println("아이디 또는 비밀번호가 틀렸습니다.");
 		}
 	}
-
+	// 사업자 회원 정보 조회
+	
+	public void lookupOwner() {
+		
+	}
+	
+	// 개인회원 회원정보 조회
+	
+	public void lookupUser() {
+		
+		
+	}
+	
 	// 회원정보 수정
 	public void modify() {
 		System.out.println("회원정보 수정");
 
-		// 사업자
+		// 사업자 , 공고내역(만들어진 메서드 추가하기)
 		if (loginUser instanceof BusinessUser) {
-		BusinessUser business = (BusinessUser)loginUser;
-		String comName = nextLine("수정할 상호명을 입력하세요."); // 상호명 - 사업자
-		String name = nextLine("수정할 이름을 입력하세요."); // 이름
+			BusinessUser business = (BusinessUser) loginUser;
+			String comName = nextLine("수정할 상호명을 입력하세요."); // 상호명 - 사업자
+			String name = nextLine("수정할 이름을 입력하세요."); // 이름
 
-		String tel = nextLine("수정할 전화번호를 입력해주세요. ex) 000-0000-0000"); // 
-		if (!tel.matches("^0\\d{2}-\\d{4}-\\d{4}$|^0\\d{2}-\\d{4}-\\d{4}$|^02-\\d{4}-\\d{4}$|^02-\\d{3}-\\d{4}$")) { 
-			System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-			return;
-		}
+			String tel = nextLine("수정할 전화번호를 입력해주세요. ex) 000-0000-0000"); //
+			if (!tel.matches("^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$")) {
+				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+				return;
+			}
 
-		String pw = nextLine("수정할 비밀번호를 입력해 주세요.");
-		if (!pw.equals(nextLine("[비밀번호 확인] 수정할 비밀번호를 재입력하세요."))) {
-			System.out.println("비밀번호가 다릅니다.");
-		}
-		System.out.println("수정할 거주지 정보");
-		String area = selectArea();
-			
-			
+			String pw = nextLine("수정할 비밀번호를 입력해 주세요.");
+			if (!pw.equals(nextLine("[비밀번호 확인] 수정할 비밀번호를 재입력하세요."))) {
+				System.out.println("비밀번호가 다릅니다.");
+			}
+			System.out.println("수정할 거주지 정보");
+			String area = selectArea();
+
 			business.setCompanyName(comName);
 			loginUser.setName(name);
 			loginUser.setTel(tel);
@@ -216,22 +260,22 @@ public class UserService {
 			return;
 		}
 
-		// 개인회원
+		// 개인회원 (만들어진 메서드 추가하기(이력서))
 		if (loginUser instanceof AlbaUser) {
-		String name = nextLine("수정할 이름을 입력하세요."); // 이름
+			String name = nextLine("수정할 이름을 입력하세요."); // 이름
 
-		String tel = nextLine("수정할 전화번호를 입력해주세요. ex) 000-0000-0000"); // 
-		if (!tel.matches("^0\\d{2}-\\d{4}-\\d{4}$|^0\\d{2}-\\d{4}-\\d{4}$|^02-\\d{4}-\\d{4}$|^02-\\d{3}-\\d{4}$")) { 
-			System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-			return;
-		}
+			String tel = nextLine("수정할 전화번호를 입력해주세요. ex) 000-0000-0000"); //
+			if (!tel.matches("^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$")) {
+				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+				return;
+			}
 
-		String pw = nextLine("수정할 비밀번호를 입력해 주세요.");
-		if (!pw.equals(nextLine("[비밀번호 확인] 수정할 비밀번호를 재입력하세요."))) {
-			System.out.println("비밀번호가 다릅니다.");
-		}
-		System.out.println("수정할 거주지 정보");
-		String area = selectArea();
+			String pw = nextLine("수정할 비밀번호를 입력해 주세요.");
+			if (!pw.equals(nextLine("[비밀번호 확인] 수정할 비밀번호를 재입력하세요."))) {
+				System.out.println("비밀번호가 다릅니다.");
+			}
+			System.out.println("수정할 거주지 정보");
+			String area = selectArea();
 			loginUser.setName(name);
 			loginUser.setTel(tel);
 			loginUser.setPw(pw);
@@ -262,6 +306,7 @@ public class UserService {
 		if (!nextConfirm("정말로 탈퇴하시겠습니까?")) {
 			return;
 		}
+		System.out.println(loginUser);
 		userList.remove(loginUser); // 로그인 유저 삭제
 		logOut();// 회원 탈퇴시 로그아웃도 동시에 진행
 		System.out.println("탈퇴가 성공적으로 완료되었습니다.");
