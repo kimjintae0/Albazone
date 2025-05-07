@@ -107,7 +107,7 @@ public class GonggoService {
 	public int gonggoSelectUser() {
 		int input = nextInt("공고 번호를 선택해 주세요.");
 		for(Gonggo g : gonggoList) {
-			if(g.getGonggoNo() == input && g.getComArea() == UserService.getInstance().getLoginUser().getArea() && g.state == false) {
+			if(g.getGonggoNo() == input && g.getComArea() == UserService.getInstance().getLoginUser().getArea() && g.state == true) {
 				return input;
 			}
 		}

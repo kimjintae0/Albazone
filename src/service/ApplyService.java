@@ -31,7 +31,7 @@ public class ApplyService {
 	// 지원 리스트 생성
 	List<Apply> applyList = new ArrayList<>();
 	
-	// 초기화 블럭
+	// 초기화 블럭 - 파일 불러오기
 	{
 		ObjectInputStream ois = null;
 		try {
@@ -187,15 +187,28 @@ public class ApplyService {
 	
 	
 //		============================== 자체 유틸 ============================
+	
 		// 데이트 타입 포매터
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
 		
 		
 		// 입력 resumeNo 출력 List<Apply>
-		public List<Apply> findApplysBy(int resumeNo) {
+		public List<Apply> findApplysByResume(int resumeNo) {
 			List<Apply> applies = new ArrayList<>();
 			for(Apply a : applyList) {
 				if(a.getResumeNo() == resumeNo) {
+					applies.add(a);
+				}
+			}
+			return applies;
+		}
+		
+		
+		// 입력 gonggoNo 출력 List<Apply>
+		public List<Apply> findApplysByGonggo(int gonggoNo){
+			List<Apply> applies = new ArrayList<>();
+			for(Apply a : applyList) {
+				if(a.getGonggoNo() == gonggoNo) {
 					applies.add(a);
 				}
 			}
@@ -226,6 +239,7 @@ public class ApplyService {
 		
 		
 //		============================= 주석처리 ==============================
+		
 //		// 로그인한 사용자가 이력서들
 //		List<Resume> resumes = ResumeService.getInstance().findResumeBy(UserService.getInstance().getLoginUser().getUserNo());
 //		// 해당 이력서들로 지원한 지원서들
