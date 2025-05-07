@@ -103,34 +103,45 @@ public class UserService {
 				System.out.println("중복된 사업자 번호가 존재합니다.");
 				return;
 			}
-			if (!comNum.matches("^[0-9]{3}-[0-9]{2}-[0-9]{5}$")) {
-				System.out.println("사업자번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-				return;
-			}
+//			if (!comNum.matches("^[0-9]{3}-[0-9]{2}-[0-9]{5}$")) {
+//				System.out.println("사업자번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+//				return;
+//			}
 
 			String comName = nextLine("상호명을 입력하세요.");
 
 			String tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요.");
 			// 중복체크,
 			// 정규식 010-0000-0000
-			if (!tel.matches("^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$")) {
-				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-				return;
-			}
+//			if (!tel.matches("^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$")) {
+//				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+//				return;
+//			}
 			if (findBytel(tel) != null) {
 				System.out.println("중복된 전화번호가 존재합니다.");
 				return;
 			}
 
 			String id = nextLine("아이디를 입력하세요.");
+			if (id.matches("^[a-zA-Z0-9]$")) {
+				System.out.println("사용가능한 아이디입니다.");
+			} else {
+				System.out.println("아이디는 영어와 숫자만 가능합니다. 다시 입력해 주세요");
+				return;
+			}
 			if (findById(id) != null) {// 중복체크
 				System.out.println("중복된 아이디가 존재합니다. 다른 아이디로 다시 작성해 주세요.");
 				return;
 			}
 
 			String pw = nextLine("비밀번호를 입력하세요.");
-			if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
-				System.out.println("비밀번호가 다릅니다.");
+			if (pw.matches("^[a-zA-Z0-9]$")) {
+				if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
+					System.out.println("비밀번호가 다릅니다.");
+					return;
+				}
+			} else {
+				System.out.println("아이디는 영어와 숫자만 가능합니다. 다시 입력해 주세요");
 				return;
 			}
 
@@ -162,14 +173,25 @@ public class UserService {
 			}
 
 			id = nextLine("아이디를 입력하세요.");
+			if (id.matches("^[a-zA-Z0-9]$")) {
+				System.out.println("사용가능한 아이디입니다.");
+			} else {
+				System.out.println("아이디는 영어와 숫자만 가능합니다. 다시 입력해 주세요");
+				return;
+			}
 			if (findById(id) != null) {// 중복체크
 				System.out.println("중복된 아이디가 존재합니다. 다른 아이디로 다시 작성해 주세요.");
 				return;
 			}
 
 			pw = nextLine("비밀번호를 입력하세요.");
-			if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
-				System.out.println("비밀번호가 다릅니다.");
+			if (pw.matches("^[a-zA-Z0-9]$")) {
+				if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
+					System.out.println("비밀번호가 다릅니다.");
+					return;
+				}
+			} else {
+				System.out.println("아이디는 영어와 숫자만 가능합니다. 다시 입력해 주세요");
 				return;
 			}
 
@@ -213,18 +235,17 @@ public class UserService {
 		}
 	}
 	// 사업자 회원 정보 조회
-	
+
 	public void lookupOwner() {
-		
+
 	}
-	
+
 	// 개인회원 회원정보 조회
-	
+
 	public void lookupUser() {
-		
-		
+
 	}
-	
+
 	// 회원정보 수정
 	public void modify() {
 		System.out.println("회원정보 수정");
@@ -233,6 +254,7 @@ public class UserService {
 		if (loginUser instanceof BusinessUser) {
 			BusinessUser business = (BusinessUser) loginUser;
 			String comName = nextLine("수정할 상호명을 입력하세요."); // 상호명 - 사업자
+
 			String name = nextLine("수정할 이름을 입력하세요."); // 이름
 
 			String tel = nextLine("수정할 전화번호를 입력해주세요. ex) 000-0000-0000"); //
@@ -241,10 +263,17 @@ public class UserService {
 				return;
 			}
 
-			String pw = nextLine("수정할 비밀번호를 입력해 주세요.");
-			if (!pw.equals(nextLine("[비밀번호 확인] 수정할 비밀번호를 재입력하세요."))) {
-				System.out.println("비밀번호가 다릅니다.");
+			String pw = nextLine("비밀번호를 입력하세요.");
+			if (pw.matches("^[a-zA-Z0-9]$")) {
+				if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
+					System.out.println("비밀번호가 다릅니다.");
+					return;
+				}
+			} else {
+				System.out.println("비밀번호는 영어와 숫자만 가능합니다. 다시 입력해 주세요");
+				return;
 			}
+
 			System.out.println("수정할 거주지 정보");
 			String area = selectArea();
 
@@ -270,9 +299,15 @@ public class UserService {
 				return;
 			}
 
-			String pw = nextLine("수정할 비밀번호를 입력해 주세요.");
-			if (!pw.equals(nextLine("[비밀번호 확인] 수정할 비밀번호를 재입력하세요."))) {
-				System.out.println("비밀번호가 다릅니다.");
+			String pw = nextLine("비밀번호를 입력하세요.");
+			if (pw.matches("^[a-zA-Z0-9]$")) {
+				if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
+					System.out.println("비밀번호가 다릅니다.");
+					return;
+				}
+			} else {
+				System.out.println("비밀번호는 영어와 숫자만 가능합니다. 다시 입력해 주세요");
+				return;
 			}
 			System.out.println("수정할 거주지 정보");
 			String area = selectArea();
