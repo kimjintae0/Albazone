@@ -11,17 +11,12 @@ import static utils.AlbaUtils.*;
 
 public class UserService {
 
+	// 정규식, 중복, 유저리스트 데이터 타입으로 저장 및 불러오기
 	// 유저 리스트 생성
 	List<User> userList = new ArrayList<User>();
 
 	// 로그인 유저
 	private User loginUser;
-
-	// 클래스 연동
-//	AlbazoneService albazoneService = AlbazoneService.getInstance();
-//	ResumeService resumeService = ResumeService.getInstance();
-//	ApplyService applyService = ApplyService.getInstance();
-//	GonggoService gonggoService = GonggoService.getInstance();
 
 	// 싱글톤
 	private static UserService userService = new UserService();
@@ -51,24 +46,28 @@ public class UserService {
 			}
 		}
 		return user;
-	} // 따라해보기
+	} 
 
-	// 아이디 중복 해결 (되기는 하는데 왜 서비스로만 리턴되는지 모르겠습니다ㅏ)
-	public UserService findById(String Id) {
-		for (User u : userList) {
-			if (u.getId().equals(Id)) {
+	// 아이디 중복 해결
+	public User findById(String id) {
+		User user = null; // 초기값 지정
+		for (User u : userList) { // 리스트에 유저1, 유저2, 유저3이 있을 때, u = 유저1 로 if문 탐색 후 u = 유저2로 if문 탐색 후 u = 유저3으로 if문 탐색
+			if (u.getId().equals(id)) {
+				user = u;
 			}
 		}
-		return userService;
+		return user;
 	}
 
 	// 전화번호 중복
-	public UserService findBytel(String tel) {
+	public User findBytel(String tel) {
+		User user = null;
 		for (User u : userList) {
 			if (u.getTel().equals(tel)) {
+				user = u;
 			}
 		}
-		return userService;
+		return user;
 	}
 
 	// 회원가입
@@ -97,12 +96,13 @@ public class UserService {
 				return;
 			}
 			// 정규식 010-0000-0000
-//			if (!tel.matches("^0\\d{2}-\\d{4}-\\d{4}$|^0\\d{2}-\\d{4}-\\d{4}$|^02-\\d{4}-\\d{4}$|^02-\\d{3}-\\d{4}$")) { // 묶기
-//				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-//				return;
-//			}
+			if (!tel.matches("^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$")) { 
+				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+				return;
+			}
 
 			String id = nextLine("아이디를 입력하세요.");
+
 			if (findById(id) != null) {// 중복체크
 				System.out.println("중복된 아이디가 존재합니다. 다른 아이디로 다시 작성해 주세요.");
 				return;
@@ -129,7 +129,7 @@ public class UserService {
 
 			String name2 = nextLine("이름을 입력하세요."); // 개인회원 알바이름
 			String tel2 = nextLine("전화번호를 입력해주세요. ex) 000-0000-0000"); // 중복체크, 정규식 010-0000-0000
-			if (!tel2.matches("^0\\d{2}-\\d{4}-\\d{4}$")) { // 서울 지역번호나 집번호도 고객한테도 필요한가?
+			if (!tel2.matches("")) { // 서울 지역번호나 집번호도 고객한테도 필요한가?
 				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
 			}
 
@@ -189,13 +189,8 @@ public class UserService {
 		String comName = nextLine("수정할 상호명을 입력하세요."); // 상호명 - 사업자
 		String name = nextLine("수정할 이름을 입력하세요."); // 이름
 
-		String tel = nextLine("수정할 전화번호를 입력해주세요. ex) 000-0000-0000"); // 사업자 전화번호 (휴대폰 번호 010으로 통일하면 사업자 알바 합치기)
-		if (!tel.matches("^0\\d{2}-\\d{4}-\\d{4}$|^0\\d{2}-\\d{4}-\\d{4}$|^02-\\d{4}-\\d{4}$|^02-\\d{3}-\\d{4}$")) { // 묶기
-			System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-			return;
-		}
-		String tel2 = nextLine("수정할 전화번호를 입력해주세요. ex) 000-0000-0000"); // 개인회원 전화번호
-		if (!tel2.matches("^0\\d{2}-\\d{4}-\\d{4}$")) {
+		String tel = nextLine("수정할 전화번호를 입력해주세요. ex) 000-0000-0000"); // 
+		if (!tel.matches("^0\\d{2}-\\d{4}-\\d{4}$|^0\\d{2}-\\d{4}-\\d{4}$|^02-\\d{4}-\\d{4}$|^02-\\d{3}-\\d{4}$")) { 
 			System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
 			return;
 		}
@@ -225,7 +220,7 @@ public class UserService {
 
 		if (loginUser instanceof AlbaUser) {
 			alba.setName(name);
-			alba.setTel(tel2);
+			alba.setTel(tel);
 			alba.setPw(pw);
 			alba.setArea(area);
 			System.out.println("변경된 회원 정보" + loginUser); // 수정되었는지 확인해보기
