@@ -138,14 +138,20 @@ public class GonggoService {
 		//공고수정-사업자
 		//공고수정할 때 어떤값을 불러와서 수정하지..? 공고번호....?
 		//진행중인 공고만 수정가능하도록 진행중(true)인 공고 먼저 출력
-		String comNum = nextLine("사업자 등록번호를 입력해주세요.");
+		System.out.println("공고 수정 기능");
+		int input = AlbaUtils.nextInt("수정할 공고의 번호를 입력하세요 : ");
+		for(int i = 0; i < gonggoList.size(); i++) {
+			if(input == gonggoList.get(i).getGonggoNo()) {
+				register();
+			}
+		}
 		
 
 	}
 	
 	void remove() {
 		//공고삭제-사업자
-		System.out.println("공고 삭제");
+		System.out.println("공고 삭제 기능");
 		int input = AlbaUtils.nextInt("삭제할 공고의 번호를 입력하세요 : ");
 		for(int i = 0; i < gonggoList.size() ; i++) {
 			if(input == gonggoList.get(i).getGonggoNo()) {
@@ -153,9 +159,22 @@ public class GonggoService {
 			gonggoList.remove(i);
 			System.out.println("해당 공고 삭제되었습니다. ");
 		}
+	}
+	
+	// applyList.gonggoNo() 를 입력받아서 List<Gonggo>를 출력하는 메서드
 		
-		
+	public List<Gonggo> findGonggoBy(int no){
+		List<Gonggo> gonggoes = new ArrayList<>();
+		for(Gonggo g : gonggoList) {
+			if(no == g.getGonggoNo()) {
+				gonggoes.add(g);
+			}
+		}
+		return gonggoes;
 		
 		
 	}
+		
+		
+		
 }
