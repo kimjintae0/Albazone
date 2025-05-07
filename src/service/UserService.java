@@ -185,7 +185,8 @@ public class UserService {
 		System.out.println("회원정보 수정");
 
 		// 사업자
-		BusinessUser business = (BusinessUser) loginUser;
+		if (loginUser instanceof BusinessUser) {
+		BusinessUser business = (BusinessUser)loginUser;
 		String comName = nextLine("수정할 상호명을 입력하세요."); // 상호명 - 사업자
 		String name = nextLine("수정할 이름을 입력하세요."); // 이름
 
@@ -201,13 +202,13 @@ public class UserService {
 		}
 		System.out.println("수정할 거주지 정보");
 		String area = selectArea();
-
-		if (loginUser instanceof BusinessUser) {
+			
+			
 			business.setCompanyName(comName);
-			business.setName(name);
-			business.setTel(tel);
-			business.setPw(pw);
-			business.setArea(area);
+			loginUser.setName(name);
+			loginUser.setTel(tel);
+			loginUser.setPw(pw);
+			loginUser.setArea(area);
 			System.out.println("변경된 회원 정보" + loginUser); // 수정되었는지 확인해보기
 			System.out.println("성공적으로 회원 정보 수정이 완료되었습니다.");
 		} else {
@@ -216,13 +217,25 @@ public class UserService {
 		}
 
 		// 개인회원
-		AlbaUser alba = (AlbaUser) loginUser;
-
 		if (loginUser instanceof AlbaUser) {
-			alba.setName(name);
-			alba.setTel(tel);
-			alba.setPw(pw);
-			alba.setArea(area);
+		String name = nextLine("수정할 이름을 입력하세요."); // 이름
+
+		String tel = nextLine("수정할 전화번호를 입력해주세요. ex) 000-0000-0000"); // 
+		if (!tel.matches("^0\\d{2}-\\d{4}-\\d{4}$|^0\\d{2}-\\d{4}-\\d{4}$|^02-\\d{4}-\\d{4}$|^02-\\d{3}-\\d{4}$")) { 
+			System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+			return;
+		}
+
+		String pw = nextLine("수정할 비밀번호를 입력해 주세요.");
+		if (!pw.equals(nextLine("[비밀번호 확인] 수정할 비밀번호를 재입력하세요."))) {
+			System.out.println("비밀번호가 다릅니다.");
+		}
+		System.out.println("수정할 거주지 정보");
+		String area = selectArea();
+			loginUser.setName(name);
+			loginUser.setTel(tel);
+			loginUser.setPw(pw);
+			loginUser.setArea(area);
 			System.out.println("변경된 회원 정보" + loginUser); // 수정되었는지 확인해보기
 			System.out.println("성공적으로 회원 정보 수정이 완료되었습니다.");
 

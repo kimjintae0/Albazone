@@ -124,6 +124,7 @@ public class ApplyService {
 //		for(Resume r : resumes) {
 //			applies.addAll(findApplysBy(r.getResumeNo()));
 //		}
+//		// 해당 지원서들에 해당되는 공고
 		
 		
 	}

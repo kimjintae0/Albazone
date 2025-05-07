@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import static utils.AlbaUtils.*;
 
+import domain.AlbaUser;
 import domain.Apply;
 import domain.Resume;
 
@@ -43,7 +44,7 @@ public class ResumeService {
 	// 이력서 조회 - 알바
 	public void lookupUser() {
 		for(Resume resume : resumeList) {
-			if(resume.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
+			if(resume.getUserNo() == UserService.getInstance().getLoginUser().getUserNo() && UserService.getInstance().getLoginUser() instanceof AlbaUser) {
 				System.out.println(resume.toString());
 			}
 		}
