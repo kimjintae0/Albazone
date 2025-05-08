@@ -82,16 +82,14 @@ public class GonggoService {
 //		}
 		
 		String comArea = selectArea();
-		//String tel = BusinessUser.getInstance().getTel();
-		String tel = AlbaUtils.nextLine("연락받을 연락처를 입력하세요.");
 		
-		
+
 		// 공고번호 관리
 		int num = gonggoList.get(gonggoList.size() - 1).getGonggoNo() == 0 ? 1 : gonggoList.get(gonggoList.size() - 1).getGonggoNo() + 1; 
 		
 		//state가 true면 진행중, false면 마감 으로 출력시키기
 		
-		gonggoList.add(new Gonggo(UserService.getInstance().getLoginUser().getUserNo(), num, title, role, workHours, wage, workingStartDate, workingEndDate, true, comArea, tel));
+		gonggoList.add(new Gonggo(UserService.getInstance().getLoginUser().getUserNo(), num, title, role, workHours, wage, workingStartDate, workingEndDate, true, comArea, UserService.getInstance().getLoginUser().getTel()));
 		
 	}
 	
@@ -208,6 +206,15 @@ public class GonggoService {
 			}
 		}
 	}
+	//회원정보 수정시 공고 연락처도 수정
+	void gonggoSync() {
+		for(Gonggo g : gonggoList) {
+			if(!UserService.getInstance().getLoginUser().getTel().equals(g.getTel())) {
+				g.setTel(UserService.getInstance().getLoginUser().getTel());
+				
+		}		
+	}
+}
 	
 	//공고 마감
 	void gonggoMagam() {
