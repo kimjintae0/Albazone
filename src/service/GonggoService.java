@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
+
 import domain.Gonggo;
 import utils.AlbaUtils;
 
@@ -31,7 +32,7 @@ public class GonggoService {
 	// 초기화 블럭
 	{
 		// 사업자 유저 번호, 공고 번호, 제목, 역할, 일하는 시간, 시급, 근무 기간, 진행상태, 소재지
-		gonggoList.add(new Gonggo(1, 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울"));
+		gonggoList.add(new Gonggo(1, 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울", "000-0000-0000"));
 	}
 	
 	
@@ -68,8 +69,8 @@ public class GonggoService {
 			Date startdate = format.parse(workingStartDate);
 			Date enddate = format.parse(workingEndDate);
 			
-			if(startdate.compareTo(enddate) > 0) {
-				System.out.println("종료일보다 시작일이 늦습니다. 날짜를 다시 입력하세요.");
+			if(enddate.compareTo(startdate) <  0) {
+				System.out.println("종료일이 시작일보다 빠릅니다. 날짜를 다시 입력하세요.");
 				return;
 			}
 		}catch(Exception e) {
@@ -81,6 +82,8 @@ public class GonggoService {
 //		}
 		
 		String comArea = selectArea();
+		//String tel = BusinessUser.getInstance().getTel();
+		String tel = AlbaUtils.nextLine("연락받을 연락처를 입력하세요.");
 		
 		
 		// 공고번호 관리
@@ -88,7 +91,7 @@ public class GonggoService {
 		
 		//state가 true면 진행중, false면 마감 으로 출력시키기
 		
-		gonggoList.add(new Gonggo(UserService.getInstance().getLoginUser().getUserNo(), num, title, role, workHours, wage, workingStartDate, workingEndDate, true, comArea));
+		gonggoList.add(new Gonggo(UserService.getInstance().getLoginUser().getUserNo(), num, title, role, workHours, wage, workingStartDate, workingEndDate, true, comArea, tel));
 		
 	}
 	
@@ -206,6 +209,12 @@ public class GonggoService {
 		}
 	}
 	
+	//공고 마감
+	void gonggoMagam() {
+		//종료일이 현시점에서 지나면 state : true -> false
+		
+	}
+	
 	void remove() {
 		//공고삭제-사업자
 		System.out.println("공고 삭제 기능");
@@ -227,7 +236,18 @@ public class GonggoService {
 				gonggoes.add(g);
 			}
 		}
-		return gonggoes;
+		return gonggoes; 
+	}
+	
+	//userNo (지원한 알바 유저 정보) 입력 받아 List<Gonggo> 출력 
+	public List<Gonggo> userFindGonggo(int no){
+		List<Gonggo> gonggoUser = new ArrayList<Gonggo>();
+		for(Gonggo g : gonggoList) {
+			if(no == g.getGonggoNo()) {
+				gonggoUser.add(g);
+			}
+		}
+		return gonggoUser;
 	}
 		
 		

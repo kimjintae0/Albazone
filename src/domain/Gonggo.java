@@ -15,6 +15,7 @@ public class Gonggo implements Serializable{
     //근무기간을 yyyy-MM-dd ~ yyyy-MM-dd 의 정규형 사용해서 표현하기 위해 시작/종료일 쪼갬
   	public boolean state;	//공고진행상태
     private String comArea; // 사업장 위치
+    private String tel; 
     
     // 게터, 세터
     public String getTitle() {
@@ -78,13 +79,19 @@ public class Gonggo implements Serializable{
 	public void setUserNo(int userNo) {
 		this.userNo = userNo;
 	}
-    
-	
+
+	public String getTel() {
+		return tel;
+	}
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
 	
 	// 생성자
     public Gonggo() {}
 
-	public Gonggo(int userNo, int gonggoNo, String title, String role, int workHours, int wage, String workingStartDate, String workingEndDate, boolean state, String comArea) {
+	public Gonggo(int userNo, int gonggoNo, String title, String role, int workHours, int wage, String workingStartDate, 
+			String workingEndDate, boolean state, String comArea, String tel) {
 		this.userNo = userNo;
 		this.title = title;
 		this.role = role;
@@ -95,16 +102,15 @@ public class Gonggo implements Serializable{
 		this.gonggoNo = gonggoNo;
 		this.state = state;
 		this.comArea = comArea;
+		this.tel = tel;
 	}
-
-	
 
 	@Override
 	public String toString() {
-		return "[공고 번호 : " + gonggoNo + ", 공고 제목 : " + title + ", 담당 업무 : "
-				+ "" + role + ", 근무시간 : " + workHours + "시간" + ", 시급 : " + wage +"원"
-				 + ", 근무기간 : " + ( workingStartDate + " ~ " + workingEndDate)
-				+ ", 공고진행상태 : " + state + ", 사업장소재지 : " + comArea + "]";
+		return "공고 [유저번호 : " + userNo + ", 공고번호 : " + gonggoNo + ", 제목 : " + title + ", 업무 : " + role
+				+ ", 근무시간 : " + workHours + "시간(일)" + ", 시급 : " + wage + "원" + ", 근무시작일 :" + workingStartDate
+				+ ", 근무종료일 : " + workingEndDate + ", 진행상태 : " + state + ", 근무지역 : " + comArea + ", 연락처 : " + tel
+				+ "]";
 	}
 
     

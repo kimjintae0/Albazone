@@ -38,6 +38,7 @@ public class BusinessUser extends User {
 		return "BusinessUser [companyName=" + companyName + ", companyNumber=" + companyNumber + "]";
 	}
 	
+
 	
 	
 	
