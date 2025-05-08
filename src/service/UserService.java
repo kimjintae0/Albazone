@@ -369,6 +369,7 @@ public class UserService {
 			loginUser.setPw(pw);
 			loginUser.setArea(area);
 			System.out.println("변경된 회원 정보" + loginUser); // 수정되었는지 확인해보기
+			ResumeService.getInstance().resumeSync();
 			System.out.println("성공적으로 회원 정보 수정이 완료되었습니다.");
 
 		}

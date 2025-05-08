@@ -47,6 +47,17 @@ public class ResumeService {
 			if(resume.getUserNo() == UserService.getInstance().getLoginUser().getUserNo() && UserService.getInstance().getLoginUser() instanceof AlbaUser) {
 				System.out.println(resume.toString());
 			}
+		} 
+	}
+	
+	// 이력서 회원정보 변경
+	public void resumeSync() {
+		for(Resume resume : resumeList) {
+			if (resume.getUserNo() == UserService.getInstance().getLoginUser().getUserNo() && UserService.getInstance().getLoginUser() instanceof AlbaUser) {
+				resume.setName(UserService.getInstance().getLoginUser().getName());
+				resume.setArea(UserService.getInstance().getLoginUser().getArea());
+				resume.setTel(UserService.getInstance().getLoginUser().getTel());
+			}
 		}
 	}
 	
