@@ -36,7 +36,7 @@ public class UserService {
 	public User getLoginUser() {
 		return loginUser;
 	}
-	
+
 //	// 파일로 저장하기
 //			private void save() {
 //				try {
@@ -69,10 +69,10 @@ public class UserService {
 //					e.printStackTrace();
 //				}
 //			}
-	
+
 // 스트림을 이용해야 함(관련 내용 찾아보고 이해해서 하기) - 저장 파일 먼저 추가하고 해야 함
-	
-	//예외 처리까지
+
+	// 예외 처리까지
 //	{ 파일 불러오기
 //		ObjectInputStream ois = null;
 //		try {
@@ -185,14 +185,14 @@ public class UserService {
 			if (findById(id) != null) {
 				System.out.println("중복된 아이디입니다.");
 				return;
-			} 
-			if (!id.matches(idCheck)){
+			}
+			if (!id.matches(idCheck)) {
 				System.out.println("아이디는 영어와 숫자만 가능합니다. 다시 입력해 주세요");
 				return;
 			}
-			
+
 			String pw = nextLine("비밀번호를 입력하세요.");
-			if(!pw.matches(pwCheck)) {
+			if (!pw.matches(pwCheck)) {
 				System.out.println("비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
 				return;
 			}
@@ -200,14 +200,12 @@ public class UserService {
 				System.out.println("비밀번호가 다릅니다.");
 				return;
 			}
-			
-			
 
 			String area = selectArea();
 
 			// 유저번호, 이름, 연락처, id, pw, 소재지, 상호, 사업자 등록번호
-			User businessUser = new BusinessUser(num, name, tel, id, pw, area, comName, comNum);
-			userList.add(businessUser);
+
+			userList.add(new BusinessUser(num, name, tel, id, pw, area, comName, comNum));
 
 			System.out.println("회원가입이 정상적으로 완료되었습니다.");
 			break; // 끝내기
@@ -229,7 +227,7 @@ public class UserService {
 				System.out.println("중복된 전화번호가 존재합니다.");
 				return;
 			}
-			
+
 			id = nextLine("아이디를 입력하세요.");
 			if (findById(id) != null) {// 중복체크
 				System.out.println("중복된 아이디가 존재합니다. 다른 아이디로 다시 작성해 주세요.");
@@ -238,13 +236,13 @@ public class UserService {
 			if (!id.matches(idCheck)) {
 				System.out.println("아이디는 영어와 숫자만 가능합니다. 다시 입력해 주세요");
 				return;
-			} 
+			}
 
 			pw = nextLine("비밀번호를 입력하세요.");
 			if (!pw.matches(pwCheck)) {
 				System.out.println("비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
 				return;
-			} 
+			}
 			if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
 				System.out.println("비밀번호가 다릅니다.");
 				return;
@@ -311,20 +309,23 @@ public class UserService {
 
 			String name = nextLine("수정할 이름을 입력하세요."); // 이름
 
-			String tel = nextLine("수정할 전화번호를 입력해주세요. ex) 000-0000-0000"); //
-			if (!tel.matches("^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$")) {
+			String tel = nextLine("\"-\"(하이픈)을 포함하여 수정할 전화번호를 입력해주세요.ex) 010-0000-0000");// 중복체크, 정규식 010-0000-0000
+			if (!tel.matches(telCheck)) {
 				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
 				return;
 			}
+			if (findBytel(tel) != null) {
+				System.out.println("중복된 전화번호가 존재합니다.");
+				return;
+			}
 
-			String pw = nextLine("비밀번호를 입력하세요.");
-			if (pw.matches("^[a-zA-Z0-9]$")) {
-				if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
-					System.out.println("비밀번호가 다릅니다.");
-					return;
-				}
-			} else {
-				System.out.println("비밀번호는 영어와 숫자만 가능합니다. 다시 입력해 주세요");
+			String pw = nextLine("수정할 비밀번호를 입력하세요.");
+			if (!pw.matches(pwCheck)) {
+				System.out.println("비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
+				return;
+			}
+			if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
+				System.out.println("비밀번호가 다릅니다.");
 				return;
 			}
 
@@ -341,22 +342,26 @@ public class UserService {
 		} else if (loginUser instanceof AlbaUser) { // 개인회원 (만들어진 메서드 추가하기(이력서))
 			String name = nextLine("수정할 이름을 입력하세요."); // 이름
 
-			String tel = nextLine("수정할 전화번호를 입력해주세요. ex) 000-0000-0000"); //
-			if (!tel.matches("^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$")) {
+			String tel = nextLine("\"-\"(하이픈)을 포함하여 수정할 전화번호를 입력해주세요.ex) 010-0000-0000");
+			if (!tel.matches(telCheck)) {
 				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
 				return;
 			}
-
-			String pw = nextLine("비밀번호를 입력하세요.");
-			if (pw.matches("^[a-zA-Z0-9]$")) {
-				if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
-					System.out.println("비밀번호가 다릅니다.");
-					return;
-				}
-			} else {
-				System.out.println("비밀번호는 영어와 숫자만 가능합니다. 다시 입력해 주세요");
+			if (findBytel(tel) != null) {
+				System.out.println("중복된 전화번호가 존재합니다.");
 				return;
 			}
+
+			String pw = nextLine("수정할 비밀번호를 입력하세요.");
+			if (!pw.matches(pwCheck)) {
+				System.out.println("비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
+				return;
+			}
+			if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
+				System.out.println("비밀번호가 다릅니다.");
+				return;
+			}
+
 			System.out.println("수정할 거주지 정보");
 			String area = selectArea();
 			loginUser.setName(name);
@@ -396,10 +401,10 @@ public class UserService {
 
 	}
 
-	
-	//==================================== 자체 사용 ==============================
-	String telCheck =  "^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$";
+	// ==================================== 자체 사용 ==============================
+	String telCheck = "^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$";
 	String comNumCheck = "^[0-9]{3}-[0-9]{2}-[0-9]{5}$";
 	String idCheck = "^[a-zA-Z]{1}[-_0-9a-zA-Z]*$";
 	String pwCheck = "^[-!_0-9a-zA-Z]*$";
+
 }
