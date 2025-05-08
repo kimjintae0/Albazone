@@ -1,9 +1,13 @@
 package service;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import domain.AlbaUser;
+import domain.Apply;
 import domain.BusinessUser;
 import domain.User;
 
@@ -29,6 +33,25 @@ public class UserService {
 	public User getLoginUser() {
 		return loginUser;
 	}
+	
+	
+// 스트림을 이용해야 함(관련 내용 찾아보고 이해해서 하기)
+	//예외 처리까지
+//	{ 파일 불러오기
+//		ObjectInputStream ois = null;
+//		try {
+//			ois = new ObjectInputStream(new FileInputStream("data/apply.ser"));
+//			applyList = (List<Apply>)ois.readObject();
+//			ois.close();
+//		}
+//		catch(FileNotFoundException e) {
+//			System.out.println("Apply : 파일을 불러올 수 없습니다. 임시 데이터셋으로 진행합니다.");
+//			applyList.add(new Apply(1, 1, 2));
+//		} 
+//		catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	// 초기화 블럭
 	{
@@ -284,13 +307,7 @@ public class UserService {
 			loginUser.setArea(area);
 			System.out.println("변경된 회원 정보" + loginUser); // 수정되었는지 확인해보기
 			System.out.println("성공적으로 회원 정보 수정이 완료되었습니다.");
-		} else {
-			System.out.println("회원 정보 수정이 취소되었습니다. 다시 진행해주세요");
-			return;
-		}
-
-		// 개인회원 (만들어진 메서드 추가하기(이력서))
-		if (loginUser instanceof AlbaUser) {
+		} else if (loginUser instanceof AlbaUser) { // 개인회원 (만들어진 메서드 추가하기(이력서))
 			String name = nextLine("수정할 이름을 입력하세요."); // 이름
 
 			String tel = nextLine("수정할 전화번호를 입력해주세요. ex) 000-0000-0000"); //
