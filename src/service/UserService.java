@@ -1,8 +1,11 @@
 package service;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +37,41 @@ public class UserService {
 		return loginUser;
 	}
 	
+//	// 파일로 저장하기
+//			private void save() {
+//				try {
+//					File file = new File("data");
+//					if(!file.exists()) {
+//						file.mkdirs();
+//					}
+//					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(file, "User.ser")));
+//					oos.writeObject(userList);
+//					oos.close();
+//				}
+//				catch (Exception e) {
+//					System.out.println("파일 접근 권한이 없습니다.");
+//					e.printStackTrace();
+//				}
+//			}
+//	// 파일로 저장하기
+//			private void save() {
+//				try {
+//					File file = new File("data");
+//					if(!file.exists()) {
+//						file.mkdirs();
+//					}
+//					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(file, "apply.ser")));
+//					oos.writeObject(applyList);
+//					oos.close();
+//				}
+//				catch (Exception e) {
+//					System.out.println("파일 접근 권한이 없습니다.");
+//					e.printStackTrace();
+//				}
+//			}
 	
-// 스트림을 이용해야 함(관련 내용 찾아보고 이해해서 하기)
+// 스트림을 이용해야 함(관련 내용 찾아보고 이해해서 하기) - 저장 파일 먼저 추가하고 해야 함
+	
 	//예외 처리까지
 //	{ 파일 불러오기
 //		ObjectInputStream ois = null;
@@ -126,47 +162,46 @@ public class UserService {
 				System.out.println("중복된 사업자 번호가 존재합니다.");
 				return;
 			}
-//			if (!comNum.matches("^[0-9]{3}-[0-9]{2}-[0-9]{5}$")) {
-//				System.out.println("사업자번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-//				return;
-//			}
+			if (!comNum.matches(comNumCheck)) {
+				System.out.println("사업자번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+				return;
+			}
 
 			String comName = nextLine("상호명을 입력하세요.");
 
 			String tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요.");
 			// 중복체크,
 			// 정규식 010-0000-0000
-//			if (!tel.matches("^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$")) {
-//				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-//				return;
-//			}
+			if (!tel.matches(telCheck)) {
+				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+				return;
+			}
 			if (findBytel(tel) != null) {
 				System.out.println("중복된 전화번호가 존재합니다.");
 				return;
 			}
 
 			String id = nextLine("아이디를 입력하세요.");
-			if (id.matches("^[a-zA-Z0-9]$")) {
-				System.out.println("사용가능한 아이디입니다.");
-			} else {
+			if (findById(id) != null) {
+				System.out.println("중복된 아이디입니다.");
+				return;
+			} 
+			if (!id.matches(idCheck)){
 				System.out.println("아이디는 영어와 숫자만 가능합니다. 다시 입력해 주세요");
 				return;
 			}
-			if (findById(id) != null) {// 중복체크
-				System.out.println("중복된 아이디가 존재합니다. 다른 아이디로 다시 작성해 주세요.");
-				return;
-			}
-
+			
 			String pw = nextLine("비밀번호를 입력하세요.");
-			if (pw.matches("^[a-zA-Z0-9]$")) {
-				if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
-					System.out.println("비밀번호가 다릅니다.");
-					return;
-				}
-			} else {
-				System.out.println("아이디는 영어와 숫자만 가능합니다. 다시 입력해 주세요");
+			if(!pw.matches(pwCheck)) {
+				System.out.println("비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
 				return;
 			}
+			if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
+				System.out.println("비밀번호가 다릅니다.");
+				return;
+			}
+			
+			
 
 			String area = selectArea();
 
@@ -186,7 +221,7 @@ public class UserService {
 			name = nextLine("이름을 입력하세요.");
 
 			tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요.ex) 010-0000-0000");// 중복체크, 정규식 010-0000-0000
-			if (!tel.matches("^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$")) {
+			if (!tel.matches(telCheck)) {
 				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
 				return;
 			}
@@ -194,35 +229,31 @@ public class UserService {
 				System.out.println("중복된 전화번호가 존재합니다.");
 				return;
 			}
-
+			
 			id = nextLine("아이디를 입력하세요.");
-			if (id.matches("^[a-zA-Z0-9]$")) {
-				System.out.println("사용가능한 아이디입니다.");
-			} else {
-				System.out.println("아이디는 영어와 숫자만 가능합니다. 다시 입력해 주세요");
-				return;
-			}
 			if (findById(id) != null) {// 중복체크
 				System.out.println("중복된 아이디가 존재합니다. 다른 아이디로 다시 작성해 주세요.");
 				return;
 			}
+			if (!id.matches(idCheck)) {
+				System.out.println("아이디는 영어와 숫자만 가능합니다. 다시 입력해 주세요");
+				return;
+			} 
 
 			pw = nextLine("비밀번호를 입력하세요.");
-			if (pw.matches("^[a-zA-Z0-9]$")) {
-				if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
-					System.out.println("비밀번호가 다릅니다.");
-					return;
-				}
-			} else {
-				System.out.println("아이디는 영어와 숫자만 가능합니다. 다시 입력해 주세요");
+			if (!pw.matches(pwCheck)) {
+				System.out.println("비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
+				return;
+			} 
+			if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
+				System.out.println("비밀번호가 다릅니다.");
 				return;
 			}
 
 			area = selectArea();
 
-			User albaUser = new AlbaUser(num, name, tel, id, pw, area);
 			System.out.println("회원가입이 정상적으로 완료되었습니다.");
-			userList.add(albaUser);
+			userList.add(new AlbaUser(num, name, tel, id, pw, area));
 
 		case 3:
 
@@ -365,4 +396,10 @@ public class UserService {
 
 	}
 
+	
+	//==================================== 자체 사용 ==============================
+	String telCheck =  "^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$";
+	String comNumCheck = "^[0-9]{3}-[0-9]{2}-[0-9]{5}$";
+	String idCheck = "^[a-zA-Z]{1}[-_0-9a-zA-Z]*$";
+	String pwCheck = "^[-!_0-9a-zA-Z]*$";
 }
