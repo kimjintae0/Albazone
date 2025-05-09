@@ -34,9 +34,9 @@ public class AlbazoneService {
 				}
 				break;
 		
-			case 9: {
+			case 9: { 
 				throw new RuntimeException();
-			}
+			} 
 
 			default: {
 				System.out.println("잘못된 입력입니다.");
@@ -106,10 +106,10 @@ public class AlbazoneService {
 
 			}
 		} else if (userService.getLoginUser() instanceof BusinessUser) {
-			int no = nextInt("1. 공고 5. 회원정보 수정 6. 회원탈퇴 7. 종료(로그아웃)");
+			int no = nextInt("1. 공고 5. 회원정보 수정 6. 회원탈퇴 7. 종료(로그아웃)8. 조회");
 			switch (no) {
 			case 1:{
-				no = nextInt("1. 공고 등록 2. 공고 조회 3. 지원자 확인 4. 공고 수정 5. 공고 삭제 6. 나가기");
+				no = nextInt("1. 공고 등록 2. 공고 조회 3. 지원자 확인 4. 공고 수정 5. 공고 삭제 6. 나가기 ");
 				switch (no) {
 				case 1:{
 					gonggoService.register();
@@ -153,6 +153,9 @@ public class AlbazoneService {
 			case 7: {
 				userService.logOut();
 				break;
+			}
+			case 8 :{
+				userService.lookupOwner();
 			}
 			}
 		}
