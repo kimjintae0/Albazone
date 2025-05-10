@@ -2,11 +2,14 @@ package service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import domain.BusinessUser;
 import domain.Gonggo;
 import utils.AlbaUtils;
 
@@ -192,8 +195,6 @@ public class GonggoService {
 					System.out.println("공고 수정이 취소되었습니다.");
 					return;
 				}
-				
-				
 				gonggoList.get(i).setTitle(title);
 				gonggoList.get(i).setRole(role);
 				gonggoList.get(i).setWorkHours(workHours);
@@ -210,8 +211,7 @@ public class GonggoService {
 	void gonggoSync() {
 		for(Gonggo g : gonggoList) {
 			if(!UserService.getInstance().getLoginUser().getTel().equals(g.getTel())) {
-				g.setTel(UserService.getInstance().getLoginUser().getTel());
-				
+				g.setTel(UserService.getInstance().getLoginUser().getTel());			
 		}		
 	}
 }
@@ -219,9 +219,25 @@ public class GonggoService {
 	//공고 마감
 	void gonggoMagam() {
 		//종료일이 현시점에서 지나면 state : true -> false
+		LocalDate now = LocalDate.now();
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String today = now.format(format);
+		System.out.println(today);
+
+		for(Gonggo g: gonggoList) {
+			//종료일 < today 
+			//Date 1 ,0 -1
 		
-	}
-	
+				Date endDate = (Date) format.parse(g.getWorkingEndDate());
+				Date nowDate = (Date) format.parse(today);
+				
+				if(endDate.compareTo(nowDate) <  0) {
+					System.out.println("공고 마감일이 지나 공고가 마감되었습니다.");
+					g.state = false;
+				}			
+			}
+		}
+
 	void remove() {
 		//공고삭제-사업자
 		System.out.println("공고 삭제 기능");
@@ -231,6 +247,20 @@ public class GonggoService {
 			}
 			gonggoList.remove(i);
 			System.out.println("해당 공고 삭제되었습니다. ");
+		}
+	}
+	
+	//사업자가 직접 마감처리 할 수 있도록 메서드
+	void stateChange() {
+		int input = AlbaUtils.nextInt("공고상태를 변경할 공고번호를 입력하세요.");
+		for(Gonggo g : gonggoList) {
+			if(g.getGonggoNo() == input) {
+				if(!nextConfirm("공고를 마감하시겠습니까?")) {
+					System.out.println("공고가 마감되었습니다.");
+					g.state = false;
+					return;
+				}
+			}
 		}
 	}
 	
