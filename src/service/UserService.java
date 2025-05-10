@@ -34,51 +34,29 @@ public class UserService {
 		return loginUser;
 	}
 
-
-	
-
 	// 초기화 블럭
-	{ //직렬화는 되어있음
-//		userList.add(new BusinessUser(1, "새똥이", "010-1111-1111", "1", "1", "서울", "자바사랑", "111-11-11111"));
-//		userList.add(new AlbaUser(2, "개똥이", "010-2222-2222", "2", "2", "서울"));
-//호출하기 버튼
-			ObjectInputStream ois = null;
-			try {
-				ois = new ObjectInputStream(new FileInputStream("data/user.ser")); //보조 입력 스트림 , 입력 
-				userList = (List<User>) ois.readObject();
-				ois.close();
-			} catch (FileNotFoundException e) {
-				System.out.println("User : 파일을 불러올 수 없습니다. 임시 데이터셋으로 진행합니다."); 
-				userList.add(new BusinessUser(1, "새똥이", "010-1111-1111", "1", "1", "서울", "자바사랑", "111-11-11111"));
-				userList.add(new AlbaUser(2, "개똥이", "010-2222-2222", "2", "2", "서울"));
-				
-			} catch (Exception e) {
-			
-				e.printStackTrace();
-			}
-		
-	}
-	//로그인할 로드를 해야됨
-	// 파일로 저장하기 -> 나중에 아래로 내리기
-		private void save() {
-			try {
-				File file = new File("data"); // 파일 초기화
-				if (!file.exists()) { // 존재하지 않을시
-					file.mkdirs(); // 상위폴더 없을시 생성
-				}
-				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(file, "user.ser")));
+	{ // 직렬화하고 사용
 
-				oos.writeObject(userList); // 문자
-				oos.close();
-			} catch (Exception e) {
-				System.out.println("파일 접근 권한이 없습니다.");
-				e.printStackTrace();
-				// e.getStackTrace() 사용
-				// : 예외가 발생된 부분만 출력하는 함수
-			}
+		ObjectInputStream ois = null;
+		try {
+			ois = new ObjectInputStream(new FileInputStream("data/user.ser")); // 보조 입력 스트림 , 입력
+			userList = (List<User>) ois.readObject();
+			ois.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("User : 파일을 불러올 수 없습니다. 임시 데이터셋으로 진행합니다.");
+			userList.add(new BusinessUser(1, "새똥이", "010-1111-1111", "1", "1", "서울", "자바사랑", "111-11-11111"));
+			userList.add(new AlbaUser(2, "개똥이", "010-2222-2222", "2", "2", "서울"));
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
 		}
+
+	}
+
 	// 중복체크 - findByNo(회원 정보), ID(아이디), tel(연락처), comNum(사업자 번호)
 
+	// 회원 정보 중복
 	public User findByNo(int userNo) {
 		User user = null;
 		for (User s : userList) {
@@ -152,8 +130,8 @@ public class UserService {
 			String comName = nextLine("상호명을 입력하세요.");
 
 			String tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요.");
-			// 중복체크,
-			// 정규식 010-0000-0000
+
+			// 중복체크, 정규식 010-0000-0000
 			if (!tel.matches(telCheck)) {
 				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
 				return;
@@ -185,10 +163,10 @@ public class UserService {
 
 			String area = selectArea();
 
-			// 유저번호, 이름, 연락처, id, pw, 소재지, 상호, 사업자 등록번호
+			// 회원 번호, 이름, 연락처, id, pw, 소재지, 상호, 사업자 등록번호
 
 			userList.add(new BusinessUser(num, name, tel, id, pw, area, comName, comNum));
-			save(); // save 
+			save(); // save
 			System.out.println("회원가입이 정상적으로 완료되었습니다.");
 			break; // 끝내기
 
@@ -233,8 +211,8 @@ public class UserService {
 			area = selectArea();
 
 			System.out.println("회원가입이 정상적으로 완료되었습니다.");
-			save();
 			userList.add(new AlbaUser(num, name, tel, id, pw, area));
+			save();
 
 		case 3:
 
@@ -244,7 +222,7 @@ public class UserService {
 		}
 	}
 
-	// 로그인 // 스위치 없애버리고 사업자 알바 두개 합치기
+	// 로그인 //
 	public void login() {
 
 		System.out.println("로그인");
@@ -269,95 +247,160 @@ public class UserService {
 			System.out.println("아이디 또는 비밀번호가 틀렸습니다.");
 		}
 	}
-	// 사업자 회원 정보 조회
+	// 사업자 회원 정보 조회 // 나중에 공백이면 수정 취소되거나 특수기호나 안되는 문자 사용시 취소되게 만들기
 
-	public void lookupOwner() {}
-		
-	
+
+	public void lookupOwner() {
+//		
+		System.out.println("회원 정보 조회");
+		System.out.println("회원 번호 : " + loginUser.getUserNo());
+		System.out.println("아이디 : " + loginUser.getId());
+		System.out.println("이름 : " + loginUser.getName());
+		System.out.println("연락처 : " + loginUser.getTel());
+		System.out.println("사업자 번호 : " + ((BusinessUser) loginUser).getCompanyNumber());
+		System.out.println("상호명 : " + ((BusinessUser) loginUser).getCompanyName());
+		System.out.println("지역 : " + loginUser.getArea());
+
+	}
+
 	// 개인회원 회원정보 조회
 
 	public void lookupUser() {
 
+		System.out.println("회원 정보 조회");
+		System.out.println("회원 번호 : " + loginUser.getUserNo());
+		System.out.println("아이디 : " + loginUser.getId());
+		System.out.println("이름 : " + loginUser.getName());
+		System.out.println("연락처 : " + loginUser.getTel());
+		System.out.println("지역 : " + loginUser.getArea());
+
 	}
 
-	// 회원정보 수정
+	// 회원정보 수정 swich로 수정하기
 	public void modify() {
-		System.out.println("회원정보 수정");
 
-		// 사업자 , 공고내역(만들어진 메서드 추가하기)
-		if (loginUser instanceof BusinessUser) {
-			BusinessUser business = (BusinessUser) loginUser;
-			String comName = nextLine("수정할 상호명을 입력하세요."); // 상호명 - 사업자
+		if (getLoginUser() instanceof BusinessUser) {
+			System.out.println("회원정보 수정");
+			// 사업자 , 공고내역(만들어진 메서드 추가하기)
+			int choice = nextInt("1. 상호명 2.이름 3.연락처 4. 비밀번호 5. 거주지 정보");
 
-			String name = nextLine("수정할 이름을 입력하세요."); // 이름
+			switch (choice) {
+			case 1: {
+				BusinessUser business = (BusinessUser) loginUser;
 
-			String tel = nextLine("\"-\"(하이픈)을 포함하여 수정할 전화번호를 입력해주세요.ex) 010-0000-0000");// 중복체크, 정규식 010-0000-0000
-			if (!tel.matches(telCheck)) {
-				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-				return;
+				String comName = nextLine("수정할 상호명을 입력하세요."); // 상호명 - 사업자
+				business.setCompanyName(comName);
+				break;
 			}
-			if (findBytel(tel) != null) {
-				System.out.println("중복된 전화번호가 존재합니다.");
-				return;
-			}
+			case 2: {
 
-			String pw = nextLine("수정할 비밀번호를 입력하세요.");
-			if (!pw.matches(pwCheck)) {
-				System.out.println("비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
-				return;
+				String name = nextLine("수정할 이름을 입력하세요."); // 이름
+				loginUser.setName(name);
+				System.out.println("회원정보가 성공적으로 수정되었습니다."); // 수정되었는지 확인해보기
+				break;
 			}
-			if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
-				System.out.println("비밀번호가 다릅니다.");
-				return;
-			}
-
-			System.out.println("수정할 거주지 정보");
-			String area = selectArea();
-
-			business.setCompanyName(comName);
-			loginUser.setName(name);
-			loginUser.setTel(tel);
-			loginUser.setPw(pw);
-			loginUser.setArea(area);
-			System.out.println("변경된 회원 정보" + loginUser); // 수정되었는지 확인해보기
-			save();
-			System.out.println("성공적으로 회원 정보 수정이 완료되었습니다.");
-		} else if (loginUser instanceof AlbaUser) { // 개인회원 (만들어진 메서드 추가하기(이력서))
-			String name = nextLine("수정할 이름을 입력하세요."); // 이름
-
-			String tel = nextLine("\"-\"(하이픈)을 포함하여 수정할 전화번호를 입력해주세요.ex) 010-0000-0000");
-			if (!tel.matches(telCheck)) {
-				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
-				return;
-			}
-			if (findBytel(tel) != null) {
-				System.out.println("중복된 전화번호가 존재합니다.");
-				return;
+			case 3: {
+				String tel = nextLine("\"-\"(하이픈)을 포함하여 수정할 전화번호를 입력해주세요.ex) 010-0000-0000");// 중복체크, 정규식 010-0000-0000
+				if (!tel.matches(telCheck)) {
+					System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+					break;
+				}
+				if (findBytel(tel) != null) {
+					System.out.println("중복된 전화번호가 존재합니다.");
+					break;
+				}
+				loginUser.setTel(tel);
+				System.out.println("회원정보가 성공적으로 수정되었습니다."); // 수정되었는지 확인해보기
+				break;
 			}
 
-			String pw = nextLine("수정할 비밀번호를 입력하세요.");
-			if (!pw.matches(pwCheck)) {
-				System.out.println("비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
-				return;
-			}
-			if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
-				System.out.println("비밀번호가 다릅니다.");
-				return;
+			case 4: {
+				String pw = nextLine("수정할 비밀번호를 입력하세요.");
+				loginUser.setPw(pw);
+				if (!pw.matches(pwCheck)) {
+					System.out.println("비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
+					break;
+				}
+				if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
+					System.out.println("비밀번호가 다릅니다.");
+
+					System.out.println("회원정보가 성공적으로 수정되었습니다."); // 수정되었는지 확인해보기
+					break;
+				}
+				break;
 			}
 
-			System.out.println("수정할 거주지 정보");
-			String area = selectArea();
-			loginUser.setName(name);
-			loginUser.setTel(tel);
-			loginUser.setPw(pw);
-			loginUser.setArea(area);
-			System.out.println("변경된 회원 정보" + loginUser); // 수정되었는지 확인해보기
-			ResumeService.getInstance().resumeSync();
-			save();
-			System.out.println("성공적으로 회원 정보 수정이 완료되었습니다.");
+			case 5: {
+				System.out.println("수정할 거주지 정보");
+				String area = selectArea();
+				loginUser.setArea(area);
+				System.out.println("회원정보가 성공적으로 수정되었습니다.");
+				break;
+			}
+			default:
+				System.out.println("처음으로 돌아갑니다.");
+				break;
+			}
+			save(); // 저장
+		} else if (getLoginUser() instanceof AlbaUser) {
+			System.out.println("회원정보 수정");
+			// 개인회원 , 공고내역(만들어진 메서드 추가하기)
+			int choice = nextInt("1. 이름 2.연락처 3. 비밀번호 4. 거주지 정보");
 
+			switch (choice) {
+			case 1: {
+				String name = nextLine("수정할 이름을 입력하세요."); // 이름
+				loginUser.setName(name);
+				System.out.println("회원정보가 성공적으로 수정되었습니다."); // 수정되었는지 확인해보기
+				break;
+			}
+
+			case 2: {
+				String tel = nextLine("\"-\"(하이픈)을 포함하여 수정할 전화번호를 입력해주세요.ex) 010-0000-0000");// 중복체크, 정규식 010-0000-0000
+				if (!tel.matches(telCheck)) {
+					System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+					break;
+				}
+				if (findBytel(tel) != null) {
+					System.out.println("중복된 전화번호가 존재합니다.");
+					break;
+				}
+				loginUser.setTel(tel);
+				System.out.println("회원정보가 성공적으로 수정되었습니다."); // 수정되었는지 확인해보기
+				break;
+			}
+
+			case 3: {
+				String pw = nextLine("수정할 비밀번호를 입력하세요.");
+				loginUser.setPw(pw);
+				if (!pw.matches(pwCheck)) {
+					System.out.println("비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
+					break;
+				}
+				if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
+					System.out.println("비밀번호가 다릅니다.");
+
+					System.out.println("회원정보가 성공적으로 수정되었습니다."); // 수정되었는지 확인해보기
+					break;
+				}
+				break;
+			}
+
+			case 4: {
+				System.out.println("수정할 거주지 정보");
+				String area = selectArea();
+				loginUser.setArea(area);
+				System.out.println("회원정보가 성공적으로 수정되었습니다.");
+				break;
+			}
+			default:
+				System.out.println("처음으로 돌아갑니다.");
+				break;
+			}
 		}
+		save(); // 저장
 	}
+
 
 	// 로그아웃
 	public void logOut() {
@@ -384,6 +427,24 @@ public class UserService {
 		logOut();// 회원 탈퇴시 로그아웃도 동시에 진행
 		System.out.println("탈퇴가 성공적으로 완료되었습니다.");
 
+	}
+
+	// 파일 저장
+	private void save() {
+		try {
+			File file = new File("data");
+			if (!file.exists()) {
+				file.mkdirs();
+			}
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(file, "user.ser")));
+
+			oos.writeObject(userList);
+			oos.close();
+		} catch (Exception e) {
+			System.out.println("파일 접근 권한이 없습니다.");
+			e.printStackTrace();
+
+		}
 	}
 
 	// ==================================== 자체 사용 ==============================
