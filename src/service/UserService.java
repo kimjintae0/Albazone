@@ -8,12 +8,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import domain.AlbaUser;
-import domain.Apply;
 import domain.BusinessUser;
 import domain.User;
-
 import static utils.AlbaUtils.*;
 
 public class UserService {
@@ -37,65 +34,50 @@ public class UserService {
 		return loginUser;
 	}
 
-//	// 파일로 저장하기
-//			private void save() {
-//				try {
-//					File file = new File("data");
-//					if(!file.exists()) {
-//						file.mkdirs();
-//					}
-//					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(file, "User.ser")));
-//					oos.writeObject(userList);
-//					oos.close();
-//				}
-//				catch (Exception e) {
-//					System.out.println("파일 접근 권한이 없습니다.");
-//					e.printStackTrace();
-//				}
-//			}
-//	// 파일로 저장하기
-//			private void save() {
-//				try {
-//					File file = new File("data");
-//					if(!file.exists()) {
-//						file.mkdirs();
-//					}
-//					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(file, "apply.ser")));
-//					oos.writeObject(applyList);
-//					oos.close();
-//				}
-//				catch (Exception e) {
-//					System.out.println("파일 접근 권한이 없습니다.");
-//					e.printStackTrace();
-//				}
-//			}
 
-// 스트림을 이용해야 함(관련 내용 찾아보고 이해해서 하기) - 저장 파일 먼저 추가하고 해야 함
-
-	// 예외 처리까지
-//	{ 파일 불러오기
-//		ObjectInputStream ois = null;
-//		try {
-//			ois = new ObjectInputStream(new FileInputStream("data/apply.ser"));
-//			applyList = (List<Apply>)ois.readObject();
-//			ois.close();
-//		}
-//		catch(FileNotFoundException e) {
-//			System.out.println("Apply : 파일을 불러올 수 없습니다. 임시 데이터셋으로 진행합니다.");
-//			applyList.add(new Apply(1, 1, 2));
-//		} 
-//		catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	
 
 	// 초기화 블럭
-	{
-		userList.add(new BusinessUser(1, "새똥이", "010-1111-1111", "1", "1", "서울", "자바사랑", "111-11-11111"));
-		userList.add(new AlbaUser(2, "개똥이", "010-2222-2222", "2", "2", "서울"));
+	{ //직렬화는 되어있음
+//		userList.add(new BusinessUser(1, "새똥이", "010-1111-1111", "1", "1", "서울", "자바사랑", "111-11-11111"));
+//		userList.add(new AlbaUser(2, "개똥이", "010-2222-2222", "2", "2", "서울"));
+//호출하기 버튼
+			ObjectInputStream ois = null;
+			try {
+				ois = new ObjectInputStream(new FileInputStream("data/user.ser")); //보조 입력 스트림 , 입력 
+				userList = (List<User>) ois.readObject();
+				ois.close();
+			} catch (FileNotFoundException e) {
+				System.out.println("User : 파일을 불러올 수 없습니다. 임시 데이터셋으로 진행합니다."); 
+				userList.add(new BusinessUser(1, "새똥이", "010-1111-1111", "1", "1", "서울", "자바사랑", "111-11-11111"));
+				userList.add(new AlbaUser(2, "개똥이", "010-2222-2222", "2", "2", "서울"));
+				
+			} catch (Exception e) {
+			
+				e.printStackTrace();
+			}
+		
 	}
+	//로그인할 로드를 해야됨
+	// 파일로 저장하기 -> 나중에 아래로 내리기
+		private void save() {
+			try {
+				File file = new File("data"); // 파일 초기화
+				if (!file.exists()) { // 존재하지 않을시
+					file.mkdirs(); // 상위폴더 없을시 생성
+				}
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(file, "user.ser")));
 
-	// 중복체크 - findByNo(회원 정보), ID, comNum, tel
+				oos.writeObject(userList); // 문자
+				oos.close();
+			} catch (Exception e) {
+				System.out.println("파일 접근 권한이 없습니다.");
+				e.printStackTrace();
+				// e.getStackTrace() 사용
+				// : 예외가 발생된 부분만 출력하는 함수
+			}
+		}
+	// 중복체크 - findByNo(회원 정보), ID(아이디), tel(연락처), comNum(사업자 번호)
 
 	public User findByNo(int userNo) {
 		User user = null;
@@ -206,7 +188,7 @@ public class UserService {
 			// 유저번호, 이름, 연락처, id, pw, 소재지, 상호, 사업자 등록번호
 
 			userList.add(new BusinessUser(num, name, tel, id, pw, area, comName, comNum));
-
+			save(); // save 
 			System.out.println("회원가입이 정상적으로 완료되었습니다.");
 			break; // 끝내기
 
@@ -251,6 +233,7 @@ public class UserService {
 			area = selectArea();
 
 			System.out.println("회원가입이 정상적으로 완료되었습니다.");
+			save();
 			userList.add(new AlbaUser(num, name, tel, id, pw, area));
 
 		case 3:
@@ -288,10 +271,9 @@ public class UserService {
 	}
 	// 사업자 회원 정보 조회
 
-	public void lookupOwner() {
-
-	}
-
+	public void lookupOwner() {}
+		
+	
 	// 개인회원 회원정보 조회
 
 	public void lookupUser() {
@@ -338,6 +320,7 @@ public class UserService {
 			loginUser.setPw(pw);
 			loginUser.setArea(area);
 			System.out.println("변경된 회원 정보" + loginUser); // 수정되었는지 확인해보기
+			save();
 			System.out.println("성공적으로 회원 정보 수정이 완료되었습니다.");
 		} else if (loginUser instanceof AlbaUser) { // 개인회원 (만들어진 메서드 추가하기(이력서))
 			String name = nextLine("수정할 이름을 입력하세요."); // 이름
@@ -370,6 +353,7 @@ public class UserService {
 			loginUser.setArea(area);
 			System.out.println("변경된 회원 정보" + loginUser); // 수정되었는지 확인해보기
 			ResumeService.getInstance().resumeSync();
+			save();
 			System.out.println("성공적으로 회원 정보 수정이 완료되었습니다.");
 
 		}
