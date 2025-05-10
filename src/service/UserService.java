@@ -276,13 +276,13 @@ public class UserService {
 
 	}
 
-	// 회원정보 수정 swich로 수정하기
+	// 회원정보 수정 swich로 수정하기, 6번 공고수정 메서드  추가
 	public void modify() {
 
 		if (getLoginUser() instanceof BusinessUser) {
 			System.out.println("회원정보 수정");
-			// 사업자 , 공고내역(만들어진 메서드 추가하기)
-			int choice = nextInt("1. 상호명 2.이름 3.연락처 4. 비밀번호 5. 거주지 정보");
+			// 사업자 
+			int choice = nextInt("1. 상호명 2.이름 3.연락처 4. 비밀번호 5. 거주지 정보 6. 공고 수정");
 
 			switch (choice) {
 			case 1: {
@@ -337,6 +337,9 @@ public class UserService {
 				System.out.println("회원정보가 성공적으로 수정되었습니다.");
 				break;
 			}
+			case 6 : {
+				GonggoService.getInstance().modify();
+			}
 			default:
 				System.out.println("처음으로 돌아갑니다.");
 				break;
@@ -344,8 +347,8 @@ public class UserService {
 			save(); // 저장
 		} else if (getLoginUser() instanceof AlbaUser) {
 			System.out.println("회원정보 수정");
-			// 개인회원 , 공고내역(만들어진 메서드 추가하기)
-			int choice = nextInt("1. 이름 2.연락처 3. 비밀번호 4. 거주지 정보");
+			// 개인회원 , 이력서 수정(만들어진 메서드 추가하기)
+			int choice = nextInt("1. 이름 2.연락처 3. 비밀번호 4. 거주지 정보 5. 이력서 수정");
 
 			switch (choice) {
 			case 1: {
@@ -392,6 +395,9 @@ public class UserService {
 				loginUser.setArea(area);
 				System.out.println("회원정보가 성공적으로 수정되었습니다.");
 				break;
+			}
+			case 5 : {
+				ResumeService.getInstance().modify();
 			}
 			default:
 				System.out.println("처음으로 돌아갑니다.");
