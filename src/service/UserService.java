@@ -131,7 +131,11 @@ public class UserService {
 				return;
 			}
 
-			String comName = nextLine("상호명을 입력하세요.");
+			String comName = nextLine("상호명을 입력하세요.");// 공백이면 넘어가서 못 넘어가게 수정
+			if(comName.isEmpty()) {
+				System.out.println("공백은 입력불가 합니다. 다시 입력해 주세요.");
+				return;
+			}
 
 			String tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요.ex) 010-0000-0000");
 
@@ -297,6 +301,10 @@ public class UserService {
 				BusinessUser business = (BusinessUser) loginUser;
 
 				String comName = nextLine("수정할 상호명을 입력하세요."); // 상호명 - 사업자
+				if(comName.isEmpty()) { // 공백 불가 추가
+					System.out.println("공백은 입력불가 합니다. 다시 입력해 주세요.");
+					return;
+				}
 				System.out.println("상호명이 " + comName + " (으)로 수정되었습니다.");
 				business.setCompanyName(comName);
 				break;
@@ -309,7 +317,7 @@ public class UserService {
 					return;
 				}
 				loginUser.setName(name);
-				System.out.println("회원 이름이 " + name + " 님으로 수정되었습니다.");
+				System.out.println("회원 이름 정보가 " + name + " 님으로 수정되었습니다.");
 				break;
 			}
 			case 3: {
@@ -323,7 +331,7 @@ public class UserService {
 					break;
 				}
 				loginUser.setTel(tel);
-				System.out.println("연락처 정보가 " + tel + " (으)로 수정되었습니다.");
+				System.out.println("전화번호 정보가 " + tel + " (으)로 수정되었습니다.");
 				break;
 			}
 
@@ -345,7 +353,7 @@ public class UserService {
 			case 5: {
 				System.out.println("수정할 거주지 정보");
 				String area = selectArea();
-				System.out.println("거주지가 " + area + " (으)로 수정되었습니다.");
+				System.out.println("거주지 정보가 " + area + " (으)로 수정되었습니다.");
 				loginUser.setArea(area);
 				break;
 			}
@@ -372,7 +380,7 @@ public class UserService {
 					return;
 				}
 				loginUser.setName(name);
-				System.out.println("이름이 " + name + " 님으로 수정되었습니다.");
+				System.out.println("회원 이름 정보가 " + name + " 님으로 수정되었습니다.");
 				break;
 			}
 
@@ -386,7 +394,7 @@ public class UserService {
 					System.out.println("중복된 전화번호가 존재합니다.");
 					break;
 				}
-				System.out.println("연락처 정보가 " + tel + " (으)로 수정되었습니다.");
+				System.out.println("전화정보 정보가 " + tel + " (으)로 수정되었습니다.");
 				loginUser.setTel(tel);
 				break;
 			}
@@ -410,7 +418,7 @@ public class UserService {
 			case 4: {
 				System.out.println("수정할 거주지 정보");
 				String area = selectArea();
-				System.out.println("거주지가 " + area + " (으)로 수정되었습니다.");
+				System.out.println("거주지 정보가 " + area + " (으)로 수정되었습니다.");
 				loginUser.setArea(area);
 				break;
 			}
@@ -442,7 +450,7 @@ public class UserService {
 			return;
 		}
 		// 중복으로 한 번 더 물어보기 (나중에 지원이랑 공고 내역 삭제까지) -> 문장 바꾸기//
-		if (!nextConfirm("정말로 탈퇴하시겠습니까?")) {
+		if (!nextConfirm("회원 정보가 전부 삭제됩니다. 탈퇴하시겠습니까?")) {
 			return;
 		}
 		System.out.println(loginUser); // 삭제되는 유저 정보  확인
