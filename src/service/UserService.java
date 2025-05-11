@@ -337,7 +337,7 @@ public class UserService {
 				System.out.println("회원정보가 성공적으로 수정되었습니다.");
 				break;
 			}
-			case 6 : {
+			case 6 : {// 공고수정 메서드 여기서 처리할필요 x - 나가기버튼으로 수정하는게 어떨까요(?) #수정필요
 				GonggoService.getInstance().modify();
 			}
 			default:
@@ -396,7 +396,7 @@ public class UserService {
 				System.out.println("회원정보가 성공적으로 수정되었습니다.");
 				break;
 			}
-			case 5 : {
+			case 5 : { // #수정필요 - 이력서 수정을 이곳에서 할 필요 x - 나가기버튼으로 변경하는게 좋을것같음.
 				ResumeService.getInstance().modify();
 			}
 			default:
