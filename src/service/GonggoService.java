@@ -103,9 +103,9 @@ public class GonggoService {
 		return 0;
 	}
 	
-	// 공고 선택 - 사업자 
+	// 공고 선택 - 사업자 #수정필요
 	public int gonggoSelectOwner() {
-		int input = nextInt("유저 번호를 입력해 주세요.");
+		int input = nextInt("유저 번호를 입력해 주세요."); // 사업자는 자신의 유저 번호를 모릅니다. 수정필요
 		for(Gonggo g : gonggoList) {
 			if(input == UserService.getInstance().getLoginUser().getUserNo()) {
 				return input;
@@ -141,12 +141,12 @@ public class GonggoService {
 		}
 	}
 	
-	//공고수정-사업자
+	//공고수정-사업자 #수정필요
 	void modify() {
 		System.out.println("공고 수정 기능");
 		int input = AlbaUtils.nextInt("공고 번호를 입력하세요 : ");
-		for(Gonggo g : gonggoList) {
-			if(input != UserService.getInstance().getLoginUser().getUserNo()) {
+		for(Gonggo g : gonggoList) { // for문 쓰는 이유도 잘 모르겠습니다.
+			if(input != UserService.getInstance().getLoginUser().getUserNo()) { // input은 공고번호인데, 왜 유저번호와 비교를 하는지 잘 모르겠습니다.
 				System.out.println("공고번호와 사업자의 유저 정보가 일치하지 않습니다.");
 				return;
 			}else 
@@ -193,9 +193,9 @@ public class GonggoService {
 			}
 		}
 	}
-	//회원정보 수정시 공고 연락처도 수정
+	//회원정보 수정시 공고 연락처도 수정 #수정필요
 	void gonggoSync() {
-		int input = nextInt("유저 번호를 입력해 주세요.");
+		int input = nextInt("유저 번호를 입력해 주세요."); // 사업자는 자신의 유저번호를 모릅니다.
 		for(Gonggo g : gonggoList) {
 				if(input == UserService.getInstance().getLoginUser().getUserNo()) {
 					if(!UserService.getInstance().getLoginUser().getTel().equals(g.getTel())) {
@@ -209,7 +209,7 @@ public class GonggoService {
 		}
 	}
 	
-	//공고 마감
+	//공고 마감 - workingEndDate 보다 현재 시간이 지났으면 자동 마감
 	void gonggoMagam() {
 		LocalDate now = LocalDate.now();
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -227,9 +227,9 @@ public class GonggoService {
 		}
 
 	void remove() {
-		//공고삭제-사업자
+		//공고삭제-사업자 # 수정필요
 		System.out.println("공고 삭제 기능");
-		int input = nextInt("유저 번호를 입력해 주세요.");
+		int input = nextInt("유저 번호를 입력해 주세요."); // 사업자는 자신의 유저번호를 모릅니다.
 		for(Gonggo g : gonggoList) {
 			if(input != UserService.getInstance().getLoginUser().getUserNo()) {
 				System.out.println("유저 번호가 일치하지 않습니다.");
@@ -251,9 +251,9 @@ public class GonggoService {
 		}
 	}
 
-	//공고마감 - 사업자가 직접 마감
+	//공고마감 - 사업자가 직접 마감 #수정필요 
 	void stateChange() {
-		int input = AlbaUtils.nextInt("유저 번호를 입력하세요.");
+		int input = AlbaUtils.nextInt("유저 번호를 입력하세요."); // 사업자는 자신의 유저번호를 모릅니다.
 		for(Gonggo g : gonggoList) {
 			if(input == UserService.getInstance().getLoginUser().getUserNo()) {
 				int input2 = nextInt("마감할 공고의 공고 번호를 입력해 주세요.");
