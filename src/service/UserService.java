@@ -246,7 +246,7 @@ public class UserService {
 				System.out.println("사업자 로그인 성공!");
 			} else if (u instanceof AlbaUser && u.getId().equals(Id) && u.getPw().equals(Pw)) {
 				flag = true;
-				loginUser = u; // 로그인 유저 u로 지정
+				loginUser = u; 
 				System.out.println("개인회원 로그인 성공!");
 			}
 		}
@@ -259,6 +259,7 @@ public class UserService {
 	public void lookupOwner() {
 //		
 		System.out.println("회원 정보 조회");
+		System.out.println("============================");
 		System.out.println("회원 번호 : " + loginUser.getUserNo());
 		System.out.println("아이디 : " + loginUser.getId());
 		System.out.println("이름 : " + loginUser.getName());
@@ -274,6 +275,7 @@ public class UserService {
 	public void lookupUser() {
 
 		System.out.println("회원 정보 조회");
+		System.out.println("============================");
 		System.out.println("회원 번호 : " + loginUser.getUserNo());
 		System.out.println("아이디 : " + loginUser.getId());
 		System.out.println("이름 : " + loginUser.getName());
@@ -428,7 +430,6 @@ public class UserService {
 	public void logOut() {
 		if (loginUser != null) {
 			loginUser = null;
-//			System.out.println("로그아웃 되었는지 확인용" + loginUser); 로그아웃 되었는지 확인용 (나중에 삭제)
 			System.out.println("로그아웃 되었습니다");
 		}
 	}
@@ -446,12 +447,12 @@ public class UserService {
 		}
 		System.out.println(loginUser); // 삭제되는 유저 정보  확인
 //		GonggoService.getInstance().remove(loginUser);// 로그인 유저 정보 삭제될때 공고랑 이력서까지 전체 삭제하게 만들기
-//		ResumeService.getInstance().remove();// 확인이 안돼서 나중에 물어봐야 됨, 지원이 안돼서 확인 불가
+//		ResumeService.getInstance().remove();// 오류
 		userList.remove(loginUser); // 로그인 유저 삭제
 		logOut();// 회원 탈퇴시 로그아웃도 동시에 진행
 	
 		System.out.println("탈퇴가 성공적으로 완료되었습니다.");
-
+		save(); // 탈퇴한 것 까지 저장
 	}
 
 	// 파일 저장
