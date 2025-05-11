@@ -35,7 +35,7 @@ public class BusinessUser extends User {
 	
 	@Override
 	public String toString() {
-		return "BusinessUser [companyName=" + companyName + ", companyNumber=" + companyNumber + "]";
+		return "BusinessUser [상호명" + companyName + ", 사업자 번호=" + companyNumber + "]";
 	}
 	
 

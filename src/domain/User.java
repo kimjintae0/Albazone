@@ -67,6 +67,6 @@ public abstract class User implements Serializable{
 	
 	@Override	// 이쁘게 보일 수 있도록 정리
 	public String toString() {
-		return "User [name=" + name + ", tel=" + tel + ", id=" + id + ", area=" + area + "]";
+		return "User [회원 이름=" + name + ", 연락처=" + tel + ", 아이디(id)=" + id + ", 거주지(area=)" + area + "]";
 	}
 }

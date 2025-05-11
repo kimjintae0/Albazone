@@ -30,7 +30,8 @@ public class AlbaUtils {
 	// 지역 선택
 	public static String selectArea() {
 		System.out.println("지역을 선택해주세요.");
-		int input = nextInt("1.서울 2.인천 3.부산 4.대전 5.대구 6.울산 7.광주\n 8.제주 9.경기 10.경상 11.강원 12.충청 13.전라");
+		// 기타 추가
+		int input = nextInt("1.서울 2.인천 3.부산 4.대전 5.대구 6.울산 7.광주\n 8.제주 9.경기 10.경상 11.강원 12.충청 13.전라 14. 기타");
 		switch(input) {
 		case 1: return "서울";  
 		case 2: return "인천"; 
@@ -45,6 +46,7 @@ public class AlbaUtils {
 		case 11: return "강원"; 
 		case 12: return "충청"; 
 		case 13: return "전라";
+		case 14: return "기타";// 추가
 		}
 		return "지역 미정";
 	}
