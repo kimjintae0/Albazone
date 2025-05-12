@@ -36,7 +36,7 @@ public class GonggoService {
 	{
 		// 사업자 유저 번호, 공고 번호, 제목, 역할, 일하는 시간, 시급, 근무 기간, 진행상태, 소재지
 		gonggoList.add(new Gonggo(1, 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울", "000-0000-0000"));
-//		gonggoList.add(new Gonggo(1, 2, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울", "000-0000-0000"));
+		gonggoList.add(new Gonggo(1, 2, "파파이스 오전 알바(9시 ~ 6시, 1시간 휴식) 꿀알바", "서빙", 3, 11000, "2025-05-01" ,"2025-05-10", true, "서울", "010-1234-1234"));
 		// 마감일 < 현재시점일 경우 true -> false 바뀌는지 확인 위한 초기화 블럭 추가
 	}
 	
@@ -118,7 +118,6 @@ public class GonggoService {
 	}
 	
 	// 공고조회 - 사업자 자신이 등록한 공고
-	// input을 메서드 밖에서 입력받고 switch문만 안에서
 	void lookupOwner(int input) {
 		switch(input) {
 		case 1:{
@@ -153,9 +152,7 @@ public class GonggoService {
 			return;
 		}
 		Gonggo g = findGonggoByNo(input);
-		
-		
-		
+
 		String title = nextLine("공고의 제목을 입력해주세요.");
 		String role = nextLine("담당 업무를 입력해주세요.");
 		int workHours = nextInt("근무 시간을 숫자로 입력해주세요. (시간 단위로 적어주세요. 소숫점은 미지원)");
@@ -182,9 +179,7 @@ public class GonggoService {
 		if(!nextConfirm("공고를 수정하시겠습니까?")) {
 			System.out.println("공고 수정이 취소되었습니다.");
 			return;
-		}
-		
-		
+		}	
 		g.setTitle(title);
 		g.setRole(role);
 		g.setWorkHours(workHours);
@@ -278,10 +273,7 @@ public class GonggoService {
 		return gonggo;
 	}
 	
-	
-	
-	// applyList.gonggoNo() 를 입력받아서 List<Gonggo>를 출력하는 메서드
-		
+	// applyList.gonggoNo() 를 입력받아서 List<Gonggo>를 출력하는 메서드	
 	public List<Gonggo> findGonggoBy(int no){
 		List<Gonggo> gonggoes = new ArrayList<>();
 		for(Gonggo g : gonggoList) {
@@ -296,7 +288,7 @@ public class GonggoService {
 	public List<Gonggo> userFindGonggo(int no){
 		List<Gonggo> gonggoUser = new ArrayList<Gonggo>();
 		for(Gonggo g : gonggoList) {
-			if(no == g.getUserNo()) {
+			if(no == g.getUserNo() ) {
 				gonggoUser.add(g);
 			}
 		}
