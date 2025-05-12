@@ -255,7 +255,7 @@ public class UserService {
 				flag = true;
 				loginUser = u;
 				System.out.println("개인회원 로그인 성공!");
-				break;
+				
 			}
 		}
 		if (!flag) {
@@ -271,6 +271,7 @@ public class UserService {
 		System.out.println("회원 정보 조회");
 		System.out.println("============================");
 		System.out.println("아이디 : " + loginUser.getId());
+		System.out.println("비밀번호 나중에 삭제 확인용 : " + loginUser.getPw());
 		System.out.println("이름 : " + loginUser.getName());
 		System.out.println("연락처 : " + loginUser.getTel());
 		System.out.println("사업자 번호 : " + business.getCompanyNumber());
@@ -288,6 +289,7 @@ public class UserService {
 		System.out.println("아이디 : " + loginUser.getId());
 		System.out.println("이름 : " + loginUser.getName());
 		System.out.println("연락처 : " + loginUser.getTel());
+		System.out.println("비밀번호 나중에 삭제 확인용 : " + loginUser.getPw());
 		System.out.println("지역 : " + loginUser.getArea());
 
 	}
@@ -363,13 +365,14 @@ public class UserService {
 			}
 
 			case 5: {
+				
 				System.out.println("수정할 거주지 정보");
 				String area = selectArea();
-				if (loginUser.getArea().equals(area)) {
-					System.out.println("중복 ㄴ");
-					break;
+			
+				if(loginUser.getArea().equals(area)) {
+					System.out.println("동일한 거주지 정보는 입력할 수 없습니다. 다시 입력해 주세요.");
+					break;	
 				}
-
 				System.out.println("거주지 정보가 " + area + " (으)로 수정되었습니다.");
 				loginUser.setArea(area);
 				break;
@@ -384,6 +387,7 @@ public class UserService {
 				break;
 			}
 		} else if (getLoginUser() instanceof AlbaUser) {
+			
 			System.out.println("회원정보 수정");
 
 			int choice = nextInt("1. 이름 2.연락처 3. 비밀번호 4. 거주지 정보 5. 나가기");
@@ -439,6 +443,10 @@ public class UserService {
 			case 4: {
 				System.out.println("수정할 거주지 정보");
 				String area = selectArea();
+				if(loginUser.getArea().equals(area)) {
+					System.out.println("동일한 거주지 정보는 입력할 수 없습니다. 다시 입력해 주세요.");
+					break;	
+				}
 
 				System.out.println("거주지 정보가 " + area + " (으)로 수정되었습니다.");
 				loginUser.setArea(area);
@@ -486,7 +494,7 @@ public class UserService {
 		}
 
 //		GonggoService.getInstance().gonggoList.removeAll(GonggoService.getInstance().userFindGonggo(loginUser.getUserNo())); // 사업자 - 공고 내역 삭제
-//		ResumeService.getInstance().resumeList.removeAll(ResumeService.getInstance().findResumeBy(loginUser.getUserNo())); // 개인 회원 - 이력서 내역 삭제
+		ResumeService.getInstance().resumeList.removeAll(ResumeService.getInstance().findResumeBy(loginUser.getUserNo())); // 개인 회원 - 이력서 내역 삭제
 		userList.remove(loginUser); // 로그인 정보 유저 삭제
 		logOut();// 회원 탈퇴시 로그아웃도 동시에 진행
 
