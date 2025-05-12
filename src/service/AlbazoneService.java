@@ -146,7 +146,7 @@ public class AlbazoneService {
 				break;
 			}
 			case 2: {
-				userService.lookupUser();
+				userService.lookupOwner();
 
 				break;
 			}
