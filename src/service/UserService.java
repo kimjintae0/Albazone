@@ -249,11 +249,13 @@ public class UserService {
 				flag = true;
 				loginUser = u; // 로그인 유저 u로 지정
 				System.out.println("사업자회원 로그인 성공!");
+				break;
 			} 
 			else if (u instanceof AlbaUser && u.getId().equals(Id) && u.getPw().equals(Pw)) {
 				flag = true;
 				loginUser = u;
 				System.out.println("개인회원 로그인 성공!");
+				break;
 			}
 		}
 		if (!flag) {
@@ -265,6 +267,7 @@ public class UserService {
 	public void lookupOwner() {
 
 		BusinessUser business = (BusinessUser) loginUser;// 사업자 변환 변수
+		
 		System.out.println("회원 정보 조회");
 		System.out.println("============================");
 		System.out.println("아이디 : " + loginUser.getId());
