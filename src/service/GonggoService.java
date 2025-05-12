@@ -109,7 +109,10 @@ public class GonggoService {
 		int num = gonggoList.get(gonggoList.size() - 1).getGonggoNo() == 0 ? 1 : gonggoList.get(gonggoList.size() - 1).getGonggoNo() + 1; 
 		
 		gonggoList.add(new Gonggo(UserService.getInstance().getLoginUser().getUserNo(), num, title, role, workHours, wage, workingStartDate, workingEndDate, true, comArea, UserService.getInstance().getLoginUser().getTel()));
+		save();
 	}
+	
+	
 
 	// 공고조회 - 개인유저
 	void lookupUser() {
@@ -258,6 +261,7 @@ public class GonggoService {
 					return;
 				}
 		}
+		save();
 	}
 	
 	//공고 마감 - workingEndDate 보다 현재 시간이 지났으면 자동 마감
@@ -275,6 +279,7 @@ public class GonggoService {
 					g.state = false;
 				}			
 			}
+		save();
 		}
 
 	void remove() {
@@ -293,6 +298,7 @@ public class GonggoService {
 				return;
 				}
 			}
+		save();
 		}
 
 
@@ -311,7 +317,7 @@ public class GonggoService {
 				}
 			}
 		}
-	
+		save();
 	}
 	private void save() {
 		try {
