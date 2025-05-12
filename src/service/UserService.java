@@ -448,9 +448,9 @@ public class UserService {
 		System.out.println("회원 탈퇴");
 		
 		//탈퇴 하기 전에 비밀번호 입력
-		String pw = nextLine("비밀번호를 입력하세요.") ;
+		String pw = nextLine("비밀번호를 입력하세요.");
 	
-		if (!pw.equals(nextLine(pw))) {
+		if (!loginUser.getPw().equals(pw)) {
 			System.out.println("비밀 번호가 일치 하지 않습니다.");
 			return;
 		}
@@ -465,9 +465,9 @@ public class UserService {
 		}
 		System.out.println(loginUser); // 삭제되는 유저 정보  확인용
 // 로그인 유저 정보 삭제될때 공고랑 이력서까지 전체 삭제하게 만들기
-//		GonggoService.getInstance().gonggoList.remove(loginUser);
+		GonggoService.getInstance().gonggoList.remove(loginUser);
 //		ResumeService.getInstance().remove();
-//		ResumeService.getInstance().resumeList.remove(loginUser); // 확인 여부를 모르겠습니다.
+		ResumeService.getInstance().resumeList.remove(loginUser); 
 		userList.remove(loginUser); // 로그인 유저 삭제
 		logOut();// 회원 탈퇴시 로그아웃도 동시에 진행
 	
