@@ -36,11 +36,11 @@ public class ResumeService {
 	{
 		ObjectInputStream ois = null;
 		try {
-			ois = new ObjectInputStream(new FileInputStream("data/user.ser")); // 보조 입력 스트림 , 입력
+			ois = new ObjectInputStream(new FileInputStream("data/resume.ser")); // 보조 입력 스트림 , 입력
 			resumeList = (List<Resume>) ois.readObject();
 			ois.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("User : 파일을 불러올 수 없습니다. 임시 데이터셋으로 진행합니다.");
+			System.out.println("Resume : 파일을 불러올 수 없습니다. 임시 데이터셋으로 진행합니다.");
 			resumeList.add(new Resume(2, 1, "김진태님의 이력서입니다.", "김진태", "010-1111-1111", "서울", "안녕하세요. 저는 김진태입니다."));
 	
 		} catch (Exception e) {
