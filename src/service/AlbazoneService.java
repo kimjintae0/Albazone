@@ -113,7 +113,7 @@ public class AlbazoneService {
 			int no = nextInt("1. 공고 2. 회원정보 조회 3. 회원정보 수정 4. 회원탈퇴 5. 종료(로그아웃)");
 			switch (no) {
 			case 1: {
-				no = nextInt("1. 공고 등록 2. 공고 조회 3. 지원자 확인 4. 공고 수정 5. 공고 삭제 6. 나가기 ");
+				no = nextInt("1. 공고 등록 2. 공고 조회 3. 지원자 확인 4. 공고 수정 5. 공고 마감 6. 공고 삭제 7. 나가기 ");
 				switch (no) {
 				case 1: {
 					gonggoService.register();
@@ -136,6 +136,10 @@ public class AlbazoneService {
 					break;
 				}
 				case 6: {
+					gonggoService.remove();
+					break;
+				}
+				case 7: {
 					break;
 				}
 				}
