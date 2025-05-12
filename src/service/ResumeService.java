@@ -61,9 +61,13 @@ public class ResumeService {
 		}
 	}
 	
-	// 이력서 조회 - 사업자
-	public void lookupOwner() {
-		
+	// 입력 : 이력서 번호, 출력 : 이력서 투스트링
+	public void lookupOwner(int resumeNo) {
+		for (int i = 0; i < resumeList.size(); i++) {
+			if(resumeList.get(i).getResumeNo() == resumeNo) {
+				System.out.println(resumeList.get(i).toString());
+			}
+		}
 	}
 	
 	// 이력서 수정
