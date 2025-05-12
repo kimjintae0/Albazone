@@ -103,11 +103,11 @@ public class GonggoService {
 		return 0;
 	}
 	
-	// 공고 선택 - 사업자 #수정필요
+	// 공고 선택 - 사업자
 	public int gonggoSelectOwner() {
-		int input = nextInt("유저 번호를 입력해 주세요."); // 사업자는 자신의 유저 번호를 모릅니다. 수정필요
+		int input = nextInt("공고 번호를 입력해 주세요."); // 사업자는 자신의 유저 번호를 모릅니다. 수정필요
 		for(Gonggo g : gonggoList) {
-			if(input == UserService.getInstance().getLoginUser().getUserNo()) {
+			if(g.getGonggoNo() == input && g.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
 				return input;
 			}
 		}
