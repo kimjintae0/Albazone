@@ -36,6 +36,8 @@ public class GonggoService {
 	{
 		// 사업자 유저 번호, 공고 번호, 제목, 역할, 일하는 시간, 시급, 근무 기간, 진행상태, 소재지
 		gonggoList.add(new Gonggo(1, 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울", "000-0000-0000"));
+//		gonggoList.add(new Gonggo(1, 2, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울", "000-0000-0000"));
+		// 마감일 < 현재시점일 경우 true -> false 바뀌는지 확인 위한 초기화 블럭 추가
 	}
 	
 	//====================================== 메서드 ===========================================================================================
@@ -116,6 +118,7 @@ public class GonggoService {
 	}
 	
 	// 공고조회 - 사업자 자신이 등록한 공고
+	// input을 메서드 밖에서 입력받고 switch문만 안에서
 	void lookupOwner() {
 		int input = nextInt("1. 진행중 2. 마감 3. 종료");
 		switch(input) {
@@ -142,13 +145,13 @@ public class GonggoService {
 		}
 	}
 	
-	//공고수정-사업자 #수정필요
+	//공고수정-사업자
 	void modify() {
 		System.out.println("공고 수정 기능");
 		int input = AlbaUtils.nextInt("공고 번호를 입력하세요 : ");
 		for(Gonggo g : gonggoList) { 
-			if(input != g.getGonggoNo() && g.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) { 
-				System.out.println("공고번호와 사업자의 유저 정보가 일치하지 않습니다.");
+			if(input != g.getGonggoNo() && g.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) { // 입력받은 공고번호가 그 공고의 유저번호도 동시에 같으면 같은 유저
+				System.out.println("공고번호가 일치하지 않습니다.");
 				return;
 			}else 
 			{
@@ -181,6 +184,9 @@ public class GonggoService {
 						System.out.println("공고 수정이 취소되었습니다.");
 						return;
 					}
+					
+					
+			
 					gonggoList.get(i).setTitle(title);
 					gonggoList.get(i).setRole(role);
 					gonggoList.get(i).setWorkHours(workHours);
@@ -196,15 +202,15 @@ public class GonggoService {
 	}
 	//회원정보 수정시 공고 연락처도 수정 #수정필요
 	void gonggoSync() {
-		int input = nextInt("유저 번호를 입력해 주세요."); // 사업자는 자신의 유저번호를 모릅니다.
+		int input = nextInt("공고 번호를 입력해 주세요."); 
 		for(Gonggo g : gonggoList) {
-				if(input == UserService.getInstance().getLoginUser().getUserNo()) {
+				if(input == g.getGonggoNo() && g.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
 					if(!UserService.getInstance().getLoginUser().getTel().equals(g.getTel())) {
 						g.setTel(UserService.getInstance().getLoginUser().getTel());
 					}
 				}		
 				else {
-					System.out.println("유저 번호가 일치하지 않습니다. ");
+					System.out.println("공고 번호가 일치하지 않습니다. ");
 					return;
 				}
 		}
@@ -228,50 +234,40 @@ public class GonggoService {
 		}
 
 	void remove() {
-		//공고삭제-사업자 # 수정필요
+		//공고삭제-사업자
 		System.out.println("공고 삭제 기능");
-		int input = nextInt("유저 번호를 입력해 주세요."); // 사업자는 자신의 유저번호를 모릅니다.
+		int input = nextInt("삭제할 공고 번호를 입력해 주세요."); 
 		for(Gonggo g : gonggoList) {
-			if(input != UserService.getInstance().getLoginUser().getUserNo()) {
-				System.out.println("유저 번호가 일치하지 않습니다.");
-				return;
+			if(input == g.getGonggoNo() && g.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
+				nextConfirm("해당 공고를 삭제하시겠습니까?");
+				gonggoList.remove(g);	
+				System.out.println("해당 공고가 삭제되었습니다.");
+				break;
 			}
 			else {
-				int input2 = nextInt("삭제할 공고의 공고 번호를 입력해 주세요.");
-					if(input2 == g.getGonggoNo()) {
-						nextConfirm("해당 공고를 삭제하시겠습니까?");
-						gonggoList.remove(g);	
-						System.out.println("해당 공고가 삭제되었습니다.");
-						break;
-					}
-					else {
-						System.out.println("해당 공고번호가 존재하지 않습니다.");
-						return;
-					}
+				System.out.println("해당 공고번호가 존재하지 않습니다.");
+				return;
+				}
 			}
 		}
-	}
 
-	//공고마감 - 사업자가 직접 마감 #수정필요 
+
+	//공고마감 - 사업자가 직접 마감 
 	void stateChange() {
-		int input = AlbaUtils.nextInt("유저 번호를 입력하세요."); // 사업자는 자신의 유저번호를 모릅니다.
+		int input = AlbaUtils.nextInt("마감할 공고 번호를 입력하세요."); 
 		for(Gonggo g : gonggoList) {
-			if(input == UserService.getInstance().getLoginUser().getUserNo()) {
-				int input2 = nextInt("마감할 공고의 공고 번호를 입력해 주세요.");
-				if(g.getGonggoNo() == input2) {
+			if(input == g.getGonggoNo() && g.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
 					if(nextConfirm("공고를 마감하시겠습니까?")) {
 						System.out.println("공고가 마감되었습니다.");
 						g.state = false;
 						return;
-					}
 				}else 
-				{System.out.println("공고번호가 일치하지 않습니다");
+				{System.out.println("공고 번호가 일치하지 않습니다");
 				return ;
 				}
-			}else
-				System.out.println("유저 번호가 일치하지 않습니다.");
-				return;		
+			}
 		}
+	
 	}
 	
 //	============================== 유틸  ==============================================================
@@ -301,6 +297,5 @@ public class GonggoService {
 	
 // ============================ 그 외 클래스 내 사용 ====================================================
 	
-	public final String dateForm = "(20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])";		
-		
+	public final String dateForm = "(20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])";				
 }
