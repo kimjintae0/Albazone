@@ -7,13 +7,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import domain.Apply;
 import domain.Gonggo;
-import domain.Resume;
 
 import static utils.AlbaUtils.*;
 
@@ -87,7 +85,7 @@ public class ApplyService {
 			boolean check = false;
 			for(Apply a : applyList) {
 				if(a.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
-					System.out.println("지원 시간 : " + dateFormat.format(a.getApplyDate()) + "\n지원상태 : " + (a.getApplySitu() == 0 ? "접수" : "읽음"));
+					System.out.println("지원 시간 : " + dateFormat(a.getApplyDate()) + "\n지원상태 : " + (a.getApplySitu() == 0 ? "접수" : "읽음"));
 					System.out.println(GonggoService.getInstance().findGonggoBy(a.getGonggoNo()));
 					check = true;
 				}
@@ -111,7 +109,7 @@ public class ApplyService {
 				check = true;
 			}
 		}
-		if(check = false) {
+		if(!check) {
 			System.out.println("지원 이력을 찾을 수 없습니다.");
 			return;
 		}
@@ -124,37 +122,22 @@ public class ApplyService {
 	
 	// 내 공고에 지원한 내역 조회 - 사업자
 	public void lookupUserOwner() {
-		int size = 0;
 		for(Gonggo g : GonggoService.getInstance().gonggoList) {
 			if(UserService.getInstance().getLoginUser().getUserNo() == g.getUserNo() && g.state == true) {
 				System.out.println(g.toString());
 			}
 		}
-		int input = nextInt("지원내역을 확인하실 공고의 번호를 입력해주세요.");
-		for(Gonggo g : GonggoService.getInstance().gonggoList) {
-			if(!(UserService.getInstance().getLoginUser().getUserNo() == g.getUserNo() && g.state == true)) {
-				input = 0;
-			}
-		}
+		int input = GonggoService.getInstance().gonggoSelectOwner();
 		if(input == 0) {
 			System.out.println("마감된 공고이거나 접근 권한이 없는 공고입니다.");
 			return;
 		}
 		for(Apply a : applyList) {
 			if(a.getGonggoNo() == input) {
-				
-				System.out.println("지원날짜"+ dateFormat.format(a.getApplyDate()));
-				for(Resume r : ResumeService.getInstance().resumeList) {
-					if(a.getResumeNo() == r.getResumeNo()) {
-						System.out.println(r.toString());
-						size++;
-					}
-				}
+				System.out.println("지원날짜"+  dateFormat(a.getApplyDate()));
+				ResumeService.getInstance().lookupOwner(a.getResumeNo());
 				a.setApplySitu(a.getApplySitu() + 1);
 			}
-		}
-		if(size == 0) {
-			System.out.println("지원자가 없습니다.");
 		}
 		save();
 	}
@@ -188,8 +171,7 @@ public class ApplyService {
 	
 //		============================== 자체 유틸 ============================
 	
-		// 데이트 타입 포매터
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
+		
 		
 		
 		// 입력 resumeNo 출력 List<Apply>

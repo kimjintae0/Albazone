@@ -2,6 +2,8 @@ package utils;
 
 import static utils.AlbaUtils.nextInt;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 
@@ -49,5 +51,11 @@ public class AlbaUtils {
 		case 14: return "기타";// 추가
 		}
 		return "지역 미정";
+	}
+	
+	// 데이트 타입 포매터
+	public static String dateFormat(Date date) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
+		return dateFormat.format(date);
 	}
 }
