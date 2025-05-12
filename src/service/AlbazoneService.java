@@ -120,7 +120,7 @@ public class AlbazoneService {
 					break;
 				}
 				case 2: {
-					gonggoService.lookupOwner();
+					gonggoService.lookupOwner(nextInt("1. 진행중 2. 마감 3. 종료"));
 					break;
 				}
 				case 3: {

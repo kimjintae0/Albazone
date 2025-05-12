@@ -119,8 +119,7 @@ public class GonggoService {
 	
 	// 공고조회 - 사업자 자신이 등록한 공고
 	// input을 메서드 밖에서 입력받고 switch문만 안에서
-	void lookupOwner() {
-		int input = nextInt("1. 진행중 2. 마감 3. 종료");
+	void lookupOwner(int input) {
 		switch(input) {
 		case 1:{
 			for(Gonggo g : gonggoList) {
@@ -197,7 +196,7 @@ public class GonggoService {
 				
 			
 
-	//회원정보 수정시 공고 연락처도 수정 #수정필요
+	//회원정보 수정시 공고 연락처도 수정
 	void gonggoSync() {
 		int input = nextInt("공고 번호를 입력해 주세요."); 
 		for(Gonggo g : gonggoList) {
