@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import domain.Apply;
-import domain.Gonggo;
 
 import static utils.AlbaUtils.*;
 
@@ -53,13 +52,13 @@ public class ApplyService {
 	
 	// 지원하기 - 알바
 	public void apply() {
-		int gonggoNo = GonggoService.getInstance().gonggoSelectUser();
+		int gonggoNo = GonggoService.getInstance().gonggoSelectUser(); // 공고 번호입력 및 체크
 		if(gonggoNo == 0) {
 			System.out.println("접근 권한이 없는 공고입니다.");
 			return;
 		}
-		ResumeService.getInstance().lookupUser();
-		int resumeNo = ResumeService.getInstance().resumeSelect();
+		ResumeService.getInstance().lookupUser();  // 이력서 목록 조회
+		int resumeNo = ResumeService.getInstance().resumeSelect(); // 이력서 번호 입력 및 체크
 		if (resumeNo == 0) {
 			System.out.println("존재하지 않는 이력서입니다.");
 			return;
@@ -122,11 +121,7 @@ public class ApplyService {
 	
 	// 내 공고에 지원한 내역 조회 - 사업자
 	public void lookupUserOwner() {
-		for(Gonggo g : GonggoService.getInstance().gonggoList) {
-			if(UserService.getInstance().getLoginUser().getUserNo() == g.getUserNo() && g.state == true) {
-				System.out.println(g.toString());
-			}
-		}
+		GonggoService.getInstance().lookupOwner(1);
 		int input = GonggoService.getInstance().gonggoSelectOwner();
 		if(input == 0) {
 			System.out.println("마감된 공고이거나 접근 권한이 없는 공고입니다.");
@@ -170,10 +165,7 @@ public class ApplyService {
 	
 	
 //		============================== 자체 유틸 ============================
-	
-		
-		
-		
+
 		// 입력 resumeNo 출력 List<Apply>
 		public List<Apply> findApplysByResume(int resumeNo) {
 			List<Apply> applies = new ArrayList<>();
@@ -215,10 +207,7 @@ public class ApplyService {
 		}
 		
 		
-		
-		
-		
-		
+
 		
 //		============================= 주석처리 ==============================
 		

@@ -22,7 +22,7 @@ public class AlbazoneService {
 	// 메뉴
 	public void menu() {
 		if (userService.getLoginUser() == null) {
-			int no = nextInt("1. 회원가입 2. 로그인  9. 종료 ");
+			int no = nextInt("1. 회원가입 2. 로그인  3. 종료 ", s -> s > 0 && s <= 3 ,"1 ~ 3 사이의 숫자를 입력해주세요.");
 			switch (no) {
 			case 1: {
 				userService.register();
@@ -34,7 +34,7 @@ public class AlbazoneService {
 			}
 				break;
 
-			case 9: {
+			case 3: {
 				throw new RuntimeException();
 			}
 
@@ -44,7 +44,7 @@ public class AlbazoneService {
 			}
 			}
 		} else if (userService.getLoginUser() instanceof AlbaUser) {
-			int no = nextInt("1. 알바공고 2. 지원하기 3. 지원내역 4. 지원취소 5. 이력서 관리 6. 회원정보 조회 7. 회원정보 수정 8.회원 탈퇴 9. 종료(로그아웃)");
+			int no = nextInt("1. 알바공고 2. 지원하기 3. 지원내역 4. 지원취소 5. 이력서 관리 6. 회원정보 조회 7. 회원정보 수정 8.회원 탈퇴 9. 종료(로그아웃)", s -> s > 0 && s <= 9, "1 ~ 9 사이의 숫자를 입력해주세요.");
 			switch (no) {
 			case 1: {
 				gonggoService.lookupUser();
@@ -63,7 +63,7 @@ public class AlbazoneService {
 				break;
 			}
 			case 5: {
-				no = nextInt("1. 이력서 등록 2. 이력서 조회 3. 이력서 수정 4. 이력서 삭제 5. 나가기");
+				no = nextInt("1. 이력서 등록 2. 이력서 조회 3. 이력서 수정 4. 이력서 삭제 5. 나가기", s -> s > 0 && s <= 5, "1 ~ 5 사이의 숫자를 입력해주세요.");
 				switch (no) {
 				case 1: {
 					resumeService.resister();
@@ -110,17 +110,17 @@ public class AlbazoneService {
 
 			}
 		} else if (userService.getLoginUser() instanceof BusinessUser) {
-			int no = nextInt("1. 공고 2. 회원정보 조회 3. 회원정보 수정 4. 회원탈퇴 5. 로그아웃",s -> s > 0 && s <= 5, "1 ~ 5 사이의 번호를 입력해주세요");
+			int no = nextInt("1. 공고 2. 회원정보 조회 3. 회원정보 수정 4. 회원탈퇴 5. 로그아웃",s -> s > 0 && s <= 5, "1 ~ 5 사이의 숫자를 입력해주세요.");
 			switch (no) {
 			case 1: {
-				no = nextInt("1. 공고 등록 2. 공고 조회 3. 지원자 확인 4. 공고 수정 5. 공고 마감 6. 공고 삭제 7. 나가기 ");
+				no = nextInt("1. 공고 등록 2. 공고 조회 3. 지원자 확인 4. 공고 수정 5. 공고 마감 6. 공고 삭제 7. 나가기 ", s -> s > 0 && s <= 7, "1 ~ 7 사이의 숫자를 입력홰주세요.");
 				switch (no) {
 				case 1: {
 					gonggoService.register();
 					break;
 				}
 				case 2: {
-					gonggoService.lookupOwner(nextInt("1. 진행중 2. 마감 3. 종료"));
+					gonggoService.lookupOwner(nextInt("1. 진행중 2. 마감 3. 종료", s -> s > 0 && s <= 3, "1 ~ 3 사이의 숫자를 입력해주세요."));
 					break;
 				}
 				case 3: {
