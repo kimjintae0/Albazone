@@ -120,6 +120,7 @@ public class ResumeService {
 		}
 		return 0;
 	}
+	
 	// 회원번호를 입력하면 이력서들이 반환
 	public List<Resume> findResumeBy(int no) {
 		List<Resume> resumes = new ArrayList<>();
