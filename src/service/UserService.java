@@ -250,12 +250,11 @@ public class UserService {
 				loginUser = u; // 로그인 유저 u로 지정
 				System.out.println("사업자회원 로그인 성공!");
 				break;
-			} 
-			else if (u instanceof AlbaUser && u.getId().equals(Id) && u.getPw().equals(Pw)) {
+			} else if (u instanceof AlbaUser && u.getId().equals(Id) && u.getPw().equals(Pw)) {
 				flag = true;
 				loginUser = u;
 				System.out.println("개인회원 로그인 성공!");
-				
+
 			}
 		}
 		if (!flag) {
@@ -267,7 +266,7 @@ public class UserService {
 	public void lookupOwner() {
 
 		BusinessUser business = (BusinessUser) loginUser;// 사업자 변환 변수
-		
+
 		System.out.println("회원 정보 조회");
 		System.out.println("============================");
 		System.out.println("아이디 : " + loginUser.getId());
@@ -298,9 +297,9 @@ public class UserService {
 
 	public void modify() {
 
+		// 사업자
 		if (getLoginUser() instanceof BusinessUser) {
 			System.out.println("회원정보 수정");
-// 사업자
 			int choice = nextInt("1. 상호명 2.이름 3.연락처 4. 비밀번호 5. 거주지 정보 6. 나가기");
 
 			switch (choice) {
@@ -308,7 +307,7 @@ public class UserService {
 				BusinessUser business = (BusinessUser) loginUser;// 사업자 변환 변수
 
 				String comName = nextLine("수정할 상호명을 입력하세요."); // 상호명 - 사업자
-// 공백 불가 및 중복 허용 불가
+				// 공백 불가 및 중복 허용 불가
 				if (comName.isEmpty() || business.getCompanyName().equals(comName)) {
 					System.out.println("공백이나 동일 상호명 입력할 수 없습니다. 다시 입력해 주세요.");
 					break;
@@ -330,7 +329,7 @@ public class UserService {
 			}
 			case 3: {
 				String tel = nextLine("\"-\"(하이픈)을 포함하여 수정할 전화번호를 입력해주세요.ex) 010-0000-0000");
-// 중복체크, 정규식 010-0000-0000
+				// 중복체크, 정규식 010-0000-0000
 				if (!tel.matches(telCheck)) {
 					System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
 					break;
@@ -346,7 +345,7 @@ public class UserService {
 
 			case 4: {
 				String pw = nextLine("수정할 비밀번호를 입력하세요.");
-// 중복 체크 ,정규식, 재입력
+				// 중복 체크 ,정규식, 재입력
 				if (loginUser.getPw().equals(pw)) {
 					System.out.println("동일한 비밀번호는 입력할 수 없습니다. 다시 입력해 주세요");
 					break;
@@ -365,13 +364,13 @@ public class UserService {
 			}
 
 			case 5: {
-				
+
 				System.out.println("수정할 거주지 정보");
 				String area = selectArea();
-			
-				if(loginUser.getArea().equals(area)) {
+
+				if (loginUser.getArea().equals(area)) {
 					System.out.println("동일한 거주지 정보는 입력할 수 없습니다. 다시 입력해 주세요.");
-					break;	
+					break;
 				}
 				System.out.println("거주지 정보가 " + area + " (으)로 수정되었습니다.");
 				loginUser.setArea(area);
@@ -386,8 +385,9 @@ public class UserService {
 				System.out.println("잘못된 번호 입력입니다. 숫자 1 ~ 6 중에 해당되는 번호를 다시 입력해 주세요");
 				break;
 			}
+			// 개인회원
 		} else if (getLoginUser() instanceof AlbaUser) {
-			
+
 			System.out.println("회원정보 수정");
 
 			int choice = nextInt("1. 이름 2.연락처 3. 비밀번호 4. 거주지 정보 5. 나가기");
@@ -443,9 +443,9 @@ public class UserService {
 			case 4: {
 				System.out.println("수정할 거주지 정보");
 				String area = selectArea();
-				if(loginUser.getArea().equals(area)) {
+				if (loginUser.getArea().equals(area)) {
 					System.out.println("동일한 거주지 정보는 입력할 수 없습니다. 다시 입력해 주세요.");
-					break;	
+					break;
 				}
 
 				System.out.println("거주지 정보가 " + area + " (으)로 수정되었습니다.");
@@ -464,7 +464,7 @@ public class UserService {
 		save(); // 수정 정보 저장
 	}
 
-// 로그아웃 //
+	// 로그아웃 //
 	public void logOut() {
 		if (loginUser != null) {
 			loginUser = null;
@@ -472,37 +472,51 @@ public class UserService {
 		}
 	}
 
-// 회원 탈퇴 //
+	// 회원 탈퇴 // 개인 ,사업자 나누기
 	public void remove() {
 		System.out.println("회원 탈퇴");
-
-// 탈퇴 하기 전에 비밀번호 입력
+		
+		// 공통 문구
+		
 		String pw = nextLine("비밀번호를 입력하세요.");
-
+		// 탈퇴 하기 전에 비밀번호 입력
 		if (!loginUser.getPw().equals(pw)) {
 			System.out.println("비밀 번호가 일치 하지 않습니다.");
 			return;
 		}
-
-// 탈퇴
-		if (!nextConfirm("탈퇴하시겠습니까?")) {
-			return;
-		}
-// 중복으로 한 번 더 물어보기 (나중에 지원이랑 공고 내역 삭제까지)
-		if (!nextConfirm("회원 정보가 전부 삭제됩니다. 탈퇴하시겠습니까?")) {
-			return;
-		}
-
+		// 사업자 탈퇴
+		if(loginUser instanceof BusinessUser) {
+			
+			
+			if (!nextConfirm("탈퇴하시겠습니까?")) {
+				return;
+			}
+			if (!nextConfirm("회원 정보가 전부 삭제됩니다. 탈퇴하시겠습니까?")) {
+				return;
+			}
 //		GonggoService.getInstance().gonggoList.removeAll(GonggoService.getInstance().userFindGonggo(loginUser.getUserNo())); // 사업자 - 공고 내역 삭제
-		ResumeService.getInstance().resumeList.removeAll(ResumeService.getInstance().findResumeBy(loginUser.getUserNo())); // 개인 회원 - 이력서 내역 삭제
+		}
+		
+		// 개인회원
+		else if (loginUser instanceof AlbaUser) {
+			
+			if (!nextConfirm("탈퇴하시겠습니까?")) {
+							return;
+			}
+			if (!nextConfirm("회원 정보가 전부 삭제됩니다. 탈퇴하시겠습니까?")) {
+							return;
+		}
+			ResumeService.getInstance().resumeList.removeAll(ResumeService.getInstance().findResumeBy(loginUser.getUserNo())); // 개인 회원 - 이력서 내역 삭제
+//			
+		}
+		// 공통
 		userList.remove(loginUser); // 로그인 정보 유저 삭제
 		logOut();// 회원 탈퇴시 로그아웃도 동시에 진행
-
 		System.out.println("탈퇴가 성공적으로 완료되었습니다.");
 		save(); // 탈퇴한 것 까지 저장
 	}
 
-// 파일 저장 //
+	// 파일 저장 //
 	private void save() {
 		try {
 			File file = new File("data");
