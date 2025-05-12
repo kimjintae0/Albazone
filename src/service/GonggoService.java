@@ -1,5 +1,8 @@
 package service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -48,6 +51,10 @@ public class GonggoService {
 		String title = nextLine("공고의 제목을 입력해주세요.");
 		String role = nextLine("담당 업무를 입력해주세요.");
 		int workHours = nextInt("근무 시간을 숫자로 입력해주세요. (시간 단위로 적어주세요. 소숫점은 미지원)");
+		if(workHours < 0 ) {
+			System.out.println("시간은 0보다 작을 수 없습니다.");
+			return;
+		}
 		int wage = nextInt("시급을 숫자로 입력해주세요. (2025년 최저시급은 10,030원 입니다.)"); // 최저시급 보다 작을 시 return
 			if(wage < 10030) {
 				System.out.println("2025년 최저 시급은 10,030원입니다. 다시 입력해주세요. ");
@@ -153,49 +160,71 @@ public class GonggoService {
 			return;
 		}
 		Gonggo g = findGonggoByNo(input);
-		
-		
-		
-		String title = nextLine("공고의 제목을 입력해주세요.");
-		String role = nextLine("담당 업무를 입력해주세요.");
-		int workHours = nextInt("근무 시간을 숫자로 입력해주세요. (시간 단위로 적어주세요. 소숫점은 미지원)");
-		int wage = nextInt("시급을 숫자로 입력해주세요. (2025년 최저시급은 10,030원 입니다.)"); // 최저시급 보다 작을 시 return
-			if(wage < 10030) {
-				System.out.println("2025년 최저 시급은 10,030원입니다. 다시 입력해주세요. ");
-				return;
-			}
-		String workingStartDate = nextLine("근무 시작일을 입력해주세요 (yyyy-MM-dd)."); // 정규식 만들기 
-		boolean workingStartDateCheck = workingStartDate.matches(dateForm);
-		if(!Pattern.matches(dateForm, workingStartDate)) {
-			System.out.println("양식에 맞게 다시 입력하세요. ");
-			return;
-		}
-		String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd)."); // 정규식 만들기 
-		boolean workingEndDateCheck = workingEndDate.matches(dateForm);
-		if(!Pattern.matches(dateForm, workingEndDate)){
-			System.out.println("양식에 맞게 다시 입력해주세요.");
-			return;
-		}
-		
-		String comArea = selectArea();
-		
-		if(!nextConfirm("공고를 수정하시겠습니까?")) {
-			System.out.println("공고 수정이 취소되었습니다.");
-			return;
-		}
-		
-		
-		g.setTitle(title);
-		g.setRole(role);
-		g.setWorkHours(workHours);
-		g.setWage(wage);
-		g.setWorkingStartDate(workingStartDate);
-		g.setWorkingEndDate(workingEndDate);
-		g.setComArea(comArea);
-	}
-				
-			
 
+		int select = AlbaUtils.nextInt("1.공고 제목 2.담당 업무 3.근무 시간 4. 시급 5.근무시작일 6. 근무종료일 7.근무 지역 8. 나가기");
+
+		switch(select) {
+			case 1 :
+				String title = nextLine("공고의 제목을 입력해주세요.");
+				System.out.println("공고 제목이 " + title + "로 변경되었습니다.");
+				g.setTitle(title);
+				break;
+			case 2:
+				String role = nextLine("담당 업무를 입력해주세요.");
+				System.out.println("담당 업무가 " + role + "(으)로 변경되었습니다.");
+				g.setRole(role);
+				break;
+			case 3:
+				int workHours = nextInt("근무 시간을 숫자로 입력해주세요. (시간 단위로 적어주세요. 소숫점은 미지원)");
+				if(workHours < 0 ) {
+					System.out.println("시간은 0보다 작을 수 없습니다.");
+					return;
+					}
+				else {
+					System.out.println("근무 시간이 " + workHours + "(으)로 변경되었습니다.");
+					g.setWorkHours(workHours);
+					break;
+				}
+			case 4: 
+				int wage = nextInt("시급을 숫자로 입력해주세요. (2025년 최저시급은 10,030원 입니다.)"); 
+				if(wage < 10030) {
+					System.out.println("2025년 최저 시급은 10,030원입니다. 다시 입력해주세요. ");
+					return;
+				}else {
+					System.out.println("시급이 " + wage + "원으로 변경되었습니다.");
+					g.setWage(wage);
+					break;
+				}
+			case 5 :
+				String workingStartDate = nextLine("근무 시작일을 입력해주세요 (yyyy-MM-dd)."); 
+				boolean workingStartDateCheck = workingStartDate.matches(dateForm);
+				if(!Pattern.matches(dateForm, workingStartDate)) {
+					System.out.println("양식에 맞게 다시 입력하세요. ");
+					return;
+				}else {
+					System.out.println("근무 시작일이 " + workingStartDate + "(으)로 변경되었습니다.");
+					g.setWorkingStartDate(workingStartDate);
+					break;
+				}
+			case 6 :
+				String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd)."); // 정규식 만들기 
+				boolean workingEndDateCheck = workingEndDate.matches(dateForm);
+				if(!Pattern.matches(dateForm, workingEndDate)){
+				System.out.println("양식에 맞게 다시 입력해주세요.");
+				return;
+				}else {
+					System.out.println("근무 종료일이 " + workingEndDate + "(으)로 변경되었습니다.");
+					g.setWorkingEndDate(workingEndDate);
+					break;
+				}
+			case 7 :
+				String comArea = selectArea();
+				System.out.println("근무 지역이 " + comArea + " (으)로 변경되었습니다.");
+				g.setComArea(comArea);
+				break;
+		}	
+			save();
+	}
 	//회원정보 수정시 공고 연락처도 수정
 	void gonggoSync() {
 		int input = nextInt("공고 번호를 입력해 주세요."); 
@@ -264,6 +293,22 @@ public class GonggoService {
 			}
 		}
 	
+	}
+	private void save() {
+		try {
+			File file = new File("data");
+			if (!file.exists()) {
+				file.mkdirs();
+			}
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(file, "gonggo.ser")));
+
+			oos.writeObject(gonggoList);
+			oos.close();
+		} catch (Exception e) {
+			System.out.println("파일 접근 권한이 없습니다.");
+			e.printStackTrace();
+
+		}
 	}
 	
 //	============================== 유틸  ==============================================================
