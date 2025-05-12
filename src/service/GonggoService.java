@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import domain.BusinessUser;
 import domain.Gonggo;
+import domain.User;
 import utils.AlbaUtils;
 
 import static utils.AlbaUtils.*;
@@ -145,8 +146,8 @@ public class GonggoService {
 	void modify() {
 		System.out.println("공고 수정 기능");
 		int input = AlbaUtils.nextInt("공고 번호를 입력하세요 : ");
-		for(Gonggo g : gonggoList) { // for문 쓰는 이유도 잘 모르겠습니다.
-			if(input != UserService.getInstance().getLoginUser().getUserNo()) { // input은 공고번호인데, 왜 유저번호와 비교를 하는지 잘 모르겠습니다.
+		for(Gonggo g : gonggoList) { 
+			if(input != g.getGonggoNo() && g.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) { 
 				System.out.println("공고번호와 사업자의 유저 정보가 일치하지 않습니다.");
 				return;
 			}else 
@@ -288,15 +289,15 @@ public class GonggoService {
 	}
 	
 	//userNo (지원한 알바 유저 정보) 입력 받아 List<Gonggo> 출력 
-//	public List<Gonggo> userFindGonggo(int no){
-//		List<Gonggo> gonggoUser = new ArrayList<Gonggo>();
-//		for(Gonggo g : gonggoList) {
-//			if(no == g.getGonggoNo()) {
-//				gonggoUser.add(g);
-//			}
-//		}
-//		return gonggoUser;
-//	}
+	public List<Gonggo> userFindGonggo(int no){
+		List<Gonggo> gonggoUser = new ArrayList<Gonggo>();
+		for(Gonggo g : gonggoList) {
+			if(no == g.getUserNo()) {
+				gonggoUser.add(g);
+			}
+		}
+		return gonggoUser;
+	}
 	
 // ============================ 그 외 클래스 내 사용 ====================================================
 	
