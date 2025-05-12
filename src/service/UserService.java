@@ -104,7 +104,7 @@ public class UserService {
 		return user;
 	}
 
-// 회원가입 //
+// 회원가입 // - > 다른 숫자 번호일시 처음으로 돌아가게 만들기
 	public void register() {
 		int choice = nextInt("1. (사업자) 회원가입 2.(개인회원) 회원가입 3. 종료");
 // 유저번호 중복 x 식
@@ -115,7 +115,7 @@ public class UserService {
 			System.out.println("사업자 회원가입");
 // 아이디 , 비밀번호, 연락처, 주소, 이름, 상호명
 
-			String name = nextLine("이름을 입력하세요. 한글로 최대 5글자까지 작성 가능합니다."); // 대표자명
+			String name = nextLine("사업자 본인 이름을 입력하세요. 한글로 최대 5글자까지 작성 가능합니다."); // 대표자명
 			if (!name.matches(nameCheck)) { // 한글 5자 제한 정규식 추가
 				System.out.println("이름 형식이 올바르지 않습니다. 다시 입력해 주세요");
 				return;
@@ -231,6 +231,8 @@ public class UserService {
 			System.out.println("메인 화면으로 돌아갑니다.");
 			break;
 
+			default : 
+				System.out.println("잘못된 입력입니다. 다시 입력해 주세요.");
 		}
 	}
 
@@ -447,7 +449,6 @@ public class UserService {
 					System.out.println("동일한 거주지 정보는 입력할 수 없습니다. 다시 입력해 주세요.");
 					break;
 				}
-
 				System.out.println("거주지 정보가 " + area + " (으)로 수정되었습니다.");
 				loginUser.setArea(area);
 				break;
@@ -495,6 +496,7 @@ public class UserService {
 				return;
 			}
 //		GonggoService.getInstance().gonggoList.removeAll(GonggoService.getInstance().userFindGonggo(loginUser.getUserNo())); // 사업자 - 공고 내역 삭제
+//			ApplyService.getInstance().applyList.removeAll(ApplyService.getInstance().findApplysByGonggo(loginUser.getUserNo())); // 사업자 - 공고 지원 삭제
 		}
 		
 		// 개인회원
@@ -506,8 +508,12 @@ public class UserService {
 			if (!nextConfirm("회원 정보가 전부 삭제됩니다. 탈퇴하시겠습니까?")) {
 							return;
 		}
+	
+			// 확인 완료
 			ResumeService.getInstance().resumeList.removeAll(ResumeService.getInstance().findResumeBy(loginUser.getUserNo())); // 개인 회원 - 이력서 내역 삭제
-//			
+			// 확인 필요
+//			ApplyService.getInstance().applyList.removeAll(ApplyService.getInstance().findApplysByResume(loginUser.getUserNo()));// 개인회원 - 지원 내역 삭제
+
 		}
 		// 공통
 		userList.remove(loginUser); // 로그인 정보 유저 삭제
