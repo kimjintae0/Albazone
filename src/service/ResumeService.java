@@ -1,12 +1,19 @@
 package service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import static utils.AlbaUtils.*;
 
 import domain.AlbaUser;
-import domain.Apply;
+
 import domain.Resume;
+
 
 public class ResumeService {
 	// 이력서 리스트 생성
@@ -27,7 +34,19 @@ public class ResumeService {
 	
 	// 초기화 블럭
 	{
-		resumeList.add(new Resume(2, 1, "김진태님의 이력서입니다.", "김진태", "010-1111-1111", "서울", "안녕하세요. 저는 김진태입니다."));
+		ObjectInputStream ois = null;
+		try {
+			ois = new ObjectInputStream(new FileInputStream("data/user.ser")); // 보조 입력 스트림 , 입력
+			resumeList = (List<Resume>) ois.readObject();
+			ois.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("User : 파일을 불러올 수 없습니다. 임시 데이터셋으로 진행합니다.");
+			resumeList.add(new Resume(2, 1, "김진태님의 이력서입니다.", "김진태", "010-1111-1111", "서울", "안녕하세요. 저는 김진태입니다."));
+	
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+		}
 	}
 	
 	// 이력서 작성
@@ -39,6 +58,7 @@ public class ResumeService {
 		int num = resumeList.get(resumeList.size() - 1).getResumeNo() == 0 ? 1 : resumeList.get(resumeList.size() - 1).getResumeNo() + 1;
 		resumeList.add(new Resume(UserService.getInstance().getLoginUser().getUserNo(), num, title, UserService.getInstance().getLoginUser().getName(), UserService.getInstance().getLoginUser().getTel(), UserService.getInstance().getLoginUser().getArea(), introduce));
 		System.out.println("이력서 작성 완료");
+		save();
 	}
 	
 	// 이력서 조회 - 알바
@@ -89,6 +109,7 @@ public class ResumeService {
 		String introduce = nextLine("자기소개를 작성해주세요.");
 		input.setTitle(title);
 		input.setIntroduce(introduce);
+		save();
 	}
 	
 	
@@ -109,6 +130,7 @@ public class ResumeService {
 		}
 		resumeList.remove(removeResume);
 		System.out.println("No." + removeResume.getResumeNo() + " 이력서가 삭제되었습니다.");
+		save();
 	}
 	
 	
@@ -135,4 +157,22 @@ public class ResumeService {
 		}
 		return resumes;
 	}
+	
+	// 파일 저장 //
+		private void save() {
+			try {
+				File file = new File("data");
+				if (!file.exists()) {
+					file.mkdirs();
+				}
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(file, "resume.ser")));
+
+				oos.writeObject(resumeList);
+				oos.close();
+			} catch (Exception e) {
+				System.out.println("파일 접근 권한이 없습니다.");
+				e.printStackTrace();
+			}
+		}
+	
 }
