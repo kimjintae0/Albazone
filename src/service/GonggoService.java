@@ -66,7 +66,7 @@ public class GonggoService {
 			return;
 		}
 		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");	
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			Date startdate = format.parse(workingStartDate);
 			Date enddate = format.parse(workingEndDate);
@@ -148,56 +148,54 @@ public class GonggoService {
 	//공고수정-사업자
 	void modify() {
 		System.out.println("공고 수정 기능");
-		int input = AlbaUtils.nextInt("공고 번호를 입력하세요 : ");
-		for(Gonggo g : gonggoList) { 
-			if(input != g.getGonggoNo() && g.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) { // 입력받은 공고번호가 그 공고의 유저번호도 동시에 같으면 같은 유저
-				System.out.println("공고번호가 일치하지 않습니다.");
+		int input = gonggoSelectOwner();
+		if (input == 0) {
+			System.out.println("해당공고에 접근이 불가능합니다.");
+			return;
+		}
+		Gonggo g = findGonggoByNo(input);
+		
+		
+		
+		String title = nextLine("공고의 제목을 입력해주세요.");
+		String role = nextLine("담당 업무를 입력해주세요.");
+		int workHours = nextInt("근무 시간을 숫자로 입력해주세요. (시간 단위로 적어주세요. 소숫점은 미지원)");
+		int wage = nextInt("시급을 숫자로 입력해주세요. (2025년 최저시급은 10,030원 입니다.)"); // 최저시급 보다 작을 시 return
+			if(wage < 10030) {
+				System.out.println("2025년 최저 시급은 10,030원입니다. 다시 입력해주세요. ");
 				return;
-			}else 
-			{
-//			for(int i = 0; i < gonggoList.size(); i++) {
-//				if(input == gonggoList.get(i).getGonggoNo()) {
-					String title = nextLine("공고의 제목을 입력해주세요.");
-					String role = nextLine("담당 업무를 입력해주세요.");
-					int workHours = nextInt("근무 시간을 숫자로 입력해주세요. (시간 단위로 적어주세요. 소숫점은 미지원)");
-					int wage = nextInt("시급을 숫자로 입력해주세요. (2025년 최저시급은 10,030원 입니다.)"); // 최저시급 보다 작을 시 return
-						if(wage < 10030) {
-							System.out.println("2025년 최저 시급은 10,030원입니다. 다시 입력해주세요. ");
-							return;
-						}
-					String workingStartDate = nextLine("근무 시작일을 입력해주세요 (yyyy-MM-dd)."); // 정규식 만들기 
-					boolean workingStartDateCheck = workingStartDate.matches(dateForm);
-					if(!Pattern.matches(dateForm, workingStartDate)) {
-						System.out.println("양식에 맞게 다시 입력하세요. ");
-						return;
-					}
-					String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd)."); // 정규식 만들기 
-					boolean workingEndDateCheck = workingEndDate.matches(dateForm);
-					if(!Pattern.matches(dateForm, workingEndDate)){
-						System.out.println("양식에 맞게 다시 입력해주세요.");
-						return;
-					}
-					
-					String comArea = selectArea();
-					
-					if(!nextConfirm("공고를 수정하시겠습니까?")) {
-						System.out.println("공고 수정이 취소되었습니다.");
-						return;
-					}
-					
-					
-					gonggoList.get(input).setTitle(title);
-					gonggoList.get(input).setRole(role);
-					gonggoList.get(input).setWorkHours(workHours);
-					gonggoList.get(input).setWage(wage);
-					gonggoList.get(input).setWorkingStartDate(workingStartDate);
-					gonggoList.get(input).setWorkingEndDate(workingEndDate);
-					gonggoList.get(input).setState(true);
-					gonggoList.get(input).setComArea(comArea);
-
-					}
-				}
 			}
+		String workingStartDate = nextLine("근무 시작일을 입력해주세요 (yyyy-MM-dd)."); // 정규식 만들기 
+		boolean workingStartDateCheck = workingStartDate.matches(dateForm);
+		if(!Pattern.matches(dateForm, workingStartDate)) {
+			System.out.println("양식에 맞게 다시 입력하세요. ");
+			return;
+		}
+		String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd)."); // 정규식 만들기 
+		boolean workingEndDateCheck = workingEndDate.matches(dateForm);
+		if(!Pattern.matches(dateForm, workingEndDate)){
+			System.out.println("양식에 맞게 다시 입력해주세요.");
+			return;
+		}
+		
+		String comArea = selectArea();
+		
+		if(!nextConfirm("공고를 수정하시겠습니까?")) {
+			System.out.println("공고 수정이 취소되었습니다.");
+			return;
+		}
+		
+		
+		g.setTitle(title);
+		g.setRole(role);
+		g.setWorkHours(workHours);
+		g.setWage(wage);
+		g.setWorkingStartDate(workingStartDate);
+		g.setWorkingEndDate(workingEndDate);
+		g.setComArea(comArea);
+	}
+				
+			
 
 	//회원정보 수정시 공고 연락처도 수정 #수정필요
 	void gonggoSync() {
@@ -270,6 +268,18 @@ public class GonggoService {
 	}
 	
 //	============================== 유틸  ==============================================================
+	// 입력 : gonggoNo, 출력 : gonggo
+	public Gonggo findGonggoByNo(int gonggoNo) {
+		Gonggo gonggo = null;
+		for(Gonggo g : gonggoList) {
+			if(g.getGonggoNo() == gonggoNo) {
+				gonggo = g;
+			}
+		}
+		return gonggo;
+	}
+	
+	
 	
 	// applyList.gonggoNo() 를 입력받아서 List<Gonggo>를 출력하는 메서드
 		
