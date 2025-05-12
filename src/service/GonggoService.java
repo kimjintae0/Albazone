@@ -155,8 +155,8 @@ public class GonggoService {
 				return;
 			}else 
 			{
-			for(int i = 0; i < gonggoList.size(); i++) {
-				if(input == gonggoList.get(i).getGonggoNo()) {
+//			for(int i = 0; i < gonggoList.size(); i++) {
+//				if(input == gonggoList.get(i).getGonggoNo()) {
 					String title = nextLine("공고의 제목을 입력해주세요.");
 					String role = nextLine("담당 업무를 입력해주세요.");
 					int workHours = nextInt("근무 시간을 숫자로 입력해주세요. (시간 단위로 적어주세요. 소숫점은 미지원)");
@@ -186,20 +186,19 @@ public class GonggoService {
 					}
 					
 					
-			
-					gonggoList.get(i).setTitle(title);
-					gonggoList.get(i).setRole(role);
-					gonggoList.get(i).setWorkHours(workHours);
-					gonggoList.get(i).setWage(wage);
-					gonggoList.get(i).setWorkingStartDate(workingStartDate);
-					gonggoList.get(i).setWorkingEndDate(workingEndDate);
-					gonggoList.get(i).setState(true);
-					gonggoList.get(i).setComArea(comArea);
+					gonggoList.get(input).setTitle(title);
+					gonggoList.get(input).setRole(role);
+					gonggoList.get(input).setWorkHours(workHours);
+					gonggoList.get(input).setWage(wage);
+					gonggoList.get(input).setWorkingStartDate(workingStartDate);
+					gonggoList.get(input).setWorkingEndDate(workingEndDate);
+					gonggoList.get(input).setState(true);
+					gonggoList.get(input).setComArea(comArea);
+
 					}
 				}
 			}
-		}
-	}
+
 	//회원정보 수정시 공고 연락처도 수정 #수정필요
 	void gonggoSync() {
 		int input = nextInt("공고 번호를 입력해 주세요."); 
