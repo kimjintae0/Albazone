@@ -400,6 +400,7 @@ public class UserService {
 			}
 
 			case 3: {
+				
 				String pw = nextLine("수정할 비밀번호를 입력하세요.");
 				if (!pw.matches(pwCheck)) {
 					System.out.println("비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
@@ -445,7 +446,16 @@ public class UserService {
 	// 회원 탈퇴
 	public void remove() {
 		System.out.println("회원 탈퇴");
+		
+		//탈퇴 하기 전에 비밀번호 입력
+		String pw = nextLine("비밀번호를 입력하세요.") ;
+	
+		if (!pw.equals(nextLine(pw))) {
+			System.out.println("비밀 번호가 일치 하지 않습니다.");
+			return;
+		}
 
+		// 탈퇴 
 		if (!nextConfirm("탈퇴하시겠습니까?")) {
 			return;
 		}
