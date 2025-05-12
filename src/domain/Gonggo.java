@@ -107,10 +107,16 @@ public class Gonggo implements Serializable{
 
 	@Override
 	public String toString() {
-		return "공고 [유저번호 : " + userNo + ", 공고번호 : " + gonggoNo + ", 제목 : " + title + ", 업무 : " + role
-				+ ", 근무시간 : " + workHours + "시간(일)" + ", 시급 : " + wage + "원" + ", 근무시작일 :" + workingStartDate
-				+ ", 근무종료일 : " + workingEndDate + ", 진행상태 : " + state + ", 근무지역 : " + comArea + ", 연락처 : " + tel
-				+ "]";
+		return "공고번호 : " + gonggoNo 
+				+ "\n제목 : " + title 
+				+ "\n업무 : " + role
+				+ "\n근무시간 : " + workHours + "시간(일)" 
+				+ "\n시급 : " + wage + "원" 
+				+ "\n근무기간 :" + (workingStartDate + "~" + workingEndDate )
+				+ "\n진행상태 : " + state 
+				+ "\n근무지역 : " + comArea 
+				+ "\n연락처 : " + tel
+				;
 	}
 
     

@@ -1,7 +1,10 @@
 package service;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import domain.Apply;
 import domain.BusinessUser;
 import domain.Gonggo;
 import domain.User;
@@ -36,11 +40,26 @@ public class GonggoService {
 
 	
 	// 초기화 블럭
+//	{
+//		// 사업자 유저 번호, 공고 번호, 제목, 역할, 일하는 시간, 시급, 근무 기간, 진행상태, 소재지
+//		gonggoList.add(new Gonggo(1, 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울", "000-0000-0000"));
+////		gonggoList.add(new Gonggo(1, 2, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울", "000-0000-0000"));
+//		// 마감일 < 현재시점일 경우 true -> false 바뀌는지 확인 위한 초기화 블럭 추가
+//	}
 	{
-		// 사업자 유저 번호, 공고 번호, 제목, 역할, 일하는 시간, 시급, 근무 기간, 진행상태, 소재지
-		gonggoList.add(new Gonggo(1, 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울", "000-0000-0000"));
-//		gonggoList.add(new Gonggo(1, 2, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울", "000-0000-0000"));
-		// 마감일 < 현재시점일 경우 true -> false 바뀌는지 확인 위한 초기화 블럭 추가
+		ObjectInputStream ois = null;
+		try {
+			ois = new ObjectInputStream(new FileInputStream("data/gonggo.ser"));
+			gonggoList = (List<Gonggo>)ois.readObject();
+			ois.close();
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("Gonggo : 파일을 불러올 수 없습니다. 임시 데이터셋으로 진행합니다.");
+			gonggoList.add(new Gonggo(1, 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울", "000-0000-0000"));
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//====================================== 메서드 ===========================================================================================
