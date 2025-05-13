@@ -100,7 +100,7 @@ public class GonggoService {
 		int input = nextInt("공고 번호를 선택해 주세요.", s -> s > 0 , "공고번호는 1이상의 정수를 입력해주세요.");
 		int gonggoNo = 0;
 		for(Gonggo g : gonggoList) {
-			if(g.getGonggoNo() == input && g.getComArea() == UserService.getInstance().getLoginUser().getArea() && g.state == true) {
+			if(g.getGonggoNo() == input && g.getComArea().equals(UserService.getInstance().getLoginUser().getArea()) && g.state == true) {
 				gonggoNo = input;
 			}
 		}
