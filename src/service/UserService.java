@@ -12,12 +12,12 @@ import domain.AlbaUser;
 import domain.BusinessUser;
 import domain.User;
 import static utils.AlbaUtils.*;
+
 @SuppressWarnings("unchecked")
 public class UserService {
 
 // 로그인 유저
 	private User loginUser;
-
 
 // 싱글톤
 	private static UserService userService = new UserService();
@@ -69,7 +69,7 @@ public class UserService {
 	}
 
 // 아이디 중복
-	
+
 	public User findById(String id) {
 		User user = null; // 초기값 지정
 		for (User u : userList) {
@@ -82,7 +82,7 @@ public class UserService {
 	}
 
 // 전화번호 중복
-	
+
 	public User findBytel(String tel) {
 		User user = null;
 		for (User u : userList) {
@@ -111,14 +111,16 @@ public class UserService {
 	public void register() {
 		int choice = nextInt("1. (사업자) 회원가입 2.(개인회원) 회원가입 3. 종료", s -> s > 0 && s <= 3, "1 ~ 3 사이의 번호를 입력해주세요");
 		// 유저번호 중복 x 식
-		int num = userList.size() == 0 ? 1	: userList.get(userList.size() - 1).getUserNo() + 1;
+		int num = userList.size() == 0 ? 1 : userList.get(userList.size() - 1).getUserNo() + 1;
 		switch (choice) {
 		case 1:
 			System.out.println("사업자 회원가입");
 			// 아이디 , 비밀번호, 연락처, 주소, 이름, 상호명
-			
-			String name = nextLine("사업자 본인 이름을 입력하세요. 한글로 최대 5글자까지 작성 가능합니다.", s -> s.matches(nameCheck) && !s.isEmpty(), "한글로 5글자 이내의 이름을 작성해주세요."); // 대표자명
-			String comNum = nextLine("\"-\"(하이픈)을 포함하여 사업자 등록번호를 입력해 주세요.ex) 000-00-00000", s -> s.matches(comNumCheck), "하이픈을 포함한 사업자 등록번호를 입력해주세요 ex) 000-00-00000"); // 사업자번호 중복체크, 정규식 넣기
+
+			String name = nextLine("사업자 본인 이름을 입력하세요. 한글로 최대 5글자까지 작성 가능합니다.",
+					s -> s.matches(nameCheck) && !s.isEmpty(), "한글로 5글자 이내의 이름을 작성해주세요."); // 대표자명
+			String comNum = nextLine("\"-\"(하이픈)을 포함하여 사업자 등록번호를 입력해 주세요.ex) 000-00-00000", s -> s.matches(comNumCheck),
+					"하이픈을 포함한 사업자 등록번호를 입력해주세요 ex) 000-00-00000"); // 사업자번호 중복체크, 정규식 넣기
 			// 사업자 정규식 000-00-00000
 			if (findByNum(comNum) != null) {
 				System.out.println("중복된 사업자 번호가 존재합니다.");
@@ -127,20 +129,24 @@ public class UserService {
 
 			String comName = nextLine("상호명을 입력하세요.", s -> !s.isEmpty(), "공백이 아닌 상호명을 입력해주세요.");// 공백이면 넘어가서 못 넘어가게 수정
 
-			String tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요.ex) 010-0000-0000", s -> s.matches(telCheck), "하이픈을 포함한 전화번호를 입력해주세요 ex) 010-0000-0000");
+			String tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요.ex) 010-0000-0000", s -> s.matches(telCheck),
+					"하이픈을 포함한 전화번호를 입력해주세요 ex) 010-0000-0000");
 			if (findBytel(tel) != null) {
 				System.out.println("중복된 전화번호가 존재합니다.");
 				return;
 			}
-			
-			String id = nextLine("아이디를 입력하세요.(첫 글자는 영문자로 시작하고, 영문자 또는 숫자로만 구성되어야 합니다.", s -> s.matches(idCheck) && !s.isEmpty(), "아이디는 첫 글자는 영문자로 시작하고, 영문자 또는 숫자로만 구성되어야 합니다. \n아이디를 입력해주세요.");
+
+			String id = nextLine("아이디를 입력하세요.(첫 글자는 영문자로 시작하고, 영문자 또는 숫자로만 구성되어야 합니다.",
+					s -> s.matches(idCheck) && !s.isEmpty(),
+					"아이디는 첫 글자는 영문자로 시작하고, 영문자 또는 숫자로만 구성되어야 합니다. \n아이디를 입력해주세요.");
 			// 중복 체크
 			if (findById(id) != null) {
 				System.out.println("중복된 아이디입니다.");
 				return;
 			}
 			// 체크
-			String pw = nextLine("비밀번호를 입력하세요.", s -> s.matches(pwCheck) && !s.isEmpty(), "비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
+			String pw = nextLine("비밀번호를 입력하세요.", s -> s.matches(pwCheck) && !s.isEmpty(),
+					"비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
 			if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
 				System.out.println("비밀번호가 다릅니다.");
 				return;
@@ -161,22 +167,27 @@ public class UserService {
 
 			// 이름, 연락처, 거주지, 아이디, 비밀번호, 이력서
 
-			name = nextLine("이름을 입력하세요.(한글 5글자 제한)", s -> s.matches(nameCheck) && !s.isEmpty(), "한글로 5글자 이내의 이름을 작성해주세요.");
-			tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요.ex) 010-0000-0000", s -> s.matches(telCheck), "하이픈을 포함한 전화번호를 입력해주세요 ex) 010-0000-0000");// 중복체크, 정규식 010-0000-0000
-	
+			name = nextLine("이름을 입력하세요.(한글 5글자 제한)", s -> s.matches(nameCheck) && !s.isEmpty(),
+					"한글로 5글자 이내의 이름을 작성해주세요.");
+			tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요.ex) 010-0000-0000", s -> s.matches(telCheck),
+					"하이픈을 포함한 전화번호를 입력해주세요 ex) 010-0000-0000");// 중복체크, 정규식 010-0000-0000
+
 			if (findBytel(tel) != null) {
 				System.out.println("중복된 전화번호가 존재합니다.");
 				return;
 			}
 
-			id = nextLine("아이디를 입력하세요.(첫 글자는 영문자로 시작하고, 영문자 또는 숫자로만 구성되어야 합니다.", s -> s.matches(idCheck) && !s.isEmpty(), "아이디는 첫 글자는 영문자로 시작하고, 영문자 또는 숫자로만 구성되어야 합니다. \n아이디를 입력해주세요.");
+			id = nextLine("아이디를 입력하세요.(첫 글자는 영문자로 시작하고, 영문자 또는 숫자로만 구성되어야 합니다.",
+					s -> s.matches(idCheck) && !s.isEmpty(),
+					"아이디는 첫 글자는 영문자로 시작하고, 영문자 또는 숫자로만 구성되어야 합니다. \n아이디를 입력해주세요.");
 			// 중복체크
 			if (findById(id) != null) {
 				System.out.println("중복된 아이디가 존재합니다. 다른 아이디로 다시 작성해 주세요.");
 				return;
 			}
 
-			pw = nextLine("비밀번호를 입력하세요.", s -> s.matches(pwCheck) && !s.isEmpty(), "비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
+			pw = nextLine("비밀번호를 입력하세요.", s -> s.matches(pwCheck) && !s.isEmpty(),
+					"비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
 			if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
 				System.out.println("비밀번호가 다릅니다.");
 				return;
@@ -192,9 +203,6 @@ public class UserService {
 
 			System.out.println("메인 화면으로 돌아갑니다.");
 			break;
-
-			default : 
-				System.out.println("잘못된 입력입니다. 다시 입력해 주세요.");
 		}
 	}
 
@@ -225,13 +233,13 @@ public class UserService {
 			System.out.println("아이디 또는 비밀번호가 틀렸습니다.");
 		}
 	}
-	
+
 // 사업자 회원 정보 조회 //
 
 	public void lookupOwner() {
- 
+
 		BusinessUser business = (BusinessUser) loginUser;// 사업자 변환 변수
-	
+
 		System.out.println("회원 정보 조회");
 		System.out.println("============================");
 		System.out.println("아이디 : " + loginUser.getId());
@@ -240,7 +248,7 @@ public class UserService {
 		System.out.println("연락처 : " + loginUser.getTel());
 		System.out.println("사업자 번호 : " + business.getCompanyNumber());
 		System.out.println("상호명 : " + business.getCompanyName());
-		System.out.println("지역 : " + loginUser.getArea());
+		System.out.println("거주지 : " + loginUser.getArea());
 
 	}
 
@@ -265,7 +273,8 @@ public class UserService {
 		// 사업자
 		if (getLoginUser() instanceof BusinessUser) {
 			System.out.println("회원정보 수정");
-			int choice = nextInt("1. 상호명 2.이름 3.연락처 4. 비밀번호 5. 거주지 정보 6. 나가기",s -> s > 0 && s <= 6, "1 ~ 6 사이의 번호를 입력해주세요");
+			int choice = nextInt("1. 상호명 2.이름 3.연락처 4. 비밀번호 5. 거주지 정보 6. 나가기", s -> s > 0 && s <= 6,
+					"1 ~ 6 사이의 번호를 입력해주세요");
 
 			switch (choice) {
 			case 1: {
@@ -283,8 +292,9 @@ public class UserService {
 			}
 			case 2: {
 
-				String name = nextLine("수정할 이름을 입력하세요.", s -> s.matches(nameCheck) && !s.isEmpty(), "한글로 5글자 이내의 이름을 작성해주세요."); // 기존 로그인 유저 이름과 중복 안되게 (!name.trim().matches(nameCheck)) 추가
-				if (loginUser.getName().equals(name)) { 
+				String name = nextLine("수정할 이름을 입력하세요.", s -> s.matches(nameCheck) && !s.isEmpty(),
+						"한글로 5글자 이내의 이름을 작성해주세요."); // 기존 로그인 유저 이름과 중복 안되게 (!name.trim().matches(nameCheck)) 추가
+				if (loginUser.getName().equals(name)) {
 					System.out.println("수정된 이름이 동일합니다. 다시 입력해 주세요");
 					break;
 				}
@@ -293,18 +303,19 @@ public class UserService {
 				break;
 			}
 			case 3: {
-				String tel = nextLine("\"-\"(하이픈)을 포함하여 수정할 전화번호를 입력해주세요.ex) 010-0000-0000", s -> s.matches(telCheck), "하이픈을 포함한 전화번호를 입력해주세요 ex) 010-0000-0000");
+				String tel = nextLine("\"-\"(하이픈)을 포함하여 수정할 전화번호를 입력해주세요.ex) 010-0000-0000", s -> s.matches(telCheck),
+						"하이픈을 포함한 전화번호를 입력해주세요 ex) 010-0000-0000");
 				// 중복체크, 정규식 010-0000-0000
 				if (findBytel(tel) != null) {
 					System.out.println("중복된 전화번호가 존재합니다.");
 					break;
 				}
 				loginUser.setTel(tel);
-				
-				//공고 전화번호 자동 변경
-			
+
+				// 공고 전화번호 자동 변경
+
 				GonggoService.getInstance().gonggoSync();
-				
+
 				System.out.println("전화번호 정보가 " + tel + " (으)로 수정되었습니다.");
 				break;
 			}
@@ -340,7 +351,7 @@ public class UserService {
 				}
 				System.out.println("거주지 정보가 " + area + " (으)로 수정되었습니다.");
 				loginUser.setArea(area);
-		
+
 				break;
 			}
 
@@ -348,9 +359,6 @@ public class UserService {
 				System.out.println("처음으로 돌아갑니다.");
 				break;
 			}
-			default:
-				System.out.println("잘못된 번호 입력입니다. 숫자 1 ~ 6 중에 해당되는 번호를 다시 입력해 주세요");
-				break;
 			}
 			// 개인회원
 		} else if (getLoginUser() instanceof AlbaUser) {
@@ -388,7 +396,8 @@ public class UserService {
 
 			case 3: {
 
-				String pw = nextLine("수정할 비밀번호를 입력하세요.", s -> s.matches(pwCheck) && !s.isEmpty(), "비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
+				String pw = nextLine("수정할 비밀번호를 입력하세요.", s -> s.matches(pwCheck) && !s.isEmpty(),
+						"비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
 
 				if (loginUser.getPw().equals(pw)) {
 					System.out.println("동일한 비밀번호는 입력할 수 없습니다. 다시 입력해 주세요");
@@ -419,9 +428,6 @@ public class UserService {
 				System.out.println("처음으로 돌아갑니다.");
 				break;
 			}
-			default:
-				System.out.println("잘못된 번호 입력입니다. 숫자 1 ~ 5 중에 해당되는 번호를 다시 입력해 주세요");
-				break;
 			}
 		}
 		save(); // 수정 정보 저장
@@ -438,20 +444,19 @@ public class UserService {
 	// 회원 탈퇴 // 개인 ,사업자 나누기
 	public void remove() {
 		System.out.println("회원 탈퇴");
-		
+
 		// 공통 문구
-		
+
 		String pw = nextLine("비밀번호를 입력하세요.");
 		// 탈퇴 하기 전에 비밀번호 입력
 		if (!loginUser.getPw().equals(pw)) {
 			System.out.println("비밀 번호가 일치 하지 않습니다.");
 			return;
 		}
-		
+
 		// 사업자 탈퇴
-		if(loginUser instanceof BusinessUser) {
-			
-			
+		if (loginUser instanceof BusinessUser) {
+
 			if (!nextConfirm("탈퇴하시겠습니까?")) {
 				return;
 			}
@@ -459,23 +464,27 @@ public class UserService {
 				return;
 			}
 			// 확인 완료
-			GonggoService.getInstance().gonggoList.removeAll(GonggoService.getInstance().userFindGonggo(loginUser.getUserNo())); // 사업자 - 공고 내역 삭제
-			ApplyService.getInstance().applyList.removeAll(ApplyService.getInstance().findApplysByGonggo(loginUser.getUserNo())); // 사업자 - 공고 지원 삭제
+			GonggoService.getInstance().gonggoList
+					.removeAll(GonggoService.getInstance().userFindGonggo(loginUser.getUserNo())); // 사업자 - 공고 내역 삭제
+			ApplyService.getInstance().applyList
+					.removeAll(ApplyService.getInstance().findApplysByGonggo(loginUser.getUserNo())); // 사업자 - 공고 지원 삭제
 		}
-		
+
 		// 개인회원
 		else if (loginUser instanceof AlbaUser) {
-			
+
 			if (!nextConfirm("탈퇴하시겠습니까?")) {
-							return;
+				return;
 			}
 			if (!nextConfirm("회원 정보가 전부 삭제됩니다. 탈퇴하시겠습니까?")) {
-							return;
+				return;
 			}
-			
+
 			// 확인 완료
-			ResumeService.getInstance().resumeList.removeAll(ResumeService.getInstance().findResumeBy(loginUser.getUserNo())); // 개인 회원 - 이력서 내역 삭제
-			ApplyService.getInstance().applyList.removeAll(ApplyService.getInstance().findApplysByResume(loginUser.getUserNo()));// 개인회원 - 지원 내역 삭제
+			ResumeService.getInstance().resumeList
+					.removeAll(ResumeService.getInstance().findResumeBy(loginUser.getUserNo())); // 개인 회원 - 이력서 내역 삭제
+			ApplyService.getInstance().applyList
+					.removeAll(ApplyService.getInstance().findApplysByResume(loginUser.getUserNo()));// 개인회원 - 지원 삭제
 			ApplyService.getInstance().removeAllUser();// 지원내역 삭제
 		}
 		// 공통
@@ -502,10 +511,11 @@ public class UserService {
 
 		}
 	}
+
 // ==================================== 자체 사용 ==============================
 	String telCheck = "^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$";
 	String comNumCheck = "^[0-9]{3}-[0-9]{2}-[0-9]{5}$";
 	String idCheck = "^[a-zA-Z]{1}[-_0-9a-zA-Z]*$";
 	String pwCheck = "^[-!_0-9a-zA-Z]*$";
-	String nameCheck = "^[가-힣]{1,5}$"; 
+	String nameCheck = "^[가-힣]{1,5}$";
 }
