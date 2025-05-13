@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import domain.AlbaUser;
 import domain.BusinessUser;
-import domain.Gonggo;
 import domain.User;
 import static utils.AlbaUtils.*;
 
@@ -70,6 +69,7 @@ public class UserService {
 	}
 
 // 아이디 중복
+	
 	public User findById(String id) {
 		User user = null; // 초기값 지정
 		for (User u : userList) {
@@ -82,6 +82,7 @@ public class UserService {
 	}
 
 // 전화번호 중복
+	
 	public User findBytel(String tel) {
 		User user = null;
 		for (User u : userList) {
@@ -109,21 +110,21 @@ public class UserService {
 // 회원가입 // - > 다른 숫자 번호일시 처음으로 돌아가게 만들기
 	public void register() {
 		int choice = nextInt("1. (사업자) 회원가입 2.(개인회원) 회원가입 3. 종료");
-// 유저번호 중복 x 식
+		// 유저번호 중복 x 식
 		int num = userList.get(userList.size() - 1).getUserNo() == 0 ? 1
 				: userList.get(userList.size() - 1).getUserNo() + 1;
 		switch (choice) {
 		case 1:
 			System.out.println("사업자 회원가입");
-// 아이디 , 비밀번호, 연락처, 주소, 이름, 상호명
-
+			// 아이디 , 비밀번호, 연락처, 주소, 이름, 상호명
+			
 			String name = nextLine("사업자 본인 이름을 입력하세요. 한글로 최대 5글자까지 작성 가능합니다."); // 대표자명
 			if (!name.matches(nameCheck)) { // 한글 5자 제한 정규식 추가
 				System.out.println("이름 형식이 올바르지 않습니다. 다시 입력해 주세요");
 				return;
 			}
 			String comNum = nextLine("\"-\"(하이픈)을 포함하여 사업자 등록번호를 입력해 주세요.ex) 000-00-00000"); // 사업자번호 중복체크, 정규식 넣기
-// 000-00-00000
+			// 사업자 정규식 000-00-00000
 			if (findByNum(comNum) != null) {
 				System.out.println("중복된 사업자 번호가 존재합니다.");
 				return;
@@ -141,7 +142,7 @@ public class UserService {
 
 			String tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요.ex) 010-0000-0000");
 
-// 형식, 중복체크
+			// 형식, 중복체크
 			if (!tel.matches(telCheck)) {
 				System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
 				return;
@@ -151,7 +152,7 @@ public class UserService {
 				return;
 			}
 			String id = nextLine("아이디를 입력하세요.(첫 글자는 영문자로 시작하고, 영문자 또는 숫자로만 구성되어야 합니다.");
-// 중복 체크
+			// 중복 체크
 			if (findById(id) != null) {
 				System.out.println("중복된 아이디입니다.");
 				return;
@@ -160,7 +161,7 @@ public class UserService {
 				System.out.println("아이디는 영어와 숫자만 가능합니다. 다시 입력해 주세요");
 				return;
 			}
-// 체크
+			// 체크
 			String pw = nextLine("비밀번호를 입력하세요.");
 			if (!pw.matches(pwCheck)) {
 				System.out.println("비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
@@ -173,7 +174,7 @@ public class UserService {
 
 			String area = selectArea();
 
-// 회원 번호, 이름, 연락처, id, pw, 소재지, 상호, 사업자 등록번호
+			// 회원 번호, 이름, 연락처, id, pw, 소재지, 상호, 사업자 등록번호
 
 			userList.add(new BusinessUser(num, name, tel, id, pw, area, comName, comNum));
 			save(); // save
@@ -184,7 +185,7 @@ public class UserService {
 
 			System.out.println("개인회원 회원가입");
 
-// 이름, 연락처, 거주지, 아이디, 비밀번호, 이력서
+			// 이름, 연락처, 거주지, 아이디, 비밀번호, 이력서
 
 			name = nextLine("이름을 입력하세요.(한글 5글자 제한)");
 			if (!name.matches(nameCheck)) { // 한글 5자 제한 정규식 추가
@@ -202,7 +203,7 @@ public class UserService {
 			}
 
 			id = nextLine("아이디를 입력하세요.(첫 글자는 영문자로 시작하고, 영문자 또는 숫자로만 구성되어야 합니다.");
-// 중복체크
+			// 중복체크
 			if (findById(id) != null) {
 				System.out.println("중복된 아이디가 존재합니다. 다른 아이디로 다시 작성해 주세요.");
 				return;
@@ -265,6 +266,7 @@ public class UserService {
 			System.out.println("아이디 또는 비밀번호가 틀렸습니다.");
 		}
 	}
+	
 // 사업자 회원 정보 조회 //
 
 	public void lookupOwner() {
@@ -323,7 +325,7 @@ public class UserService {
 			case 2: {
 
 				String name = nextLine("수정할 이름을 입력하세요."); // 기존 로그인 유저 이름과 중복 안되게 (!name.trim().matches(nameCheck)) 추가
-				if ((loginUser.getName().equals(name)) || (!name.matches(nameCheck))) { // 한글 5자 제한 정규식 추가
+				if ((loginUser.getName().equals(name)) || (!name.matches(nameCheck))) { 
 					System.out.println("수정된 이름이 동일하거나 형식이 올바르지 않습니다. 다시 입력해 주세요");
 					break;
 				}
@@ -343,6 +345,7 @@ public class UserService {
 					break;
 				}
 				loginUser.setTel(tel);
+				
 				//공고 전화번호 자동 변경
 			
 				GonggoService.getInstance().gonggoSync();
@@ -493,6 +496,7 @@ public class UserService {
 			System.out.println("비밀 번호가 일치 하지 않습니다.");
 			return;
 		}
+		
 		// 사업자 탈퇴
 		if(loginUser instanceof BusinessUser) {
 			
@@ -503,7 +507,7 @@ public class UserService {
 			if (!nextConfirm("회원 정보가 전부 삭제됩니다. 탈퇴하시겠습니까?")) {
 				return;
 			}
-			// 지원 확인하고 되는지 검수
+			// 확인 완료
 			GonggoService.getInstance().gonggoList.removeAll(GonggoService.getInstance().userFindGonggo(loginUser.getUserNo())); // 사업자 - 공고 내역 삭제
 			ApplyService.getInstance().applyList.removeAll(ApplyService.getInstance().findApplysByGonggo(loginUser.getUserNo())); // 사업자 - 공고 지원 삭제
 		}
@@ -520,15 +524,14 @@ public class UserService {
 			
 			// 확인 완료
 			ResumeService.getInstance().resumeList.removeAll(ResumeService.getInstance().findResumeBy(loginUser.getUserNo())); // 개인 회원 - 이력서 내역 삭제
-			// 확인 완료
 			ApplyService.getInstance().applyList.removeAll(ApplyService.getInstance().findApplysByResume(loginUser.getUserNo()));// 개인회원 - 지원 내역 삭제
-			ApplyService.getInstance().removeAllUser();
+			ApplyService.getInstance().removeAllUser();// 지원내역 삭제
 		}
 		// 공통
 		userList.remove(loginUser); // 로그인 정보 유저 삭제
 		logOut();// 회원 탈퇴시 로그아웃도 동시에 진행
 		System.out.println("탈퇴가 성공적으로 완료되었습니다.");
-		save(); // 탈퇴한 것 까지 저장
+		save(); // 탈퇴 저장
 	}
 
 	// 파일 저장 //
@@ -548,11 +551,10 @@ public class UserService {
 
 		}
 	}
-
 // ==================================== 자체 사용 ==============================
 	String telCheck = "^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$";
 	String comNumCheck = "^[0-9]{3}-[0-9]{2}-[0-9]{5}$";
 	String idCheck = "^[a-zA-Z]{1}[-_0-9a-zA-Z]*$";
 	String pwCheck = "^[-!_0-9a-zA-Z]*$";
-	String nameCheck = "^[가-힣]{1,5}$"; // 5글자 제한
+	String nameCheck = "^[가-힣]{1,5}$"; 
 }
