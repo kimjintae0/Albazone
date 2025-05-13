@@ -66,7 +66,7 @@ public class UserService {
 			System.out.println("사업자 회원가입");
 			// 아이디 , 비밀번호, 연락처, 주소, 이름, 상호명
 
-			String name = nextLine("사업자 본인 이름을 입력하세요. 한글로 최대 5글자까지 작성 가능합니다.",
+			String name = nextLine("사업자 본인 이름을 입력하세요.(한글 5글자 제한)",
 					s -> s.matches(nameCheck) && !s.isEmpty(), "한글로 5글자 이내의 이름을 작성해주세요."); // 대표자명
 			String comNum = nextLine("\"-\"(하이픈)을 포함하여 사업자 등록번호를 입력해 주세요.ex) 000-00-00000", s -> s.matches(comNumCheck),
 					"하이픈을 포함한 사업자 등록번호를 입력해주세요 ex) 000-00-00000"); // 사업자번호 중복체크, 정규식 넣기
@@ -79,23 +79,25 @@ public class UserService {
 			String comName = nextLine("상호명을 입력하세요.", s -> !s.isEmpty(), "공백이 아닌 상호명을 입력해주세요.");// 공백이면 넘어가서 못 넘어가게 수정
 
 			String tel = nextLine("\"-\"(하이픈)을 포함하여 전화번호를 입력해주세요.ex) 010-0000-0000", s -> s.matches(telCheck),
-					"하이픈을 포함한 전화번호를 입력해주세요 ex) 010-0000-0000");
+					"하이픈을 포함한 전화번호를 입력하세요. ex) 010-0000-0000");
 			if (findBytel(tel) != null) {
-				System.out.println("중복된 전화번호가 존재합니다.");
+				System.out.println("중복된 전화번호가 존재합니다. 다시 입력해 주세요.");
 				return;
 			}
 
-			String id = nextLine("아이디를 입력하세요.(첫 글자는 영문자로 시작하고, 영문자 또는 숫자로만 구성되어야 합니다.",
+			String id = nextLine("아이디를 입력하세요.\n"
+					+ "아이디의 첫 글자는 영문자로 시작하고, 영문자 또는 숫자로만 구성되어야 합니다.",
 					s -> s.matches(idCheck) && !s.isEmpty(),
 					"아이디는 첫 글자는 영문자로 시작하고, 영문자 또는 숫자로만 구성되어야 합니다. \n아이디를 입력해주세요.");
 			// 중복 체크
 			if (findById(id) != null) {
-				System.out.println("중복된 아이디입니다.");
+				System.out.println("중복된 아이디가 존재합니다. 다른 아이디로 다시 작성해 주세요.");
 				return;
 			}
 			// 체크
-			String pw = nextLine("비밀번호를 입력하세요.", s -> s.matches(pwCheck) && !s.isEmpty(),
-					"비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
+			String pw = nextLine("비밀번호를 입력하세요.\n"
+					+ " 비밀번호는 (!_-)특수문자, 영문자, 숫자로만 구성되어야합니다.", s -> s.matches(pwCheck) && !s.isEmpty(),
+					"비밀번호는 (!_-)특수문자, 영문자, 숫자로만 구성되어야합니다. 다시 입력해 주세요.");
 			if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
 				System.out.println("비밀번호가 다릅니다.");
 				return;
@@ -122,11 +124,12 @@ public class UserService {
 					"하이픈을 포함한 전화번호를 입력해주세요 ex) 010-0000-0000");// 중복체크, 정규식 010-0000-0000
 
 			if (findBytel(tel) != null) {
-				System.out.println("중복된 전화번호가 존재합니다.");
+				System.out.println("중복된 전화번호가 존재합니다. 다시 입력해 주세요.");
 				return;
 			}
 
-			id = nextLine("아이디를 입력하세요.(첫 글자는 영문자로 시작하고, 영문자 또는 숫자로만 구성되어야 합니다.",
+			id = nextLine("아이디를 입력하세요.\n"
+					+ "(아이디의 첫 글자는 영문자로 시작하고, 영문자 또는 숫자로만 구성되어야 합니다.)",
 					s -> s.matches(idCheck) && !s.isEmpty(),
 					"아이디는 첫 글자는 영문자로 시작하고, 영문자 또는 숫자로만 구성되어야 합니다. \n아이디를 입력해주세요.");
 			// 중복체크
@@ -135,8 +138,9 @@ public class UserService {
 				return;
 			}
 
-			pw = nextLine("비밀번호를 입력하세요.", s -> s.matches(pwCheck) && !s.isEmpty(),
-					"비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
+			pw = nextLine("비밀번호를 입력하세요.\n"
+					+ "비밀번호는 (!_-)특수문자, 영문자, 숫자로만 구성되어야합니다.", s -> s.matches(pwCheck) && !s.isEmpty(),
+					"비밀번호는 (!_-)특수문자, 영문자, 숫자로만 구성되어야합니다. 다시 입력해 주세요.");
 			if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
 				System.out.println("비밀번호가 다릅니다.");
 				return;
@@ -241,7 +245,7 @@ public class UserService {
 			}
 			case 2: {
 
-				String name = nextLine("수정할 이름을 입력하세요.", s -> s.matches(nameCheck) && !s.isEmpty(),
+				String name = nextLine("수정할 이름을 입력하세요.(한글 5글자 제한)", s -> s.matches(nameCheck) && !s.isEmpty(),
 						"한글로 5글자 이내의 이름을 작성해주세요."); // 기존 로그인 유저 이름과 중복 안되게 (!name.trim().matches(nameCheck)) 추가
 				if (loginUser.getName().equals(name)) {
 					System.out.println("수정된 이름이 동일합니다. 다시 입력해 주세요");
@@ -270,14 +274,14 @@ public class UserService {
 			}
 
 			case 4: {
-				String pw = nextLine("수정할 비밀번호를 입력하세요.");
+				String pw = nextLine("수정할 비밀번호를 입력하세요.\n 비밀번호는 (!_-)특수문자, 영문자, 숫자로만 구성되어야합니다.");
 				// 중복 체크 ,정규식, 재입력
 				if (loginUser.getPw().equals(pw)) {
 					System.out.println("동일한 비밀번호는 입력할 수 없습니다. 다시 입력해 주세요");
 					break;
 				}
 				if (!pw.matches(pwCheck)) {
-					System.out.println("비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
+					System.out.println("비밀번호는 (!_-)특수문자, 영문자, 숫자로만 구성되어야합니다.");
 					break;
 				}
 				if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
@@ -319,7 +323,7 @@ public class UserService {
 			// 중복 체크 ,정규식, 재입력
 			switch (choice) {
 			case 1: {
-				String name = nextLine("수정할 이름을 입력하세요."); 
+				String name = nextLine("수정할 이름을 입력하세요.(한글 5글자 제한)"); 
 				if ((loginUser.getName().equals(name)) || (!name.trim().matches(nameCheck))) { 
 					System.out.println("수정된 이름이 동일하거나 형식이 올바르지 않습니다. 다시 입력해 주세요");
 					break;
@@ -346,8 +350,8 @@ public class UserService {
 
 			case 3: {
 
-				String pw = nextLine("수정할 비밀번호를 입력하세요.", s -> s.matches(pwCheck) && !s.isEmpty(),
-						"비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.");
+				String pw = nextLine("수정할 비밀번호를 입력하세요.\n 비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.", s -> s.matches(pwCheck) && !s.isEmpty(),
+						"비밀번호는 (!_-)특수문자, 영문자, 숫자로만 구성되어야합니다.");
 
 				if (loginUser.getPw().equals(pw)) {
 					System.out.println("동일한 비밀번호는 입력할 수 없습니다. 다시 입력해 주세요");
