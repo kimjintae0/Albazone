@@ -100,6 +100,7 @@ public class ApplyService {
 	
 	// 지원 취소
 	public void remove() {
+		System.out.println("===== 지원 취소 =====");
 		lookupUser();
 		Apply removeApply = null;
 		boolean check = false;
@@ -123,12 +124,10 @@ public class ApplyService {
 	
 	// 내 공고에 지원한 내역 조회 - 사업자
 	public void lookupUserOwner() {
-		for(Gonggo g : GonggoService.getInstance().gonggoList) {
-			if(UserService.getInstance().getLoginUser().getUserNo() == g.getUserNo() && g.state == true) {
-				System.out.println(g.toString());
-			}
-		}
+		System.out.println("===== 지원 내역 조회 =====");
+		GonggoService.getInstance().lookupOwner(1);
 		int input = GonggoService.getInstance().gonggoSelectOwner();
+		int count = 0;
 		if(input == 0) {
 			System.out.println("마감된 공고이거나 접근 권한이 없는 공고입니다.");
 			return;
@@ -138,7 +137,11 @@ public class ApplyService {
 				System.out.println("지원날짜"+  dateFormat(a.getApplyDate()));
 				ResumeService.getInstance().lookupOwner(a.getResumeNo());
 				a.setApplySitu(a.getApplySitu() + 1);
+				count++;
 			}
+		}
+		if(count == 0) {
+			System.out.println("지원자가 없습니다.");
 		}
 		save();
 	}
