@@ -456,6 +456,7 @@ public class UserService {
 					System.out.println("동일한 거주지 정보는 입력할 수 없습니다. 다시 입력해 주세요.");
 					break;
 				}
+				ApplyService.getInstance().removeAllUser();
 				System.out.println("거주지 정보가 " + area + " (으)로 수정되었습니다.");
 				loginUser.setArea(area);
 				break;
@@ -515,13 +516,13 @@ public class UserService {
 			}
 			if (!nextConfirm("회원 정보가 전부 삭제됩니다. 탈퇴하시겠습니까?")) {
 							return;
-		}
-	
+			}
+			
 			// 확인 완료
 			ResumeService.getInstance().resumeList.removeAll(ResumeService.getInstance().findResumeBy(loginUser.getUserNo())); // 개인 회원 - 이력서 내역 삭제
 			// 확인 완료
 			ApplyService.getInstance().applyList.removeAll(ApplyService.getInstance().findApplysByResume(loginUser.getUserNo()));// 개인회원 - 지원 내역 삭제
-
+			ApplyService.getInstance().removeAllUser();
 		}
 		// 공통
 		userList.remove(loginUser); // 로그인 정보 유저 삭제
