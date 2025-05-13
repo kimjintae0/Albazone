@@ -52,6 +52,7 @@ public class ResumeService {
 	// 이력서 작성
 	public void resister() {
 		// 알바유저 번호, 이력서 번호, 제목, 알바이름, 알바 연락처, 알바지역, 자기소개
+		System.out.println("===== 이력서 작성 =====");
 		String title = nextLine("이력서 제목을 작성해주세요.");
 		String introduce = nextLine("자기소개를 작성해주세요.");
 		// 이력서 번호 관리
@@ -61,13 +62,19 @@ public class ResumeService {
 		save();
 	}
 	
-	// 이력서 조회 - 	알바
+	// 이력서 조회 - 알바
 	public void lookupUser() {
+		System.out.println("===== 이력서 조회 =====");
+		int count = 0;
 		for(Resume resume : resumeList) {
 			if(resume.getUserNo() == UserService.getInstance().getLoginUser().getUserNo() && UserService.getInstance().getLoginUser() instanceof AlbaUser) {
 				System.out.println(resume.toString());
+				count++;
 			}
-		} 
+		}
+		if(count == 0) {
+			System.out.println("조회할 이력서가 없습니다.");
+		}
 	}
 	
 	// 이력서 회원정보 변경
@@ -79,6 +86,7 @@ public class ResumeService {
 				resume.setTel(UserService.getInstance().getLoginUser().getTel());
 			}
 		}
+		System.out.println("사용자의 이력서 정보가 변경되었습니다.");
 	}
 	
 	// 입력 : 이력서 번호, 출력 : 이력서 투스트링
@@ -92,7 +100,7 @@ public class ResumeService {
 	
 	// 이력서 수정
 	public void modify() {
-		System.out.println("이력서 수정");
+		System.out.println("===== 이력서 수정 =====");
 		Resume input = null;
 		lookupUser();
 		int select = resumeSelect();
@@ -109,6 +117,7 @@ public class ResumeService {
 		String introduce = nextLine("자기소개를 작성해주세요.");
 		input.setTitle(title);
 		input.setIntroduce(introduce);
+		System.out.println("이력서가 수정되었습니다.");
 		save();
 	}
 	
