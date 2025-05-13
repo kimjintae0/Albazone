@@ -79,24 +79,10 @@ public class AlbaUtils {
 	public static String selectArea() {
 		System.out.println("지역을 선택해주세요.");
 		// 기타 추가
-		int input = nextInt("1.서울 2.인천 3.부산 4.대전 5.대구 6.울산 7.광주\n 8.제주 9.경기 10.경상 11.강원 12.충청 13.전라 14. 기타");
-		switch(input) {
-		case 1: return "서울";  
-		case 2: return "인천"; 
-		case 3: return "부산"; 
-		case 4: return "대전"; 
-		case 5: return "대구";
-		case 6: return "울산"; 
-		case 7: return "광주"; 
-		case 8: return "제주"; 
-		case 9: return "경기"; 
-		case 10: return "경상"; 
-		case 11: return "강원"; 
-		case 12: return "충청"; 
-		case 13: return "전라";
-		case 14: return "기타";// 추가
-		}
-		return "지역 미정";
+		int input = nextInt("1.서울 2.인천 3.부산 4.대전 5.대구 6.울산 7.광주\n 8.제주 9.경기 10.경상 11.강원 12.충청 13.전라 14. 기타", s -> s > 0 && s <= 14,"1 ~ 14 사이의 숫자를 입력해주세요.");
+		String[] area = {"서울","인천","부산","대전","대구","울산","광주","제주","경기","경상","강원","충청","전라","기타"};
+		
+		return area[input - 1];
 	}
 	
 	// ========================================= 데이트 타입 포매터 ===========================================
