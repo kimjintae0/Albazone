@@ -64,12 +64,14 @@ public class ResumeService {
 	
 	// 이력서 조회 - 알바
 	public void lookupUser() {
-		System.out.println("===== 이력서 조회 =====");
+		System.out.println("이력서 목록");
 		int count = 0;
 		for(Resume resume : resumeList) {
 			if(resume.getUserNo() == UserService.getInstance().getLoginUser().getUserNo() && UserService.getInstance().getLoginUser() instanceof AlbaUser) {
+				System.out.println("===== " + ++count + " =====");
 				System.out.println(resume.toString());
-				count++;
+				
+				
 			}
 		}
 		if(count == 0) {
