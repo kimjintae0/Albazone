@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,12 +14,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import domain.Apply;
-import domain.BusinessUser;
 import domain.Gonggo;
-import domain.User;
 import utils.AlbaUtils;
-
 import static utils.AlbaUtils.*;
 
 public class GonggoService {
@@ -80,13 +75,13 @@ public class GonggoService {
 				return;
 			}
 		String workingStartDate = nextLine("근무 시작일을 입력해주세요 (yyyy-MM-dd)."); // 정규식 만들기 
-		boolean workingStartDateCheck = workingStartDate.matches(dateForm);
+//		boolean workingStartDateCheck = workingStartDate.matches(dateForm);
 		if(!Pattern.matches(dateForm, workingStartDate)) {
 			System.out.println("양식에 맞게 다시 입력하세요. ");
 			return;
 		}
 		String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd)."); // 정규식 만들기 
-		boolean workingEndDateCheck = workingEndDate.matches(dateForm);
+//		boolean workingEndDateCheck = workingEndDate.matches(dateForm);
 		if(!Pattern.matches(dateForm, workingEndDate)){
 			System.out.println("양식에 맞게 다시 입력해주세요.");
 			return;
@@ -221,7 +216,7 @@ public class GonggoService {
 				}
 			case 5 :
 				String workingStartDate = nextLine("근무 시작일을 입력해주세요 (yyyy-MM-dd)."); 
-				boolean workingStartDateCheck = workingStartDate.matches(dateForm);
+//				boolean workingStartDateCheck = workingStartDate.matches(dateForm);
 				if(!Pattern.matches(dateForm, workingStartDate)) {
 					System.out.println("양식에 맞게 다시 입력하세요. ");
 					return;
@@ -232,7 +227,7 @@ public class GonggoService {
 				}
 			case 6 :
 				String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd)."); // 정규식 만들기 
-				boolean workingEndDateCheck = workingEndDate.matches(dateForm);
+//				boolean workingEndDateCheck = workingEndDate.matches(dateForm);
 				if(!Pattern.matches(dateForm, workingEndDate)){
 				System.out.println("양식에 맞게 다시 입력해주세요.");
 				return;
