@@ -39,7 +39,7 @@ public class ResumeService {
 				resumeList = (List<Resume>) ois.readObject();
 				ois.close();
 			} catch (FileNotFoundException e) {
-				System.out.println("User : 파일을 불러올 수 없습니다. 임시 데이터셋으로 진행합니다.");
+				System.out.println("resume : 파일을 불러올 수 없습니다. 임시 데이터셋으로 진행합니다.");
 				resumeList.add(new Resume(2, 1, "김진태님의 이력서입니다.", "김진태", "010-1111-1111", "서울", "안녕하세요. 저는 김진태입니다."));
 
 			} catch (Exception e) {
@@ -55,13 +55,13 @@ public class ResumeService {
 		String title = nextLine("이력서 제목을 작성해주세요.");
 		String introduce = nextLine("자기소개를 작성해주세요.");
 		// 이력서 번호 관리
-		int num = resumeList.get(resumeList.size() - 1).getResumeNo() == 0 ? 1 : resumeList.get(resumeList.size() - 1).getResumeNo() + 1;
+		int num = resumeList.size() == 0 ? 1 : resumeList.get(resumeList.size() - 1).getResumeNo() + 1;
 		resumeList.add(new Resume(UserService.getInstance().getLoginUser().getUserNo(), num, title, UserService.getInstance().getLoginUser().getName(), UserService.getInstance().getLoginUser().getTel(), UserService.getInstance().getLoginUser().getArea(), introduce));
 		System.out.println("이력서 작성 완료");
 		save();
 	}
 	
-	// 이력서 조회 - 알바
+	// 이력서 조회 - 	알바
 	public void lookupUser() {
 		for(Resume resume : resumeList) {
 			if(resume.getUserNo() == UserService.getInstance().getLoginUser().getUserNo() && UserService.getInstance().getLoginUser() instanceof AlbaUser) {
