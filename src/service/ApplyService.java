@@ -53,6 +53,7 @@ public class ApplyService {
 	
 	// 지원하기 - 알바
 	public void apply() {
+		System.out.println("===== 지원하기 =====");
 		int gonggoNo = GonggoService.getInstance().gonggoSelectUser();
 		if(gonggoNo == 0) {
 			System.out.println("접근 권한이 없는 공고입니다.");
