@@ -146,11 +146,13 @@ public class ApplyService {
 	
 	// 회원탈퇴, 거주지 수정시 유저의 지원내역 전체삭제 - 유저 
 	public void removeAllUser() {
+		List<Apply> applys = new ArrayList<>();
 		for(Apply a : applyList) {
 			if (a.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
-				applyList.remove(a);
+				applys.add(a);
 			}
 		}
+		applyList.removeAll(applys);
 		System.out.println("지원내역이 전체 삭제되었습니다.");
 		save();
 	}
