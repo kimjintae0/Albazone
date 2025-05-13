@@ -1,6 +1,7 @@
 package domain;
 
 
+@SuppressWarnings("serial")
 public class AlbaUser extends User {
 	//공통 User(회원번호, 이름, 연락처, 소재지 , Id, Pw)로 생성해둠
 	

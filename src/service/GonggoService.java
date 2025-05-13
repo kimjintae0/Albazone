@@ -16,7 +16,7 @@ import java.util.List;
 import domain.Gonggo;
 import utils.AlbaUtils;
 import static utils.AlbaUtils.*;
-
+@SuppressWarnings("unchecked")
 public class GonggoService {
 	// 공고 리스트 생성
 	List<Gonggo> gonggoList = new ArrayList<>();

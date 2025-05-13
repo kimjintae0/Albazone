@@ -2,6 +2,7 @@ package domain;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public abstract class User implements Serializable{
 	// 공통 부분 묶어두기
 	private int userNo; // 회원번호

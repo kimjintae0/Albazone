@@ -1,7 +1,8 @@
 package domain;
 
-import service.UserService;
 
+
+@SuppressWarnings("serial")
 public class BusinessUser extends User {
 	// 1) 사업자 :상호명, 사업자 번호  이외 공통 User(회원번호, 이름, 연락처, 소재지 , Id, Pw)
 	private String companyName; // 상호명

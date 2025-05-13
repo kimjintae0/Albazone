@@ -2,6 +2,7 @@ package domain;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Resume  implements Serializable{
 	// 제목, 이름, 연락처, 주소, 자기소개
 	private int userNo; // 알바유저 번호

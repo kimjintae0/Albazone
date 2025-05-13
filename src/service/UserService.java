@@ -12,7 +12,7 @@ import domain.AlbaUser;
 import domain.BusinessUser;
 import domain.User;
 import static utils.AlbaUtils.*;
-
+@SuppressWarnings("unchecked")
 public class UserService {
 
 // 로그인 유저

@@ -102,7 +102,7 @@ public class ApplyService {
 		lookupUser();
 		Apply removeApply = null;
 		boolean check = false;
-		int input = nextInt("지원을 취소하실 공고의 번호를 입력해주세요.");
+		int input = nextInt("지원을 취소하실 공고의 번호를 입력해주세요.", s -> s > 0 , "공고번호는 1이상의 정수를 입력해주세요.");
 		for(Apply a : applyList) {
 			if(a.getUserNo() == UserService.getInstance().getLoginUser().getUserNo() && a.getGonggoNo() == input) {
 				removeApply = a;

@@ -3,6 +3,7 @@ package domain;
 import java.io.Serializable;
 import java.util.Date;
 
+@SuppressWarnings("serial")
 public class Apply implements Serializable{
 	private int gonggoNo;
 	private int resumeNo;

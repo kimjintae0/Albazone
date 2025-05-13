@@ -13,7 +13,7 @@ import static utils.AlbaUtils.*;
 import domain.AlbaUser;
 import domain.Resume;
 
-
+@SuppressWarnings("unchecked")
 public class ResumeService {
 	// 이력서 리스트 생성
 	List<Resume> resumeList = new ArrayList<>();
