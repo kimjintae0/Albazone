@@ -82,17 +82,18 @@ public class ApplyService {
 	
 	// 지원내역 조회 - 알바
 	public void lookupUser() {
-			boolean check = false;
-			for(Apply a : applyList) {
-				if(a.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
-					System.out.println("지원 시간 : " + dateFormat(a.getApplyDate()) + "\n지원상태 : " + (a.getApplySitu() == 0 ? "접수" : "읽음"));
-					System.out.println(GonggoService.getInstance().findGonggoBy(a.getGonggoNo()));
-					check = true;
-				}
+		System.out.println("===== 지원 내역 =====");
+		int check = 0;
+		for(Apply a : applyList) {
+			if(a.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
+				System.out.println("===== " + ++check + " =====");
+				System.out.println("지원 시간 : " + dateFormat(a.getApplyDate()) + "\n지원상태 : " + (a.getApplySitu() == 0 ? "접수" : "읽음"));
+				System.out.println(GonggoService.getInstance().findGonggoBy(a.getGonggoNo()));
 			}
-			if(!check) {
-				System.out.println("지원내역이 없습니다.");
-			}
+		}
+		if(check == 0) {
+			System.out.println("지원내역이 없습니다.");
+		}
 	}
 	
 	
