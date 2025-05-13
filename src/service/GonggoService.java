@@ -61,7 +61,7 @@ public class GonggoService {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			Date startdate = format.parse(workingStartDate);
-			Date enddate = format.parse(workingEndDate);
+			Date enddate = format.parse(workingEndDate); 
 			String today = now.format(formatNow);
 			Date todaynow = format.parse(today);
 			if(enddate.compareTo(startdate) <  0 || enddate.compareTo(todaynow) < 0) {
@@ -72,10 +72,13 @@ public class GonggoService {
 			e.printStackTrace();
 		}	
 		String comArea = selectArea();
+		
+
+
 		// 공고번호 관리
 		int num = gonggoList.size() == 0 ? 1 : gonggoList.get(gonggoList.size() - 1).getGonggoNo() + 1; 
 		
-		gonggoList.add(new Gonggo(UserService.getInstance().getLoginUser().getUserNo(), num, title, role, workHours, wage, workingStartDate, workingEndDate, true, comArea, UserService.getInstance().getLoginUser().getTel()));
+		gonggoList.add(new Gonggo(UserService.getInstance().getLoginUser().getUserNo(), num, title, role, workHours, wage, workingStartDate, workingEndDate, true , comArea, UserService.getInstance().getLoginUser().getTel()));
 		save();
 		System.out.println("공고가 정상적으로 등록 완료되었습니다.");
 	}
@@ -215,7 +218,7 @@ public class GonggoService {
 				
 			case 7 :
 				String comArea = selectArea();
-				System.out.println("근무 지역이 " + comArea + " (으)로 변경되었습니다.");
+				System.out.println("근무 지역이 " + "\"" + comArea + "\"" + " 시로 변경되었습니다.");
 				g.setComArea(comArea);
 				ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
 				break;

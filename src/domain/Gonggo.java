@@ -114,7 +114,7 @@ public class Gonggo implements Serializable{
 				+ "\n근무시간 : " + workHours + "시간(일)" 
 				+ "\n시급 : " + wage + "원" 
 				+ "\n근무기간 :" + (workingStartDate + " ~ " + workingEndDate )
-				+ "\n진행상태 : " + state 
+				+ "\n진행상태 : " + (state == true ? "진행중" : "마감" )
 				+ "\n근무지역 : " + comArea 
 				+ "\n연락처 : " + tel
 				+ "\n===================================="
