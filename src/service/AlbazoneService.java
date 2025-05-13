@@ -132,11 +132,11 @@ public class AlbazoneService {
 					break;
 				}
 				case 5: {
-					gonggoService.remove();
+					gonggoService.stateChange();
 					break;
 				}
 				case 6: {
-					gonggoService.stateChange();
+					gonggoService.remove();
 					break;
 				}
 				case 7: {
