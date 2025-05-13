@@ -347,6 +347,20 @@ public class GonggoService {
 		return gonggoUser;
 	}
 	
+	
+	// 유저 번호를 입력받아 ,그 유저가 몇개의 공고를 가지고 있는지 출력하는 메서드
+	public int userRemoveCheck() {
+		int count = 0;
+		for(Gonggo g : gonggoList) {
+			if(g.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
+				count++;
+			}
+		}
+		return count;
+	}
+	
+	
+	
 // ============================ 그 외 클래스 내 사용 ====================================================
 	
 	public final String dateForm = "(20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])";	//날짜 정규식
