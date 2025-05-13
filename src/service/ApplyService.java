@@ -144,16 +144,28 @@ public class ApplyService {
 	
 	
 	
-	// 회원탈퇴시 지원내역 전체삭제 - 유저
+	// 회원탈퇴, 거주지 수정시 유저의 지원내역 전체삭제 - 유저 
 	public void removeAllUser() {
 		for(Apply a : applyList) {
 			if (a.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
 				applyList.remove(a);
 			}
 		}
-		System.out.println("유저의 지원내역이 전체 삭제되었습니다.");
+		System.out.println("지원내역이 전체 삭제되었습니다.");
 		save();
 	}
+	
+	// 이력서 삭제시 지원내역 삭제 - resumeNo입력 후 해당 이력서로 지원한 내역 삭제
+	public void removeByResumeNo(int resumeNo) {
+		List<Apply> applys = new ArrayList<>();
+		for(Apply a : applyList) {
+			if(a.getResumeNo() == resumeNo) {
+				applys.add(a);
+			}
+		}
+		applyList.removeAll(applys);
+	}
+	
 	
 	
 	// 공고 수정, 삭제 시 해당공고 지원내역 전체삭제 - 사업자
