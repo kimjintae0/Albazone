@@ -253,17 +253,10 @@ public class GonggoService {
 	}
 	//회원정보 수정시 공고 연락처도 수정
 	void gonggoSync() {
-		int input = nextInt("공고 번호를 입력해 주세요."); 
 		for(Gonggo g : gonggoList) {
-				if(input == g.getGonggoNo() && g.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
-					if(!UserService.getInstance().getLoginUser().getTel().equals(g.getTel())) {
-						g.setTel(UserService.getInstance().getLoginUser().getTel());
-					}
-				}		
-				else {
-					System.out.println("공고 번호가 일치하지 않습니다. ");
-					return;
-				}
+			if(UserService.getInstance().getLoginUser().getUserNo() == g.getUserNo()) {
+				g.setTel(UserService.getInstance().getLoginUser().getTel());
+			}
 		}
 		save();
 	}
