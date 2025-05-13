@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import domain.AlbaUser;
 import domain.BusinessUser;
+import domain.Gonggo;
 import domain.User;
 import static utils.AlbaUtils.*;
 
@@ -17,6 +18,7 @@ public class UserService {
 
 // 로그인 유저
 	private User loginUser;
+
 
 // 싱글톤
 	private static UserService userService = new UserService();
@@ -266,9 +268,9 @@ public class UserService {
 // 사업자 회원 정보 조회 //
 
 	public void lookupOwner() {
-
+ 
 		BusinessUser business = (BusinessUser) loginUser;// 사업자 변환 변수
-
+	
 		System.out.println("회원 정보 조회");
 		System.out.println("============================");
 		System.out.println("아이디 : " + loginUser.getId());
@@ -341,6 +343,10 @@ public class UserService {
 					break;
 				}
 				loginUser.setTel(tel);
+				//공고 전화번호 자동 변경
+			
+				GonggoService.getInstance().gonggoSync();
+				
 				System.out.println("전화번호 정보가 " + tel + " (으)로 수정되었습니다.");
 				break;
 			}
@@ -376,6 +382,7 @@ public class UserService {
 				}
 				System.out.println("거주지 정보가 " + area + " (으)로 수정되었습니다.");
 				loginUser.setArea(area);
+		
 				break;
 			}
 
@@ -495,8 +502,9 @@ public class UserService {
 			if (!nextConfirm("회원 정보가 전부 삭제됩니다. 탈퇴하시겠습니까?")) {
 				return;
 			}
-//		GonggoService.getInstance().gonggoList.removeAll(GonggoService.getInstance().userFindGonggo(loginUser.getUserNo())); // 사업자 - 공고 내역 삭제
-//			ApplyService.getInstance().applyList.removeAll(ApplyService.getInstance().findApplysByGonggo(loginUser.getUserNo())); // 사업자 - 공고 지원 삭제
+			// 지원 확인하고 되는지 검수
+			GonggoService.getInstance().gonggoList.removeAll(GonggoService.getInstance().userFindGonggo(loginUser.getUserNo())); // 사업자 - 공고 내역 삭제
+			ApplyService.getInstance().applyList.removeAll(ApplyService.getInstance().findApplysByGonggo(loginUser.getUserNo())); // 사업자 - 공고 지원 삭제
 		}
 		
 		// 개인회원
@@ -511,8 +519,8 @@ public class UserService {
 	
 			// 확인 완료
 			ResumeService.getInstance().resumeList.removeAll(ResumeService.getInstance().findResumeBy(loginUser.getUserNo())); // 개인 회원 - 이력서 내역 삭제
-			// 확인 필요
-//			ApplyService.getInstance().applyList.removeAll(ApplyService.getInstance().findApplysByResume(loginUser.getUserNo()));// 개인회원 - 지원 내역 삭제
+			// 확인 완료
+			ApplyService.getInstance().applyList.removeAll(ApplyService.getInstance().findApplysByResume(loginUser.getUserNo()));// 개인회원 - 지원 내역 삭제
 
 		}
 		// 공통
