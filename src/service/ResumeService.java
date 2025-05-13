@@ -137,15 +137,16 @@ public class ResumeService {
 	
 	// 이력서 번호 선택
 	public int resumeSelect() {
-		int select = nextInt("이력서 번호를 입력해주세요.");	
+		int select = nextInt("이력서 번호를 입력해주세요.",s -> s > 0, "이력서 번호는 1 이상의 정수로 입력해주세요.");
+		int resumeNo = 0;
 		for(Resume resume : resumeList) {
-			if(resume.getResumeNo() == select) {
-				if(resume.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
-					return select;
-				}
+			if(resume.getResumeNo() == select && resume.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
+				
+				resumeNo = select;
+				
 			}
 		}
-		return 0;
+		return resumeNo;
 	}
 	
 	// 회원번호를 입력하면 이력서들이 반환
