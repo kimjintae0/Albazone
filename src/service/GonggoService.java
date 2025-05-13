@@ -91,14 +91,14 @@ public class GonggoService {
 			System.out.println("양식에 맞게 다시 입력해주세요.");
 			return;
 		}
-		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			Date startdate = format.parse(workingStartDate);
 			Date enddate = format.parse(workingEndDate);
-			
-			if(enddate.compareTo(startdate) <  0) {
-				System.out.println("종료일이 시작일보다 빠릅니다. 날짜를 다시 입력하세요.");
+			String today = now.format(formatNow);
+			Date todaynow = format.parse(today);
+			if(enddate.compareTo(startdate) <  0 || enddate.compareTo(todaynow) < 0) {
+				System.out.println("종료일이 시작일보다 빠르거나, 금일보다 빠릅니다.");
 				return;
 			}
 		}catch(Exception e) {
@@ -268,16 +268,16 @@ public class GonggoService {
 		save();
 	}
 	
+	
 	//공고 마감 - workingEndDate 보다 현재 시간이 지났으면 자동 마감
+	
 	void gonggoMagam() {
-		LocalDate now = LocalDate.now();
-		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String today = now.format(format);
+		String today = now.format(formatNow);
 		System.out.println(today);
 
 		for(Gonggo g: gonggoList) {
-				Date endDate = (Date) format.parse(g.getWorkingEndDate());
-				Date nowDate = (Date) format.parse(today);
+				Date endDate = (Date) formatNow.parse(g.getWorkingEndDate());
+				Date nowDate = (Date) formatNow.parse(today);
 				
 				if(endDate.compareTo(nowDate) <  0) {
 					g.state = false;
@@ -382,5 +382,7 @@ public class GonggoService {
 	
 // ============================ 그 외 클래스 내 사용 ====================================================
 	
-	public final String dateForm = "(20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])";				
+	public final String dateForm = "(20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])";	//날짜 정규식
+	 DateTimeFormatter formatNow = DateTimeFormatter.ofPattern("yyyy-MM-dd");		//현재날짜패턴
+	 LocalDate now = LocalDate.now();
 }
