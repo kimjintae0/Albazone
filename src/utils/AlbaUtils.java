@@ -43,9 +43,9 @@ public class AlbaUtils {
 		}
 		
 		
-//		public static String nextLine(String msg) {
-//			return nextLine(msg, null, null);
-//		}
+		public static String nextLine(String msg) {
+			return nextLine(msg, null, null);
+		}
 		
 		
 		public static int nextInt(String msg, Predicate<Integer> pred, String errMsg) {
@@ -60,10 +60,10 @@ public class AlbaUtils {
 			return Long.parseLong(nextLine(msg));
 		}
 		
-		public static String nextLine(String msg) {
-			System.out.print(msg);
-			return scanner.nextLine();
-		}
+//		public static String nextLine(String msg) {
+//			System.out.print(msg);
+//			return scanner.nextLine();
+//		}
 	
 	
 	

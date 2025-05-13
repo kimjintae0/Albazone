@@ -12,7 +12,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import domain.Gonggo;
 import utils.AlbaUtils;
@@ -64,28 +63,10 @@ public class GonggoService {
 		// 사업자 유저 번호, 공고 번호, 제목, 역할, 일하는 시간, 시급, 근무 기간, 진행상태, 소재지
 		String title = nextLine("공고의 제목을 입력해주세요.");
 		String role = nextLine("담당 업무를 입력해주세요.");
-		int workHours = nextInt("근무 시간을 숫자로 입력해주세요. (시간 단위로 적어주세요. 소숫점은 미지원)");
-		if(workHours < 0 ) {
-			System.out.println("시간은 0보다 작을 수 없습니다.");
-			return;
-		}
-		int wage = nextInt("시급을 숫자로 입력해주세요. (2025년 최저시급은 10,030원 입니다.)"); // 최저시급 보다 작을 시 return
-			if(wage < 10030) {
-				System.out.println("2025년 최저 시급은 10,030원입니다. 다시 입력해주세요. ");
-				return;
-			}
-		String workingStartDate = nextLine("근무 시작일을 입력해주세요 (yyyy-MM-dd)."); // 정규식 만들기 
-//		boolean workingStartDateCheck = workingStartDate.matches(dateForm);
-		if(!Pattern.matches(dateForm, workingStartDate)) {
-			System.out.println("양식에 맞게 다시 입력하세요. ");
-			return;
-		}
-		String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd)."); // 정규식 만들기 
-//		boolean workingEndDateCheck = workingEndDate.matches(dateForm);
-		if(!Pattern.matches(dateForm, workingEndDate)){
-			System.out.println("양식에 맞게 다시 입력해주세요.");
-			return;
-		}
+		int workHours = nextInt("근무 시간을 숫자로 입력해주세요.", s -> s > 0 && s <= 12,"시간은 1 ~ 12 사이의 정수로 입력해주세요.");
+		int wage = nextInt("시급을 숫자로 입력해주세요. (2025년 최저시급은 10,030원 입니다.)", s -> s >= 10030, "시급은 최저시급이상이어야 합니다."); // 최저시급 보다 작을 시 return
+		String workingStartDate = nextLine("근무 시작일을 입력해주세요 (yyyy-MM-dd).",s -> s.matches(dateForm),"날짜는 yyyy-MM-dd 형식으로 작성해주세요."); // 정규식 만들기 
+		String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd).",s -> s.matches(dateForm),"날짜는 yyyy-MM-dd 형식으로 작성해주세요."); // 정규식 만들기 
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			Date startdate = format.parse(workingStartDate);
@@ -101,7 +82,7 @@ public class GonggoService {
 		}	
 		String comArea = selectArea();
 		// 공고번호 관리
-		int num = gonggoList.get(gonggoList.size() - 1).getGonggoNo() == 0 ? 1 : gonggoList.get(gonggoList.size() - 1).getGonggoNo() + 1; 
+		int num = gonggoList.size() == 0 ? 1 : gonggoList.get(gonggoList.size() - 1).getGonggoNo() + 1; 
 		
 		gonggoList.add(new Gonggo(UserService.getInstance().getLoginUser().getUserNo(), num, title, role, workHours, wage, workingStartDate, workingEndDate, true, comArea, UserService.getInstance().getLoginUser().getTel()));
 		save();
@@ -121,7 +102,7 @@ public class GonggoService {
 	
 	// 공고 선택 - 개인유저
 	public int gonggoSelectUser() {
-		int input = nextInt("공고 번호를 선택해 주세요.");
+		int input = nextInt("공고 번호를 선택해 주세요.", s -> s > 0 , "공고번호는 1이상의 정수를 입력해주세요.");
 		int gonggoNo = 0;
 		for(Gonggo g : gonggoList) {
 			if(g.getGonggoNo() == input && g.getComArea() == UserService.getInstance().getLoginUser().getArea() && g.state == true) {
@@ -133,7 +114,7 @@ public class GonggoService {
 	
 	// 공고 선택 - 사업자
 	public int gonggoSelectOwner() {
-		int input = nextInt("공고 번호를 입력해 주세요."); // 사업자는 자신의 유저 번호를 모릅니다. 수정필요
+		int input = nextInt("공고 번호를 입력해 주세요.", s -> s > 0 , "공고번호는 1이상의 정수를 입력해주세요."); // 사업자는 자신의 유저 번호를 모릅니다. 수정필요
 		int gonggoNo = 0;
 		for(Gonggo g : gonggoList) {
 			if(g.getGonggoNo() == input && g.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
@@ -180,7 +161,7 @@ public class GonggoService {
 		}
 		Gonggo g = findGonggoByNo(input);
 
-		int select = AlbaUtils.nextInt("1.공고 제목 2.담당 업무 3.근무 시간 4. 시급 5.근무시작일 6. 근무종료일 7.근무 지역 8. 나가기");
+		int select = AlbaUtils.nextInt("1.공고 제목 2.담당 업무 3.근무 시간 4. 시급 5.근무시작일 6. 근무종료일 7.근무 지역 8. 나가기", s -> s > 0 && s <= 8, "1 ~ 8 사이의 숫자를 입력해주세요.");
 
 		switch(select) {
 			case 1 :
@@ -188,57 +169,40 @@ public class GonggoService {
 				System.out.println("공고 제목이 " + title + "로 변경되었습니다.");
 				g.setTitle(title);
 				break;
+				
 			case 2:
 				String role = nextLine("담당 업무를 입력해주세요.");
 				System.out.println("담당 업무가 " + role + "(으)로 변경되었습니다.");
 				g.setRole(role);
 				break;
+				
 			case 3:
-				int workHours = nextInt("근무 시간을 숫자로 입력해주세요. (시간 단위로 적어주세요. 소숫점은 미지원)");
-				if(workHours < 0 ) {
-					System.out.println("시간은 0보다 작을 수 없습니다.");
-					return;
-					}
-				else {
-					System.out.println("근무 시간이 " + workHours + "(으)로 변경되었습니다.");
-					g.setWorkHours(workHours);
-					ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
-					break;
-				}
+				int workHours = nextInt("근무 시간을 숫자로 입력해주세요. (시간 단위로 적어주세요. 소숫점은 미지원)", s -> s > 0 && s <= 12,"시간은 1 ~ 12 사이의 정수로 입력해주세요.");
+				System.out.println("근무 시간이 " + workHours + "(으)로 변경되었습니다.");
+				g.setWorkHours(workHours);
+				ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
+				break;
+				
 			case 4: 
-				int wage = nextInt("시급을 숫자로 입력해주세요. (2025년 최저시급은 10,030원 입니다.)"); 
-				if(wage < 10030) {
-					System.out.println("2025년 최저 시급은 10,030원입니다. 다시 입력해주세요. ");
-					return;
-				}else {
-					System.out.println("시급이 " + wage + "원으로 변경되었습니다.");
-					g.setWage(wage);
-					ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
-					break;
-				}
+				int wage = nextInt("시급을 숫자로 입력해주세요. (2025년 최저시급은 10,030원 입니다.)", s -> s >= 10030, "시급은 최저시급이상이어야 합니다."); 
+				System.out.println("시급이 " + wage + "원으로 변경되었습니다.");
+				g.setWage(wage);
+				ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
+				break;
+				
 			case 5 :
-				String workingStartDate = nextLine("근무 시작일을 입력해주세요 (yyyy-MM-dd)."); 
-//				boolean workingStartDateCheck = workingStartDate.matches(dateForm);
-				if(!Pattern.matches(dateForm, workingStartDate)) {
-					System.out.println("양식에 맞게 다시 입력하세요. ");
-					return;
-				}else {
-					System.out.println("근무 시작일이 " + workingStartDate + "(으)로 변경되었습니다.");
-					g.setWorkingStartDate(workingStartDate);
-					break;
-				}
+				String workingStartDate = nextLine("근무 시작일을 입력해주세요 (yyyy-MM-dd).",s -> s.matches(dateForm),"날짜는 yyyy-MM-dd 형식으로 작성해주세요."); 
+				System.out.println("근무 시작일이 " + workingStartDate + "(으)로 변경되었습니다.");
+				g.setWorkingStartDate(workingStartDate);
+				break;
+				
 			case 6 :
-				String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd)."); // 정규식 만들기 
-//				boolean workingEndDateCheck = workingEndDate.matches(dateForm);
-				if(!Pattern.matches(dateForm, workingEndDate)){
-				System.out.println("양식에 맞게 다시 입력해주세요.");
-				return;
-				}else {
-					System.out.println("근무 종료일이 " + workingEndDate + "(으)로 변경되었습니다.");
-					g.setWorkingEndDate(workingEndDate);
-					ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
-					break;
-				}
+				String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd).",s -> s.matches(dateForm),"날짜는 yyyy-MM-dd 형식으로 작성해주세요.");
+				System.out.println("근무 종료일이 " + workingEndDate + "(으)로 변경되었습니다.");
+				g.setWorkingEndDate(workingEndDate);
+				ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
+				break;
+				
 			case 7 :
 				String comArea = selectArea();
 				System.out.println("근무 지역이 " + comArea + " (으)로 변경되었습니다.");
@@ -248,6 +212,8 @@ public class GonggoService {
 		}	
 			save();
 	}
+	
+	
 	//회원정보 수정시 공고 연락처도 수정
 	void gonggoSync() {
 		for(Gonggo g : gonggoList) {
@@ -258,9 +224,8 @@ public class GonggoService {
 		save();
 	}
 	
-	
+		
 	//공고 마감 - workingEndDate 보다 현재 시간이 지났으면 자동 마감
-	
 	void gonggoMagam() {
 		String today = now.format(formatNow);
 		System.out.println(today);
@@ -280,7 +245,7 @@ public class GonggoService {
 	void remove() {
 		//공고삭제-사업자
 		System.out.println("공고 삭제 기능");
-		int input = nextInt("삭제할 공고 번호를 입력해 주세요."); 
+		int input = nextInt("삭제할 공고 번호를 입력해 주세요.",s -> s > 0, "공고번호는 1이상의 정수를 입력해주세요."); 
 		for(Gonggo g : gonggoList) {
 			if(input == g.getGonggoNo() && g.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
 				nextConfirm("해당 공고를 삭제하시겠습니까?");
@@ -300,14 +265,14 @@ public class GonggoService {
 
 	//공고마감 - 사업자가 직접 마감 
 	void stateChange() {
-		int input = AlbaUtils.nextInt("마감할 공고 번호를 입력하세요."); 
+		int input = AlbaUtils.nextInt("마감할 공고 번호를 입력하세요.",s -> s > 0, "공고번호는 1이상의 정수를 입력해주세요."); 
 		for(Gonggo g : gonggoList) {
 			if(input == g.getGonggoNo() && g.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
-					if(nextConfirm("공고를 마감하시겠습니까?")) {
-						System.out.println("공고가 마감되었습니다.");
-						g.state = false;
-						ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
-						return;
+				if(nextConfirm("공고를 마감하시겠습니까?")) {
+					System.out.println("공고가 마감되었습니다.");
+					g.state = false;
+					ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
+					return;
 				}else 
 				{System.out.println("공고 번호가 일치하지 않습니다");
 				return ;
