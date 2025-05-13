@@ -128,6 +128,7 @@ public class ResumeService {
 					removeResume = resume;
 			}
 		}
+		ApplyService.getInstance().removeByResumeNo(removeResume.getResumeNo());
 		resumeList.remove(removeResume);
 		System.out.println("No." + removeResume.getResumeNo() + " 이력서가 삭제되었습니다.");
 		save();
