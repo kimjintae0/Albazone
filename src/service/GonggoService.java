@@ -259,19 +259,20 @@ public class GonggoService {
 		//공고삭제-사업자
 		System.out.println("공고 삭제 기능");
 		int input = nextInt("삭제할 공고 번호를 입력해 주세요.",s -> s > 0, "공고번호는 1이상의 정수를 입력해주세요."); 
+		Gonggo gonggo = null;
 		for(Gonggo g : gonggoList) {
 			if(input == g.getGonggoNo() && g.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
-				nextConfirm("해당 공고를 삭제하시겠습니까?");
-				gonggoList.remove(g);	
-				System.out.println("해당 공고가 삭제되었습니다.");
-				ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
-				break;
+				gonggo = g;
 			}
-			else {
-				System.out.println("해당 공고번호가 존재하지 않습니다.");
-				return;
-				}
-			}
+		}
+		if(gonggo == null) {
+			System.out.println("해당 공고번호가 존재하지 않습니다.");
+			return;
+		}
+		nextConfirm("해당 공고를 삭제하시겠습니까?");
+		gonggoList.remove(gonggo);	
+		System.out.println("해당 공고가 삭제되었습니다.");
+		ApplyService.getInstance().removeAllOwner(gonggo.getGonggoNo());
 		save();
 		}
 
@@ -279,18 +280,22 @@ public class GonggoService {
 	//공고마감 - 사업자가 직접 마감 
 	void stateChange() {
 		int input = AlbaUtils.nextInt("마감할 공고 번호를 입력하세요.",s -> s > 0, "공고번호는 1이상의 정수를 입력해주세요."); 
+		Gonggo gonggo = null;
 		for(Gonggo g : gonggoList) {
 			if(input == g.getGonggoNo() && g.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
-				if(nextConfirm("공고를 마감하시겠습니까?")) {
-					System.out.println("공고가 마감되었습니다.");
-					g.state = false;
-					ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
-					return;
-				}else 
-				{System.out.println("공고 번호가 일치하지 않습니다");
-				return ;
-				}
+				gonggo = g;
 			}
+		}
+		if(gonggo == null) {
+			System.out.println("접근불가능한 공고입니다.");
+		}
+		if(nextConfirm("공고를 마감하시겠습니까?")) {
+			gonggo.state = false;
+			System.out.println("공고가 마감되었습니다.");
+			ApplyService.getInstance().removeAllOwner(gonggo.getGonggoNo());
+		}else 
+		{System.out.println("공고 마감이 취소되었습니다.");
+		return ;
 		}
 		save();
 	}
@@ -348,7 +353,7 @@ public class GonggoService {
 	}
 	
 	
-	// 유저 번호를 입력받아 ,그 유저가 몇개의 공고를 가지고 있는지 출력하는 메서드
+	// 로그인유저가 몇개의 공고를 가지고 있는지 출력하는 메서드
 	public int userRemoveCheck() {
 		int count = 0;
 		for(Gonggo g : gonggoList) {
