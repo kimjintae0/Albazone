@@ -12,7 +12,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import domain.Gonggo;
 import utils.AlbaUtils;
 import static utils.AlbaUtils.*;
@@ -32,14 +31,6 @@ public class GonggoService {
 //	UserService userService = UserService.getInstance();
 	ApplyService applyService = ApplyService.getInstance();
 
-	
-	// 초기화 블럭
-//	{
-//		// 사업자 유저 번호, 공고 번호, 제목, 역할, 일하는 시간, 시급, 근무 기간, 진행상태, 소재지
-//		gonggoList.add(new Gonggo(1, 1, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울", "000-0000-0000"));
-////		gonggoList.add(new Gonggo(1, 2, "김밥천국 오전 알바(9시 ~ 6시, 1시간 휴식) 구합니다", "서빙", 8, 10030, "2025-05-04" ,"2025-06-04", true, "서울", "000-0000-0000"));
-//		// 마감일 < 현재시점일 경우 true -> false 바뀌는지 확인 위한 초기화 블럭 추가
-//	}
 	{
 		ObjectInputStream ois = null;
 		try {
@@ -86,6 +77,7 @@ public class GonggoService {
 		
 		gonggoList.add(new Gonggo(UserService.getInstance().getLoginUser().getUserNo(), num, title, role, workHours, wage, workingStartDate, workingEndDate, true, comArea, UserService.getInstance().getLoginUser().getTel()));
 		save();
+		System.out.println("공고가 정상적으로 등록 완료되었습니다.");
 	}
 	
 	
@@ -131,6 +123,7 @@ public class GonggoService {
 		case 1:{
 			for(Gonggo g : gonggoList) {
 				if(UserService.getInstance().getLoginUser().getUserNo() == g.getUserNo() && g.state == true) {
+					System.out.println("<현재 진행중인 공고>");
 					System.out.println(g.toString());	
 				}
 			}
@@ -139,6 +132,8 @@ public class GonggoService {
 		case 2:{
 			for(Gonggo g : gonggoList) {
 				if(UserService.getInstance().getLoginUser().getUserNo() == g.getUserNo() && g.state == false) {
+					System.out.println("<현재 마감된 공고>");
+
 					System.out.println(g.toString());
 				}
 			}
@@ -166,33 +161,33 @@ public class GonggoService {
 		switch(select) {
 			case 1 :
 				String title = nextLine("공고의 제목을 입력해주세요.");
-				System.out.println("공고 제목이 " + title + "로 변경되었습니다.");
+				System.out.println("공고 제목이 " + "\"" + title + "\"" + "(으)로 변경 완료되었습니다.");
 				g.setTitle(title);
 				break;
 				
 			case 2:
 				String role = nextLine("담당 업무를 입력해주세요.");
-				System.out.println("담당 업무가 " + role + "(으)로 변경되었습니다.");
+				System.out.println("담당 업무가 " + "\"" + role + "\"" + "(으)로 변경완료되었습니다.");
 				g.setRole(role);
 				break;
 				
 			case 3:
 				int workHours = nextInt("근무 시간을 숫자로 입력해주세요. (시간 단위로 적어주세요. 소숫점은 미지원)", s -> s > 0 && s <= 12,"시간은 1 ~ 12 사이의 정수로 입력해주세요.");
-				System.out.println("근무 시간이 " + workHours + "(으)로 변경되었습니다.");
+				System.out.println("근무 시간이 " + "\"" + workHours + "시간\"" + "(으)로 변경되었습니다.");
 				g.setWorkHours(workHours);
 				ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
 				break;
 				
 			case 4: 
 				int wage = nextInt("시급을 숫자로 입력해주세요. (2025년 최저시급은 10,030원 입니다.)", s -> s >= 10030, "시급은 최저시급이상이어야 합니다."); 
-				System.out.println("시급이 " + wage + "원으로 변경되었습니다.");
+				System.out.println("시급이 " + "\"" + wage + "원\"" + "으로 변경되었습니다.");
 				g.setWage(wage);
 				ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
 				break;
 				
 			case 5 :
 				String workingStartDate = nextLine("근무 시작일을 입력해주세요 (yyyy-MM-dd).",s -> s.matches(dateForm),"날짜는 yyyy-MM-dd 형식으로 작성해주세요."); 
-				System.out.println("근무 시작일이 " + workingStartDate + "(으)로 변경되었습니다.");
+				System.out.println("근무 시작일이 " + "\"" + workingStartDate + "\"" + "일로 변경되었습니다.");
 				g.setWorkingStartDate(workingStartDate);
 				break;
 				
@@ -213,7 +208,7 @@ public class GonggoService {
 				}	
 				
 				
-				System.out.println("근무 종료일이 " + workingEndDate + "(으)로 변경되었습니다.");
+				System.out.println("근무 종료일이 " + "\"" + workingEndDate + "\"" + "일로 변경되었습니다.");
 				g.setWorkingEndDate(workingEndDate);
 				ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
 				break;
@@ -325,8 +320,7 @@ public class GonggoService {
 		return gonggo;
 	}
 	
-	
-	
+
 	// applyList.gonggoNo() 를 입력받아서 List<Gonggo>를 출력하는 메서드
 		
 	public List<Gonggo> findGonggoBy(int no){
