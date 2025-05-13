@@ -109,7 +109,7 @@ public class UserService {
 
 // 회원가입 // - > 다른 숫자 번호일시 처음으로 돌아가게 만들기
 	public void register() {
-		int choice = nextInt("1. (사업자) 회원가입 2.(개인회원) 회원가입 3. 종료");
+		int choice = nextInt("1. (사업자) 회원가입 2.(개인회원) 회원가입 3. 종료", s -> s > 0 && s <= 3, "1 ~ 3 사이의 번호를 입력해주세요");
 		// 유저번호 중복 x 식
 		int num = userList.get(userList.size() - 1).getUserNo() == 0 ? 1
 				: userList.get(userList.size() - 1).getUserNo() + 1;
@@ -306,7 +306,7 @@ public class UserService {
 		// 사업자
 		if (getLoginUser() instanceof BusinessUser) {
 			System.out.println("회원정보 수정");
-			int choice = nextInt("1. 상호명 2.이름 3.연락처 4. 비밀번호 5. 거주지 정보 6. 나가기");
+			int choice = nextInt("1. 상호명 2.이름 3.연락처 4. 비밀번호 5. 거주지 정보 6. 나가기",s -> s > 0 && s <= 6, "1 ~ 6 사이의 번호를 입력해주세요");
 
 			switch (choice) {
 			case 1: {
@@ -402,7 +402,7 @@ public class UserService {
 
 			System.out.println("회원정보 수정");
 
-			int choice = nextInt("1. 이름 2.연락처 3. 비밀번호 4. 거주지 정보 5. 나가기");
+			int choice = nextInt("1. 이름 2.연락처 3. 비밀번호 4. 거주지 정보 5. 나가기", s -> s > 0 && s <= 5, "1 ~ 5 사이의 번호를 입력해주세요");
 
 			switch (choice) {
 			case 1: {
