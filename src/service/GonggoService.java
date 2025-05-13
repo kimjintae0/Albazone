@@ -198,6 +198,21 @@ public class GonggoService {
 				
 			case 6 :
 				String workingEndDate = nextLine("근무 종료일을 입력해주세요(yyyy-MM-dd).",s -> s.matches(dateForm),"날짜는 yyyy-MM-dd 형식으로 작성해주세요.");
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				try {
+					Date startdate = format.parse(g.getWorkingStartDate());
+					Date enddate = format.parse(workingEndDate);
+					String today = now.format(formatNow);
+					Date todaynow = format.parse(today);
+					if(enddate.compareTo(startdate) <  0 || enddate.compareTo(todaynow) < 0) {
+						System.out.println("종료일이 시작일보다 빠르거나, 금일보다 빠릅니다.");
+						return;
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				}	
+				
+				
 				System.out.println("근무 종료일이 " + workingEndDate + "(으)로 변경되었습니다.");
 				g.setWorkingEndDate(workingEndDate);
 				ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
