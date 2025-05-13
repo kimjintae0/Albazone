@@ -164,6 +164,7 @@ public class ApplyService {
 			}
 		}
 		applyList.removeAll(applys);
+		save();
 	}
 	
 	
