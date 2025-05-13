@@ -416,12 +416,14 @@ public class UserService {
 			if (!nextConfirm("탈퇴하시겠습니까?")) {
 				return;
 			}
+			if(GonggoService.getInstance().userRemoveCheck() != 0) {
+				System.out.println("모든 공고를 삭제해야 회원 탈퇴가 가능합니다.");
+				return;
+			}
 			if (!nextConfirm("회원 정보가 전부 삭제됩니다. 탈퇴하시겠습니까?")) {
 				return;
 			}
-		
-			GonggoService.getInstance().gonggoList
-					.removeAll(GonggoService.getInstance().userFindGonggo(loginUser.getUserNo())); // 사업자 - 공고 내역 삭제
+			
 			ApplyService.getInstance().applyList
 					.removeAll(ApplyService.getInstance().findApplysByGonggo(loginUser.getUserNo())); // 사업자 - 공고 지원 삭제
 		}
