@@ -122,23 +122,25 @@ public class GonggoService {
 	// 공고 선택 - 개인유저
 	public int gonggoSelectUser() {
 		int input = nextInt("공고 번호를 선택해 주세요.");
+		int gonggoNo = 0;
 		for(Gonggo g : gonggoList) {
 			if(g.getGonggoNo() == input && g.getComArea() == UserService.getInstance().getLoginUser().getArea() && g.state == true) {
-				return input;
+				gonggoNo = input;
 			}
 		}
-		return 0;
+		return gonggoNo;
 	}
 	
 	// 공고 선택 - 사업자
 	public int gonggoSelectOwner() {
 		int input = nextInt("공고 번호를 입력해 주세요."); // 사업자는 자신의 유저 번호를 모릅니다. 수정필요
+		int gonggoNo = 0;
 		for(Gonggo g : gonggoList) {
 			if(g.getGonggoNo() == input && g.getUserNo() == UserService.getInstance().getLoginUser().getUserNo()) {
-				return input;
+				gonggoNo = input;
 			}
 		}
-		return 0;
+		return gonggoNo;
 	}
 	
 	// 공고조회 - 사업자 자신이 등록한 공고
