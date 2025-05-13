@@ -205,6 +205,7 @@ public class GonggoService {
 				else {
 					System.out.println("근무 시간이 " + workHours + "(으)로 변경되었습니다.");
 					g.setWorkHours(workHours);
+					ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
 					break;
 				}
 			case 4: 
@@ -215,6 +216,7 @@ public class GonggoService {
 				}else {
 					System.out.println("시급이 " + wage + "원으로 변경되었습니다.");
 					g.setWage(wage);
+					ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
 					break;
 				}
 			case 5 :
@@ -237,12 +239,14 @@ public class GonggoService {
 				}else {
 					System.out.println("근무 종료일이 " + workingEndDate + "(으)로 변경되었습니다.");
 					g.setWorkingEndDate(workingEndDate);
+					ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
 					break;
 				}
 			case 7 :
 				String comArea = selectArea();
 				System.out.println("근무 지역이 " + comArea + " (으)로 변경되었습니다.");
 				g.setComArea(comArea);
+				ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
 				break;
 		}	
 			save();
@@ -277,6 +281,7 @@ public class GonggoService {
 				
 				if(endDate.compareTo(nowDate) <  0) {
 					g.state = false;
+					ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
 				}			
 			}
 		save();
@@ -291,6 +296,7 @@ public class GonggoService {
 				nextConfirm("해당 공고를 삭제하시겠습니까?");
 				gonggoList.remove(g);	
 				System.out.println("해당 공고가 삭제되었습니다.");
+				ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
 				break;
 			}
 			else {
@@ -310,6 +316,7 @@ public class GonggoService {
 					if(nextConfirm("공고를 마감하시겠습니까?")) {
 						System.out.println("공고가 마감되었습니다.");
 						g.state = false;
+						ApplyService.getInstance().removeAllOwner(g.getGonggoNo());
 						return;
 				}else 
 				{System.out.println("공고 번호가 일치하지 않습니다");

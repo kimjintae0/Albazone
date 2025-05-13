@@ -156,12 +156,11 @@ public class ApplyService {
 	}
 	
 	
-	// 공고 삭제 시 해당공고 지원내역 전체삭제 - 사업자
+	// 공고 수정, 삭제 시 해당공고 지원내역 전체삭제 - 사업자
 	public void removeAllOwner(int gonggoNo) {
 				for(Apply a : applyList) {
 					if(a.getGonggoNo() == gonggoNo) {
 						applyList.remove(a);
-					
 					}
 				}
 		System.out.println("해당 공고에 지원한 지원내역이 전체 삭제되었습니다.");
