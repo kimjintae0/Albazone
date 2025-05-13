@@ -274,12 +274,14 @@ public class UserService {
 			}
 
 			case 4: {
-				String pw = nextLine("수정할 비밀번호를 입력하세요.\n 비밀번호는 (!_-)특수문자, 영문자, 숫자로만 구성되어야합니다.");
+				String pw = nextLine("수정할 비밀번호를 입력하세요.\n 비밀번호는 (!_-)특수문자, 영대소문자, 숫자로만 구성되어야합니다.", s -> s.matches(pwCheck) && !s.isEmpty(),
+						"비밀번호는 (!_-)특수문자, 영문자, 숫자로만 구성되어야합니다.");
 				// 중복 체크 ,정규식, 재입력
 				if (loginUser.getPw().equals(pw)) {
 					System.out.println("동일한 비밀번호는 입력할 수 없습니다. 다시 입력해 주세요");
 					break;
 				}
+			
 				if (!pw.matches(pwCheck)) {
 					System.out.println("비밀번호는 (!_-)특수문자, 영문자, 숫자로만 구성되어야합니다.");
 					break;
@@ -336,11 +338,11 @@ public class UserService {
 			case 2: {
 				String tel = nextLine("\"-\"(하이픈)을 포함하여 수정할 전화번호를 입력해주세요.ex) 010-0000-0000");// 중복체크, 정규식 010-0000-0000
 				if (!tel.matches(telCheck)) {
-					System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요");
+					System.out.println("전화번호 형식이 올바르지 않습니다. 다시 입력해 주세요.");
 					break;
 				}
 				if (findBytel(tel) != null) {
-					System.out.println("중복된 전화번호가 존재합니다.");
+					System.out.println("중복된 전화번호가 존재합니다. 다시 입력해 주세요.");
 					break;
 				}
 				System.out.println("전화번호 정보가 " + tel + " (으)로 수정되었습니다.");
@@ -354,7 +356,7 @@ public class UserService {
 						"비밀번호는 (!_-)특수문자, 영문자, 숫자로만 구성되어야합니다.");
 
 				if (loginUser.getPw().equals(pw)) {
-					System.out.println("동일한 비밀번호는 입력할 수 없습니다. 다시 입력해 주세요");
+					System.out.println("동일한 비밀번호는 입력할 수 없습니다. 다시 입력해 주세요.");
 					break;
 				}
 				if (!pw.equals(nextLine("[비밀번호 확인] 비밀번호를 재입력하세요."))) {
