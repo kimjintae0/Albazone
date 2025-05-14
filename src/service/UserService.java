@@ -196,7 +196,6 @@ public class UserService {
 		System.out.println("회원 정보 조회");
 		System.out.println("============================");
 		System.out.println("아이디 : " + loginUser.getId());
-		System.out.println("비밀번호 나중에 삭제 확인용 : " + loginUser.getPw());
 		System.out.println("이름 : " + loginUser.getName());
 		System.out.println("연락처 : " + loginUser.getTel());
 		System.out.println("사업자 번호 : " + business.getCompanyNumber());
@@ -214,7 +213,6 @@ public class UserService {
 		System.out.println("아이디 : " + loginUser.getId());
 		System.out.println("이름 : " + loginUser.getName());
 		System.out.println("연락처 : " + loginUser.getTel());
-		System.out.println("비밀번호 나중에 삭제 확인용 : " + loginUser.getPw());
 		System.out.println("지역 : " + loginUser.getArea());
 
 	}
